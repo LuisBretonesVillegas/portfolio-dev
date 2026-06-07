@@ -1,40 +1,30 @@
 ---
-title: Welcome to Starlight
-description: Get started building your docs site with Starlight.
-template: splash # Remove or comment out this line to display the site sidebar on this page.
+title: Luis Bretones
+description: Personal homelab documentation and project notes.
+template: splash
 hero:
-  tagline: Congrats on setting up a new Starlight project!
+  tagline: Computer Engineering student at UAL. This is where I document what I build and learn.
   image:
     file: ../../assets/houston.webp
   actions:
-    - text: Example Guide
-      link: /guides/example/
+    - text: See my project
+      link: /projects/
       icon: right-arrow
-    - text: Read the Starlight docs
-      link: https://starlight.astro.build
+    - text: GitHub
+      link: https://github.com/luisbv
       icon: external
       variant: minimal
 ---
-
-import { Card, CardGrid } from '@astrojs/starlight/components';
-
-## Next steps
-
-<CardGrid stagger>
-	<Card title="Update content" icon="pencil">
-		Edit `src/content/docs/index.mdx` to see this page change.
-	</Card>
-	<Card title="Change page layout" icon="document">
-		Delete `template: splash` in `src/content/docs/index.mdx` to display a
-		sidebar on this page.
-	</Card>
-	<Card title="Add new content" icon="add-document">
-		Add Markdown or MDX files to `src/content/docs` to create new pages.
-	</Card>
-	<Card title="Configure your site" icon="setting">
-		Edit your `sidebar` and other config in `astro.config.mjs`.
-	</Card>
-	<Card title="Read the docs" icon="open-book">
-		Learn more in [the Starlight Docs](https://starlight.astro.build/).
-	</Card>
-</CardGrid>
+ 
+import { Card } from '@astrojs/starlight/components';
+ 
+## About
+ 
+Computer Engineering student based in Spain. Interested in networking, low-level systems, and building things that actually run.
+This site is where I keep notes on what I'm working on.
+ 
+## Projects
+ 
+<Card title="RF Receiver" icon="magnifier">
+  A small receiver project. Build log and notes coming soon.
+</Card>
