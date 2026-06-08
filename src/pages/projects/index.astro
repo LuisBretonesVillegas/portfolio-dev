@@ -78,6 +78,10 @@ import Portfolio from '../../layouts/Portfolio.astro';
       background: var(--accent);
       color: #fff;
     }
+    @media (max-width: 768px) {
+      .project-card { flex-direction: column; align-items: flex-start; gap: 1rem; }
+      .project-card-arrow { align-self: flex-start; }
+    }
   </style>
 
   <div class="projects-header">
