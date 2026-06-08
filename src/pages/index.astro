@@ -1,142 +1,8 @@
 ---
+import Portfolio from '../layouts/Portfolio.astro';
 ---
-<!DOCTYPE html>
-<html lang="en" data-theme="light">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Luis Bretones | Computer Engineering Student</title>
-  <meta name="description" content="Computer Engineering student at UAL, focused on networking and cloud infrastructure." />
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Playfair+Display:wght@700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<Portfolio>
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --bg: #f5f0e8;
-      --bg-card: #ede8df;
-      --text: #111111;
-      --text-muted: #6b7280;
-      --accent: #1a5c00;
-      --border: #e5e7eb;
-      --shadow: rgba(0, 0, 0, 0.05);
-    }
-    [data-theme="dark"] {
-      --bg: #0a0a0a;
-      --bg-card: #111111;
-      --text: #fafafa;
-      --text-muted: #888888;
-      --accent: #4aaf20;
-      --border: #222222;
-      --shadow: rgba(0, 0, 0, 0.4);
-    }
-
-    body {
-      font-family: 'DM Sans', sans-serif;
-      background-color: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-      transition: background-color 0.3s, color 0.3s;
-    }
-
-    /* ── NAV ── */
-    nav {
-      position: fixed;
-      inset: 0 0 auto 0;
-      z-index: 100;
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      background: rgba(255, 255, 255, 0.92);
-      border-bottom: 1px solid var(--border);
-      transition: background 0.3s;
-    }
-    [data-theme="dark"] nav { background: rgba(10, 10, 10, 0.92); }
-    .nav-inner {
-      max-width: 860px;
-      margin: 0 auto;
-      padding: 1rem 2rem;
-      display: grid;
-      grid-template-columns: 1fr auto 1fr;
-      align-items: center;
-    }
-
-    .nav-left {
-      display: flex;
-      flex-direction: column;
-      gap: 0.1rem;
-    }
-    .nav-name {
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.95rem;
-      font-weight: 600;
-      color: var(--text);
-      text-decoration: none;
-    }
-    .nav-name:hover { color: var(--accent); }
-    .nav-subtitle {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.65rem;
-      font-weight: 500;
-      letter-spacing: 0.08em;
-      color: var(--accent);
-      text-transform: uppercase;
-    }
-    .nav-center {
-      display: flex;
-      align-items: center;
-      gap: 2rem;
-    }
-    .nav-link {
-      font-size: 0.85rem;
-      font-weight: 500;
-      color: var(--text-muted);
-      text-decoration: none;
-      transition: color 0.2s;
-      letter-spacing: 0.02em;
-    }
-    .nav-link:hover { color: var(--accent); }
-    .nav-right {
-      display: flex;
-      align-items: center;
-      gap: 1.25rem;
-      justify-content: flex-end;
-    }
-    .nav-icon-link {
-      color: var(--text-muted);
-      display: flex;
-      align-items: center;
-      transition: color 0.2s;
-    }
-    .nav-icon-link:hover { color: var(--accent); }
-    .theme-btn {
-      background: none;
-      border: 1px solid var(--border);
-      border-radius: 50%;
-      width: 30px;
-      height: 30px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--text-muted);
-      transition: border-color 0.2s, color 0.2s;
-    }
-    .theme-btn:hover { border-color: var(--accent); color: var(--accent); }
-    #sun-icon { display: none; }
-    [data-theme="dark"] #moon-icon { display: none; }
-    [data-theme="dark"] #sun-icon { display: block; }
-
-    /* ── LAYOUT ── */
-    main {
-      padding-top: 65px;
-      max-width: 860px;
-      margin: 0 auto;
-      padding-left: 2rem;
-      padding-right: 2rem;
-    }
-
     /* ── HERO ── */
     .hero {
       display: grid;
@@ -177,33 +43,6 @@
       max-width: 460px;
       margin-bottom: 2rem;
     }
-    .hero-actions {
-      display: flex;
-      gap: 0.75rem;
-      flex-wrap: wrap;
-      margin-bottom: 2.5rem;
-    }
-    .btn {
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.875rem;
-      font-weight: 500;
-      padding: 0.5rem 1.1rem;
-      border-radius: 6px;
-      text-decoration: none;
-      transition: background 0.2s, color 0.2s, border-color 0.2s;
-    }
-    .btn-primary {
-      background: var(--accent);
-      color: #fff;
-      border: 1px solid var(--accent);
-    }
-    .btn-primary:hover { opacity: 0.88; }
-    .btn-ghost {
-      background: transparent;
-      color: var(--text-muted);
-      border: 1px solid var(--border);
-    }
-    .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
     .hero-keywords {
       font-family: 'JetBrains Mono', monospace;
       font-size: 0.7rem;
@@ -212,11 +51,7 @@
       color: var(--text-muted);
       line-height: 1.9;
     }
-    .hero-right {
-      padding-top: 5rem;
-      display: flex;
-      justify-content: center;
-    }
+    .hero-right { padding-top: 5rem; display: flex; justify-content: center; }
     .avatar {
       width: 280px;
       height: 280px;
@@ -224,22 +59,6 @@
       object-fit: cover;
       object-position: center top;
       border: 2px solid var(--border);
-    }
-
-    /* ── SECTIONS ── */
-    .section {
-      padding: 3rem 0;
-      border-bottom: 1px solid var(--border);
-    }
-    .section:last-child { border-bottom: none; }
-    .section-title {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.65rem;
-      font-weight: 600;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--text-muted);
-      margin-bottom: 1.75rem;
     }
 
     /* ── SKILLS GRID ── */
@@ -273,97 +92,20 @@
       background: var(--bg);
       cursor: default;
     }
-
-    /* per-category colors */
     .c-green .skill-cell-title { color: var(--accent); }
     .c-green .skill-tag { border: 1px solid color-mix(in srgb, var(--accent) 40%, transparent); color: var(--accent); }
-
     .c-blue .skill-cell-title { color: #3d7fc1; }
     .c-blue .skill-tag { border: 1px solid #a3c4e8; color: #3d7fc1; }
-
     .c-orange .skill-cell-title { color: #b85c2a; }
     .c-orange .skill-tag { border: 1px solid #dda882; color: #b85c2a; }
-
     .c-purple .skill-cell-title { color: #6b5fa0; }
     .c-purple .skill-tag { border: 1px solid #b8aed6; color: #6b5fa0; }
-
     .c-teal .skill-cell-title { color: #2e8c76; }
     .c-teal .skill-tag { border: 1px solid #8fcfc0; color: #2e8c76; }
-
     .c-muted .skill-cell-title { color: var(--text-muted); }
     .c-muted .skill-tag { border: 1px solid var(--border); color: var(--text-muted); }
 
-    /* ── REPO FEED ── */
-    .repo-feed { display: flex; flex-direction: column; gap: 0.75rem; }
-    .repo-item {
-      display: block;
-      padding: 1rem 1.1rem;
-      border: 1px solid var(--border);
-      border-radius: 4px;
-      background: var(--bg);
-      text-decoration: none;
-      color: var(--text);
-      transition: border-color 0.15s;
-    }
-    .repo-item:hover { border-color: var(--accent); }
-    .repo-item-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 0.5rem;
-      gap: 1rem;
-    }
-    .repo-item-name {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.875rem;
-      font-weight: 600;
-      color: var(--text);
-      transition: color 0.2s;
-    }
-    .repo-item-name::before { content: '~/'; color: var(--text-muted); font-weight: 400; }
-    .repo-item:hover .repo-item-name { color: var(--accent); }
-    .repo-item-src {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.72rem;
-      color: var(--accent);
-      white-space: nowrap;
-    }
-    .repo-item-tags {
-      display: flex;
-      gap: 0.35rem;
-      flex-wrap: wrap;
-      margin-bottom: 0.5rem;
-    }
-    .repo-item-tag {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.65rem;
-      font-weight: 500;
-      padding: 0.15rem 0.5rem;
-      border-radius: 3px;
-      border: 1px solid color-mix(in srgb, var(--accent) 40%, transparent);
-      color: var(--accent);
-    }
-    .repo-item-desc {
-      font-size: 0.875rem;
-      color: var(--text-muted);
-      line-height: 1.6;
-    }
-    .view-all {
-      display: block;
-      margin-top: 0.75rem;
-      padding: 0.7rem;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.75rem;
-      color: var(--accent);
-      text-decoration: none;
-      text-align: center;
-      border: 1px dashed var(--border);
-      border-radius: 4px;
-      transition: border-color 0.15s;
-    }
-    .view-all:hover { border-color: var(--accent); }
-
-    /* ── CERTIFICATIONS ── */
+    /* ── CERT GRID ── */
     .cert-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -430,239 +172,150 @@
       border: 1px solid var(--border);
     }
 
-    /* ── FOOTER ── */
-    footer {
-      max-width: 860px;
-      margin: 0 auto;
-      padding: 2rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      font-size: 0.8rem;
-      color: var(--text-muted);
-      flex-wrap: wrap;
-      gap: 0.5rem;
-      border-top: 1px solid var(--border);
-    }
-    .footer-links { display: flex; gap: 1.25rem; }
-    .footer-links a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
-    .footer-links a:hover { color: var(--accent); }
-
     /* ── RESPONSIVE ── */
     @media (max-width: 768px) {
-      .hero {
-        grid-template-columns: 1fr auto;
-        gap: 1.25rem;
-        align-items: start;
-      }
-      .hero-right {
-        display: flex;
-        padding-top: 3.5rem;
-      }
-      .avatar {
-        width: 110px;
-        height: 110px;
-      }
-      .nav-inner {
-        grid-template-columns: 1fr auto;
-        padding: 0.875rem 1.25rem;
-        gap: 0;
-      }
-      .nav-center { display: none; }
-      .nav-right { gap: 1rem; }
+      .hero { grid-template-columns: 1fr auto; gap: 1.25rem; align-items: start; }
+      .hero-right { display: flex; padding-top: 3.5rem; }
+      .avatar { width: 110px; height: 110px; }
       .skill-grid { grid-template-columns: repeat(2, 1fr); }
       .skill-cell:nth-child(3n) { border-right: 1px solid var(--border); }
       .skill-cell:nth-child(2n) { border-right: none; }
       .cert-grid { grid-template-columns: repeat(2, 1fr); }
-      .repo-item-header { flex-direction: column; gap: 0.25rem; }
     }
   </style>
-</head>
-<body>
 
-  <nav>
-    <div class="nav-inner">
-    <div class="nav-left">
-      <a href="/" class="nav-name">Luis Bretones</a>
-      <span class="nav-subtitle">Networking // Almería</span>
+  <section class="hero">
+    <div class="hero-left">
+      <p class="hero-meta">Luis Bretones // Networking // Almería</p>
+      <h1>Luis Bretones</h1>
+      <p class="role">Computer Engineering Student</p>
+      <p class="tagline">
+        Networking &amp; cloud infrastructure.<br />
+        Building toward CCNA and AWS certifications.<br />
+        Documenting what I learn and build along the way.
+      </p>
+      <p class="hero-keywords">
+        Networking // Cloud Infrastructure //<br />
+        Linux // Wireshark // Docker
+      </p>
     </div>
-    <div class="nav-center">
-      <a href="/projects/" class="nav-link">Projects</a>
-      <a href="/blog/" class="nav-link">Blog</a>
-      <a href="/contact/" class="nav-link">Contact</a>
+    <div class="hero-right">
+      <img src="/avatar.jpeg" alt="Luis Bretones" class="avatar" />
     </div>
-    <div class="nav-right">
-      <a href="https://github.com/LuisBretonesVillegas" target="_blank" rel="noopener" class="nav-icon-link" aria-label="GitHub">
-        <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+  </section>
+
+  <section class="section" id="skills">
+    <p class="section-title">Skills // Current stack</p>
+    <div class="skill-grid">
+      <div class="skill-cell c-green">
+        <p class="skill-cell-title">Networking</p>
+        <div class="skill-cell-tags">
+          <span class="skill-tag">TCP/IP</span>
+          <span class="skill-tag">Routing & Switching</span>
+          <span class="skill-tag">VLANs</span>
+          <span class="skill-tag">Subnetting</span>
+          <span class="skill-tag">BGP</span>
+          <span class="skill-tag">OSPF</span>
+          <span class="skill-tag">Cisco IOS</span>
+        </div>
+      </div>
+      <div class="skill-cell c-blue">
+        <p class="skill-cell-title">Cloud & Infra</p>
+        <div class="skill-cell-tags">
+          <span class="skill-tag">AWS</span>
+          <span class="skill-tag">Docker</span>
+          <span class="skill-tag">Linux</span>
+          <span class="skill-tag">Bash</span>
+          <span class="skill-tag">GitHub Actions</span>
+        </div>
+      </div>
+      <div class="skill-cell c-orange">
+        <p class="skill-cell-title">Analysis & Tools</p>
+        <div class="skill-cell-tags">
+          <span class="skill-tag">Wireshark</span>
+          <span class="skill-tag">Packet Tracer</span>
+          <span class="skill-tag">GNS3</span>
+          <span class="skill-tag">Nmap</span>
+          <span class="skill-tag">tcpdump</span>
+        </div>
+      </div>
+      <div class="skill-cell c-purple">
+        <p class="skill-cell-title">Programming</p>
+        <div class="skill-cell-tags">
+          <span class="skill-tag">Python</span>
+          <span class="skill-tag">C</span>
+          <span class="skill-tag">Bash</span>
+          <span class="skill-tag">Git</span>
+        </div>
+      </div>
+      <div class="skill-cell c-teal">
+        <p class="skill-cell-title">OS & Systems</p>
+        <div class="skill-cell-tags">
+          <span class="skill-tag">Arch Linux</span>
+          <span class="skill-tag">Ubuntu</span>
+          <span class="skill-tag">Windows Server</span>
+          <span class="skill-tag">VirtualBox</span>
+        </div>
+      </div>
+      <div class="skill-cell c-muted">
+        <p class="skill-cell-title">Project Management</p>
+        <div class="skill-cell-tags">
+          <span class="skill-tag">Git Flow</span>
+          <span class="skill-tag">GitHub</span>
+          <span class="skill-tag">Markdown</span>
+          <span class="skill-tag">Documentation</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <p class="section-title">Repository feed // Featured</p>
+    <div class="repo-feed">
+      <a href="/projects/protocol-analysis-wireless-audio-transceivers/" class="repo-item">
+        <div class="repo-item-header">
+          <span class="repo-item-name">protocol-analysis-wireless-audio-transceivers</span>
+          <span class="repo-item-src">view_source →</span>
+        </div>
+        <div class="repo-item-tags">
+          <span class="repo-item-tag">USB</span>
+          <span class="repo-item-tag">networking</span>
+          <span class="repo-item-tag">arch-linux</span>
+          <span class="repo-item-tag">wireshark</span>
+        </div>
+        <p class="repo-item-desc">Low-level USB protocol analysis of a Corsair wireless audio dongle: descriptor enumeration, interface mapping, and traffic capture on Arch Linux.</p>
       </a>
-      <a href="https://www.linkedin.com/in/luis-bretones-villegas-02b103315/" target="_blank" rel="noopener" class="nav-icon-link" aria-label="LinkedIn">
-        <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-      </a>
-      <button class="theme-btn" id="themeToggle" aria-label="Toggle theme">
-        <svg id="moon-icon" width="13" height="13" fill="currentColor" viewBox="0 0 16 16"><path d="M6 .278a.768.768 0 01.08.858 7.208 7.208 0 00-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527 0 1.04-.055 1.533-.16a.787.787 0 01.81.316.733.733 0 01-.031.893A8.349 8.349 0 018.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.752.752 0 016 .278z"/></svg>
-        <svg id="sun-icon" width="13" height="13" fill="currentColor" viewBox="0 0 16 16"><path d="M8 12a4 4 0 100-8 4 4 0 000 8zM8 0a.5.5 0 01.5.5v2a.5.5 0 01-1 0v-2A.5.5 0 018 0zm0 13a.5.5 0 01.5.5v2a.5.5 0 01-1 0v-2A.5.5 0 018 13zm8-5a.5.5 0 01-.5.5h-2a.5.5 0 010-1h2a.5.5 0 01.5.5zM3 8a.5.5 0 01-.5.5h-2a.5.5 0 010-1h2A.5.5 0 013 8zm10.657-5.657a.5.5 0 010 .707l-1.414 1.415a.5.5 0 11-.707-.707l1.414-1.415a.5.5 0 01.707 0zm-9.193 9.193a.5.5 0 010 .707L3.05 13.657a.5.5 0 01-.707-.707l1.414-1.414a.5.5 0 01.707 0zm9.193 2.121a.5.5 0 01-.707 0l-1.414-1.414a.5.5 0 01.707-.707l1.414 1.414a.5.5 0 010 .707zM4.464 4.465a.5.5 0 01-.707 0L2.343 3.05a.5.5 0 11.707-.707l1.414 1.414a.5.5 0 010 .707z"/></svg>
-      </button>
     </div>
+    <a href="/projects/" class="view-all">~/explore_all →</a>
+  </section>
+
+  <section class="section">
+    <p class="section-title">Certifications // Roadmap</p>
+    <div class="cert-grid">
+      <div class="cert-card active">
+        <span class="cert-vendor">Cisco</span>
+        <span class="cert-acronym">CCNA</span>
+        <span class="cert-fullname">Cisco Certified Network Associate</span>
+        <span class="cert-status status-active">In progress</span>
+      </div>
+      <div class="cert-card active">
+        <span class="cert-vendor">AWS</span>
+        <span class="cert-acronym">CCP</span>
+        <span class="cert-fullname">AWS Certified Cloud Practitioner</span>
+        <span class="cert-status status-active">In progress</span>
+      </div>
+      <div class="cert-card">
+        <span class="cert-vendor">Cisco</span>
+        <span class="cert-acronym">CCNP</span>
+        <span class="cert-fullname">Cisco Certified Network Professional</span>
+        <span class="cert-status status-planned">Planned</span>
+      </div>
+      <div class="cert-card">
+        <span class="cert-vendor">AWS</span>
+        <span class="cert-acronym">SAA</span>
+        <span class="cert-fullname">AWS Solutions Architect Associate</span>
+        <span class="cert-status status-planned">Planned</span>
+      </div>
     </div>
-  </nav>
-
-  <main>
-
-    <section class="hero">
-      <div class="hero-left">
-        <p class="hero-meta">Luis Bretones // Networking // Almería</p>
-        <h1>Luis Bretones</h1>
-        <p class="role">Computer Engineering Student</p>
-        <p class="tagline">
-          Networking &amp; cloud infrastructure.<br />
-          Building toward CCNA and AWS certifications.<br />
-          Documenting what I learn and build along the way.
-        </p>
-        <p class="hero-keywords">
-          Networking // Cloud Infrastructure //<br />
-          Linux // Wireshark // Docker
-        </p>
-      </div>
-      <div class="hero-right">
-        <img src="/avatar.jpeg" alt="Luis Bretones" class="avatar" />
-      </div>
-    </section>
-
-    <section class="section" id="skills">
-      <p class="section-title">Skills // Current stack</p>
-      <div class="skill-grid">
-        <div class="skill-cell c-green">
-          <p class="skill-cell-title">Networking</p>
-          <div class="skill-cell-tags">
-            <span class="skill-tag">TCP/IP</span>
-            <span class="skill-tag">Routing & Switching</span>
-            <span class="skill-tag">VLANs</span>
-            <span class="skill-tag">Subnetting</span>
-            <span class="skill-tag">BGP</span>
-            <span class="skill-tag">OSPF</span>
-            <span class="skill-tag">Cisco IOS</span>
-          </div>
-        </div>
-        <div class="skill-cell c-blue">
-          <p class="skill-cell-title">Cloud & Infra</p>
-          <div class="skill-cell-tags">
-            <span class="skill-tag">AWS</span>
-            <span class="skill-tag">Docker</span>
-            <span class="skill-tag">Linux</span>
-            <span class="skill-tag">Bash</span>
-            <span class="skill-tag">GitHub Actions</span>
-          </div>
-        </div>
-        <div class="skill-cell c-orange">
-          <p class="skill-cell-title">Analysis & Tools</p>
-          <div class="skill-cell-tags">
-            <span class="skill-tag">Wireshark</span>
-            <span class="skill-tag">Packet Tracer</span>
-            <span class="skill-tag">GNS3</span>
-            <span class="skill-tag">Nmap</span>
-            <span class="skill-tag">tcpdump</span>
-          </div>
-        </div>
-        <div class="skill-cell c-purple">
-          <p class="skill-cell-title">Programming</p>
-          <div class="skill-cell-tags">
-            <span class="skill-tag">Python</span>
-            <span class="skill-tag">C</span>
-            <span class="skill-tag">Bash</span>
-            <span class="skill-tag">Git</span>
-          </div>
-        </div>
-        <div class="skill-cell c-teal">
-          <p class="skill-cell-title">OS & Systems</p>
-          <div class="skill-cell-tags">
-            <span class="skill-tag">Arch Linux</span>
-            <span class="skill-tag">Ubuntu</span>
-            <span class="skill-tag">Windows Server</span>
-            <span class="skill-tag">VirtualBox</span>
-          </div>
-        </div>
-        <div class="skill-cell c-muted">
-          <p class="skill-cell-title">Project Management</p>
-          <div class="skill-cell-tags">
-            <span class="skill-tag">Git Flow</span>
-            <span class="skill-tag">GitHub</span>
-            <span class="skill-tag">Markdown</span>
-            <span class="skill-tag">Documentation</span>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section">
-      <p class="section-title">Repository feed // Featured</p>
-      <div class="repo-feed">
-        <a href="/projects/protocol-analysis-wireless-audio-transceivers/" class="repo-item">
-          <div class="repo-item-header">
-            <span class="repo-item-name">protocol-analysis-wireless-audio-transceivers</span>
-            <span class="repo-item-src">view_source →</span>
-          </div>
-          <div class="repo-item-tags">
-            <span class="repo-item-tag">USB</span>
-            <span class="repo-item-tag">networking</span>
-            <span class="repo-item-tag">arch-linux</span>
-            <span class="repo-item-tag">wireshark</span>
-          </div>
-          <p class="repo-item-desc">Low-level USB protocol analysis of a Corsair wireless audio dongle: descriptor enumeration, interface mapping, and traffic capture on Arch Linux.</p>
-        </a>
-      </div>
-      <a href="/projects/" class="view-all">~/explore_all →</a>
-    </section>
-
-    <section class="section">
-      <p class="section-title">Certifications // Roadmap</p>
-      <div class="cert-grid">
-        <div class="cert-card active">
-          <span class="cert-vendor">Cisco</span>
-          <span class="cert-acronym">CCNA</span>
-          <span class="cert-fullname">Cisco Certified Network Associate</span>
-          <span class="cert-status status-active">In progress</span>
-        </div>
-        <div class="cert-card active">
-          <span class="cert-vendor">AWS</span>
-          <span class="cert-acronym">CCP</span>
-          <span class="cert-fullname">AWS Certified Cloud Practitioner</span>
-          <span class="cert-status status-active">In progress</span>
-        </div>
-        <div class="cert-card">
-          <span class="cert-vendor">Cisco</span>
-          <span class="cert-acronym">CCNP</span>
-          <span class="cert-fullname">Cisco Certified Network Professional</span>
-          <span class="cert-status status-planned">Planned</span>
-        </div>
-        <div class="cert-card">
-          <span class="cert-vendor">AWS</span>
-          <span class="cert-acronym">SAA</span>
-          <span class="cert-fullname">AWS Solutions Architect Associate</span>
-          <span class="cert-status status-planned">Planned</span>
-        </div>
-      </div>
-    </section>
-
-  </main>
-
-  <footer>
-    <span>© {new Date().getFullYear()} Luis Bretones</span>
-    <div class="footer-links">
-      <a href="https://github.com/LuisBretonesVillegas" target="_blank" rel="noopener">GitHub</a>
-      <a href="https://www.linkedin.com/in/luis-bretones-villegas-02b103315/" target="_blank" rel="noopener">LinkedIn</a>
-    </div>
-  </footer>
-
-  <script>
-    const btn  = document.getElementById('themeToggle');
-    const root = document.documentElement;
-    root.setAttribute('data-theme', localStorage.getItem('theme') || 'light');
-    btn.addEventListener('click', () => {
-      const next = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
-      root.setAttribute('data-theme', next);
-      localStorage.setItem('theme', next);
-    });
-  </script>
-
-</body>
-</html>
+  </section>
+</Portfolio>

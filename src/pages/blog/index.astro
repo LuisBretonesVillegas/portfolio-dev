@@ -1,0 +1,32 @@
+---
+import Portfolio from '../../layouts/Portfolio.astro';
+---
+<Portfolio title="Blog | Luis Bretones">
+  <section class="section" style="padding-top: 4rem;">
+    <p class="section-title">Blog // Posts</p>
+    <p class="blog-intro">Personal log where I document progress, builds, and things I learn along the way.</p>
+    <div class="repo-feed">
+      <a href="/blog/usbmon-arch-linux/" class="repo-item">
+        <div class="repo-item-header">
+          <span class="repo-item-name">getting-started-with-usbmon-on-arch-linux</span>
+          <span class="repo-item-src">read →</span>
+        </div>
+        <div class="repo-item-tags">
+          <span class="repo-item-tag">arch-linux</span>
+          <span class="repo-item-tag">USB</span>
+          <span class="repo-item-tag">wireshark</span>
+        </div>
+        <p class="repo-item-desc">Setting up Wireshark and usbmon to capture USB traffic without running as root.</p>
+      </a>
+    </div>
+  </section>
+</Portfolio>
+
+<style>
+  .blog-intro {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin-bottom: 1.5rem;
+    line-height: 1.7;
+  }
+</style>
