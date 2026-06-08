@@ -2,6 +2,11 @@
 
 :root {
   --sl-font: 'Inter', sans-serif;
+  --sl-font-mono: 'JetBrains Mono', monospace;
+}
+
+body, .sl-markdown-content, header, nav, aside {
+  font-family: 'Inter', sans-serif !important;
 }
 
 /* Light mode */
