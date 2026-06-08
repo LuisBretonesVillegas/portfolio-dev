@@ -7,6 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Luis Bretones — Computer Engineering Student</title>
   <meta name="description" content="Computer Engineering student at UAL, focused on networking and cloud infrastructure." />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
@@ -70,6 +71,14 @@
       color: var(--accent);
       text-decoration: none;
       letter-spacing: -0.02em;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .logo-icon {
+      width: 28px;
+      height: 28px;
+      flex-shrink: 0;
     }
     .nav-right {
       display: flex;
@@ -440,7 +449,9 @@
 <body>
 
   <nav>
-    <a href="/" class="logo">Luis Bretones</a>
+    <a href="/" class="logo">
+      <img src="/favicon.svg" alt="LB" class="logo-icon" />
+    </a>
     <div class="nav-right">
       <a href="/projects/" class="nav-link">Docs</a>
       <a href="/blog/" class="nav-link">Blog</a>
@@ -566,8 +577,8 @@
           </div>
           <p class="cert-sub">Cisco Certified Network Associate</p>
           <div class="progress-wrap">
-            <div class="progress-track"><div class="progress-fill" style="width:60%"></div></div>
-            <span class="progress-pct">60%</span>
+            <div class="progress-track"><div class="progress-fill" style="width:33%"></div></div>
+            <span class="progress-pct">33%</span>
           </div>
         </div>
         <div class="cert-item">
@@ -577,8 +588,8 @@
           </div>
           <p class="cert-sub">AWS Certified Cloud Practitioner</p>
           <div class="progress-wrap">
-            <div class="progress-track"><div class="progress-fill" style="width:40%"></div></div>
-            <span class="progress-pct">40%</span>
+            <div class="progress-track"><div class="progress-fill" style="width:16%"></div></div>
+            <span class="progress-pct">16%</span>
           </div>
         </div>
         <div class="cert-item">
