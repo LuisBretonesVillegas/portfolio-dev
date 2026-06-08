@@ -6,20 +6,29 @@ import starlight from '@astrojs/starlight';
 export default defineConfig({
 	integrations: [
 		starlight({
-			title: 'My Docs',
-			social: [{ icon: 'github', label: 'GitHub', href: 'https://github.com/withastro/starlight' }],
+			title: 'Luis Bretones',
+			customCss: ['./src/styles/custom.css'],
+			social: [
+				{ icon: 'github', label: 'GitHub', href: 'https://github.com/LuisBretonesVillegas' },
+				{ icon: 'linkedin', label: 'LinkedIn', href: 'https://www.linkedin.com/in/luis-bretones-villegas-02b103315/' },
+			],
 			sidebar: [
+				{ label: 'Home', link: '/' },
 				{
-					label: 'Guides',
+					label: 'Projects',
 					items: [
-						// Each item here is one entry in the navigation menu.
-						{ label: 'Example Guide', slug: 'guides/example' },
+						{ label: 'All Projects', link: '/projects/' },
+						{ label: 'Protocol Analysis of Wireless Audio Transceivers', link: '/projects/protocol-analysis-wireless-audio-transceivers/' },
 					],
 				},
 				{
-					label: 'Reference',
-					items: [{ autogenerate: { directory: 'reference' } }],
+					label: 'Blog',
+					items: [
+						{ label: 'All Posts', link: '/blog/' },
+						{ label: 'Getting started with usbmon on Arch Linux', link: '/blog/usbmon-arch-linux/' },
+					],
 				},
+				{ label: 'Contact', link: '/contact/' },
 			],
 		}),
 	],
