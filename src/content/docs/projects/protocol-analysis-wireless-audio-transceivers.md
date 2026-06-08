@@ -9,7 +9,7 @@ Low-level analysis of the USB communication protocol used by a Corsair wireless 
 ## Hardware
 
 - **Device:** Corsair wireless headset USB dongle
-- **USB spec:** USB 1.10 — Full Speed (12 Mbps)
+- **USB spec:** USB 1.10, Full Speed (12 Mbps)
 - **Logical interfaces:** 4 (numbered 0–3)
 - **Default Endpoint (EP 0):** handles all global control transfers
 
@@ -22,23 +22,23 @@ Low-level analysis of the USB communication protocol used by a Corsair wireless 
 | 0x02     | OUT       | Isochronous     | 288 bytes  | 1 ms     | Headphone audio stream → device  |
 | 0x83     | IN        | Interrupt       | 32 bytes   | 1 ms     | Physical button events → host    |
 
-### Interface 0 — AudioControl
+### Interface 0: AudioControl
 Manages mute and volume for both the microphone and headphone channels via internal Feature Units. No active endpoints; all requests go through EP 0.
 
-### Interface 1 — AudioStreaming (Microphone)
+### Interface 1: AudioStreaming (Microphone)
 - Alternate Setting 0: no active endpoints (bandwidth saving when mic is idle)
 - Alternate Setting 1: PCM, Mono, 16-bit, 8000–48000 Hz
 
-### Interface 2 — AudioStreaming (Headphones)
+### Interface 2: AudioStreaming (Headphones)
 - Alternate Setting 2 (active): PCM, Stereo, 16-bit, 8000–48000 Hz
 - Larger max packet size (288 bytes) reflects the higher stereo bandwidth requirement
 
-### Interface 3 — HID
+### Interface 3: HID
 Captures physical hardware events (mute button, volume wheel, pairing). Interrupt transfer guarantees low-latency response.
 
 ## Methodology
 
-### 1. Environment setup — USB traffic capture on Arch Linux
+### 1. Environment setup: USB traffic capture on Arch Linux
 
 Load the `usbmon` kernel module to enable USB bus monitoring:
 
@@ -152,7 +152,7 @@ sudo apt install usbutils
 # ALSA tools (aplay, speaker-test)
 sudo apt install alsa-utils
 
-# usbmon is part of the kernel — just load the module
+# usbmon is part of the kernel, just load the module
 sudo modprobe usbmon
 
 # Add your user to the wireshark group
@@ -171,7 +171,7 @@ sudo pacman -S usbutils
 # ALSA tools
 sudo pacman -S alsa-utils
 
-# usbmon — built into the kernel, load with:
+# usbmon is built into the kernel, load with:
 sudo modprobe usbmon
 
 # Add your user to the wireshark group
