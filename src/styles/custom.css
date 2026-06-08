@@ -6,8 +6,9 @@
   --sl-font-mono: 'JetBrains Mono', monospace;
 }
 
-/* ── Light mode ── */
-:root[data-theme='light'] {
+/* ── Always light ── */
+:root[data-theme='light'],
+:root[data-theme='dark'] {
   --sl-color-bg: #f5f0e8;
   --sl-color-bg-nav: rgba(245, 240, 232, 0.92);
   --sl-color-bg-sidebar: #f0ebe2;

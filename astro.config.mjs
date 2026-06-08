@@ -7,7 +7,6 @@ export default defineConfig({
 	integrations: [
 		starlight({
 			title: 'Luis Bretones',
-			defaultTheme: 'light',
 			customCss: ['./src/styles/custom.css'],
 			components: {
 				Footer: './src/components/Footer.astro',
