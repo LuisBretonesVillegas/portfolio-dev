@@ -1,30 +1,80 @@
 ---
 title: Luis Bretones
-description: Personal homelab documentation and project notes.
+description: Computer Engineering student specializing in networking and cloud infrastructure.
 template: splash
 hero:
-  tagline: Computer Engineering student at UAL. This is where I document what I build and learn.
+  tagline: Computer Engineering student at UAL, focused on networking and cloud infrastructure.
   image:
     file: ../../assets/houston.webp
   actions:
-    - text: See my project
+    - text: See my projects
       link: /projects/
       icon: right-arrow
-    - text: GitHub
-      link: https://github.com/luisbv
-      icon: external
+    - text: Contact me
+      link: /contact/
       variant: minimal
 ---
- 
-import { Card } from '@astrojs/starlight/components';
- 
+
+import { Card, CardGrid, LinkCard, Badge } from '@astrojs/starlight/components';
+
 ## About
- 
-Computer Engineering student based in Spain. Interested in networking, low-level systems, and building things that actually run.
-This site is where I keep notes on what I'm working on.
- 
+
+Computer Engineering student at the University of Almería (UAL), class of 2029. Focused on networking, cloud infrastructure, and low-level systems. C1 English.
+
+Currently working toward my CCNA and AWS Cloud Practitioner certifications, with CCNP and AWS Solutions Architect – Associate on the roadmap. I use this site to document what I build and learn along the way.
+
+## Skills
+
+<CardGrid>
+  <Card title="Networking & Infrastructure" icon="laptop">
+    TCP/IP stack, routing, switching, and deep traffic analysis with Wireshark. Network topology design and troubleshooting with Cisco Packet Tracer.
+  </Card>
+  <Card title="DevOps & Cloud" icon="setting">
+    Docker containerisation — build, deploy, and manage isolated environments. AWS service administration and basic cloud architecture.
+  </Card>
+  <Card title="Systems & Administration" icon="linux">
+    Advanced Linux/Unix administration: permissions, environment configuration, task automation. Fluent Bash/Shell scripting for troubleshooting and config management.
+  </Card>
+  <Card title="Development & Version Control" icon="github">
+    Git and GitHub for repository management, change tracking, and technical project documentation.
+  </Card>
+</CardGrid>
+
+## Certifications
+
+**In progress**
+
+<CardGrid>
+  <Card title="CCNA" icon="approve-check">
+    Cisco Certified Network Associate — routing, switching, and network fundamentals.
+  </Card>
+  <Card title="AWS Cloud Practitioner" icon="approve-check">
+    AWS Certified Cloud Practitioner — foundational cloud concepts and AWS services.
+  </Card>
+</CardGrid>
+
+**Planned**
+
+<CardGrid>
+  <Card title="CCNP" icon="forward-slash">
+    Cisco Certified Network Professional — enterprise-level routing and switching.
+  </Card>
+  <Card title="AWS Solutions Architect – Associate" icon="forward-slash">
+    Designing resilient, cost-efficient architectures on AWS.
+  </Card>
+</CardGrid>
+
 ## Projects
- 
-<Card title="RF Receiver" icon="magnifier">
-  A small receiver project. Build log and notes coming soon.
-</Card>
+
+<LinkCard
+  title="Protocol Analysis of Wireless Audio Transceivers"
+  description="Low-level USB protocol analysis of a Corsair wireless audio dongle — descriptor enumeration, interface mapping, and traffic capture on Arch Linux."
+  href="/projects/protocol-analysis-wireless-audio-transceivers/"
+/>
+
+[View all projects →](/projects/)
+
+## Education
+
+**Bachelor's Degree in Computer Engineering**
+University of Almería (UAL) · 2024 – 2029 (expected)
