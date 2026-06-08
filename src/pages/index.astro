@@ -177,9 +177,21 @@ import Portfolio from '../layouts/Portfolio.astro';
 
     /* ── RESPONSIVE ── */
     @media (max-width: 768px) {
-      .hero { grid-template-columns: 1fr auto; gap: 1.25rem; align-items: start; }
-      .hero-right { display: flex; padding-top: 3.5rem; }
-      .avatar { width: 110px; height: 110px; }
+      .hero {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        padding: 2.5rem 0 2rem;
+        text-align: left;
+      }
+      .hero-right {
+        order: -1;
+        display: flex;
+        justify-content: flex-start;
+        padding-top: 0;
+      }
+      .avatar { width: 88px; height: 88px; }
+      .tagline { max-width: 100%; }
+      h1 { font-size: clamp(2.2rem, 10vw, 3rem); }
       .skill-grid { grid-template-columns: repeat(2, 1fr); }
       .skill-cell:nth-child(3n) { border-right: 1px solid #b8b3ab; }
       .skill-cell:nth-child(2n) { border-right: none; }
