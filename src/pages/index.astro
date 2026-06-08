@@ -65,14 +65,16 @@ import Portfolio from '../layouts/Portfolio.astro';
     .skill-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      border: 1px solid var(--border);
+      border: 1px solid #b8b3ab;
       border-radius: 4px;
       overflow: hidden;
+      background: #b8b3ab;
     }
     .skill-cell {
       padding: 1.25rem 1.1rem;
-      border-right: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
+      background: #eae6de;
+      border-right: 1px solid #b8b3ab;
+      border-bottom: 1px solid #b8b3ab;
     }
     .skill-cell:nth-child(3n) { border-right: none; }
     .skill-cell:nth-last-child(-n+3) { border-bottom: none; }
@@ -88,12 +90,13 @@ import Portfolio from '../layouts/Portfolio.astro';
     .skill-tag {
       font-size: 0.78rem;
       padding: 0.2rem 0.55rem;
-      border-radius: 4px;
+      border-radius: 2px;
       background: var(--bg);
       cursor: default;
     }
     .c-green .skill-cell-title { color: var(--accent); }
     .c-green .skill-tag { border: 1px solid color-mix(in srgb, var(--accent) 40%, transparent); color: var(--accent); }
+
     .c-blue .skill-cell-title { color: #3d7fc1; }
     .c-blue .skill-tag { border: 1px solid #a3c4e8; color: #3d7fc1; }
     .c-orange .skill-cell-title { color: #b85c2a; }
@@ -178,7 +181,7 @@ import Portfolio from '../layouts/Portfolio.astro';
       .hero-right { display: flex; padding-top: 3.5rem; }
       .avatar { width: 110px; height: 110px; }
       .skill-grid { grid-template-columns: repeat(2, 1fr); }
-      .skill-cell:nth-child(3n) { border-right: 1px solid var(--border); }
+      .skill-cell:nth-child(3n) { border-right: 1px solid #b8b3ab; }
       .skill-cell:nth-child(2n) { border-right: none; }
       .cert-grid { grid-template-columns: repeat(2, 1fr); }
     }

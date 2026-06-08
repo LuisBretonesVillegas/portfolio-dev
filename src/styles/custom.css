@@ -23,22 +23,6 @@
   --sl-color-black: #f5f0e8;
 }
 
-/* ── Dark mode ── */
-:root[data-theme='dark'] {
-  --sl-color-bg: #0a0a0a;
-  --sl-color-bg-nav: rgba(10, 10, 10, 0.92);
-  --sl-color-bg-sidebar: #111111;
-  --sl-color-bg-inline-code: #1a1a1a;
-  --sl-color-hairline: #222222;
-  --sl-color-hairline-light: #1a1a1a;
-  --sl-color-text: #fafafa;
-  --sl-color-text-accent: #4aaf20;
-  --sl-color-accent-low: #1a3d0a;
-  --sl-color-accent: #4aaf20;
-  --sl-color-accent-high: #7dd654;
-  --sl-color-white: #fafafa;
-  --sl-color-black: #0a0a0a;
-}
 
 /* ── Nav / header cleanup ── */
 header.header {

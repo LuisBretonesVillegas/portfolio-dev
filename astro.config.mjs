@@ -11,22 +11,17 @@ export default defineConfig({
 			components: {
 				Footer: './src/components/Footer.astro',
 				SiteTitle: './src/components/SiteTitle.astro',
+				ThemeSelect: './src/components/ThemeSelect.astro',
 			},
 			sidebar: [
 				{ label: 'Home', link: '/' },
 				{
 					label: 'Projects',
-					items: [
-						{ label: 'All Projects', link: '/projects/' },
-						{ label: 'Protocol Analysis of Wireless Audio Transceivers', link: '/projects/protocol-analysis-wireless-audio-transceivers/' },
-					],
+					autogenerate: { directory: 'projects' },
 				},
 				{
 					label: 'Blog',
-					items: [
-						{ label: 'All Posts', link: '/blog/' },
-						{ label: 'Getting started with usbmon on Arch Linux', link: '/blog/usbmon-arch-linux/' },
-					],
+					autogenerate: { directory: 'blog' },
 				},
 				{ label: 'Contact', link: '/contact/' },
 			],
