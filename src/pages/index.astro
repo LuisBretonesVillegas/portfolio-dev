@@ -111,11 +111,10 @@
 
     /* ── HERO ── */
     .hero {
-      min-height: calc(100vh - 57px);
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 2rem;
+      padding: 5rem 2rem;
     }
     .hero-inner {
       display: flex;
@@ -286,6 +285,26 @@
     }
     .view-all:hover { text-decoration: underline; }
 
+    /* ── FOOTER ── */
+    footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.25rem 2.5rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.825rem;
+      color: var(--text-muted);
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .footer-links { display: flex; gap: 1.25rem; }
+    .footer-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--accent); }
+
     /* ── RESPONSIVE ── */
     @media (max-width: 600px) {
       .hero-inner { flex-direction: column; text-align: center; gap: 1.75rem; }
@@ -370,6 +389,14 @@
       <a href="/projects/" class="view-all">View all projects →</a>
     </section>
   </main>
+
+  <footer>
+    <span>© {new Date().getFullYear()} Luis Bretones</span>
+    <div class="footer-links">
+      <a href="https://github.com/LuisBretonesVillegas" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://www.linkedin.com/in/luis-bretones-villegas-02b103315/" target="_blank" rel="noopener">LinkedIn</a>
+    </div>
+  </footer>
 
   <script>
     const btn  = document.getElementById('themeToggle');
