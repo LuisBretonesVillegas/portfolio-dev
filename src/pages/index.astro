@@ -438,11 +438,17 @@
     /* ── RESPONSIVE ── */
     @media (max-width: 768px) {
       .hero {
-        grid-template-columns: 1fr;
-        gap: 0;
+        grid-template-columns: 1fr auto;
+        gap: 1.25rem;
+        align-items: start;
       }
       .hero-right {
-        display: none;
+        display: flex;
+        padding-top: 3.5rem;
+      }
+      .avatar {
+        width: 110px;
+        height: 110px;
       }
       .nav-inner {
         grid-template-columns: 1fr auto;
