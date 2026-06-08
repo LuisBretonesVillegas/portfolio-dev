@@ -8,6 +8,9 @@ export default defineConfig({
 		starlight({
 			title: 'Luis Bretones',
 			customCss: ['./src/styles/custom.css'],
+			components: {
+				Footer: './src/components/Footer.astro',
+			},
 			social: [
 				{ icon: 'github', label: 'GitHub', href: 'https://github.com/LuisBretonesVillegas' },
 				{ icon: 'linkedin', label: 'LinkedIn', href: 'https://www.linkedin.com/in/luis-bretones-villegas-02b103315/' },

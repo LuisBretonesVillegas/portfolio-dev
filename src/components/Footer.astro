@@ -1,0 +1,33 @@
+---
+---
+<footer>
+  <span>© {new Date().getFullYear()} Luis Bretones</span>
+  <div class="links">
+    <a href="https://github.com/LuisBretonesVillegas" target="_blank" rel="noopener">GitHub</a>
+    <a href="https://www.linkedin.com/in/luis-bretones-villegas-02b103315/" target="_blank" rel="noopener">LinkedIn</a>
+  </div>
+</footer>
+
+<style>
+  footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.25rem 2rem;
+    border-top: 1px solid var(--sl-color-hairline);
+    font-size: 0.825rem;
+    color: var(--sl-color-gray-3);
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .links {
+    display: flex;
+    gap: 1.25rem;
+  }
+  a {
+    color: var(--sl-color-gray-3);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  a:hover { color: var(--sl-color-accent); }
+</style>

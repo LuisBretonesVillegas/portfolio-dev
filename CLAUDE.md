@@ -79,8 +79,8 @@ I build and learn along the way.]. Do not invent anything. Keep everything in En
 - [x] Configure the sidebar in astro.config.mjs with these sections: Home, Projects, About, Contact. Each linking to its corresponding page. Keep everything in English.
 - [x] Create the page about.md with my professional background. Sections: Who I am / Experience / Skills / Education. Content: [describe it]. Keep everything in English.
 - [x] Create the page contact.md with my email, LinkedIn and GitHub. No form for now. Keep everything in English.
-- [ ] Change the theme accent color to [hex code or color description]. Edit only src/styles/custom.css using Starlight's custom properties (--sl-color-*). Do not hardcode colors anywhere else.
-- [ ] Change the heading font to [Google Font name]. Import it in custom.css and apply it to --sl-font. Do not touch any other files.
+- [x] Change the theme accent color to [hex code or color description]. Edit only src/styles/custom.css using Starlight's custom properties (--sl-color-*). Do not hardcode colors anywhere else.
+- [x] Change the heading font to [Google Font name]. Import it in custom.css and apply it to --sl-font. Do not touch any other files.
 - [ ] Add a footer with my name, current year, and links to GitHub and LinkedIn. Use a Starlight component override if needed. Keep everything in English.
 - [ ] Check that all internal sidebar links and buttons work correctly. List any that are broken and fix them one by one, showing me each fix before moving to the next.
 - [ ] Remove from the sidebar any example or placeholder pages created by Starlight by default. Do not delete actual content pages.
