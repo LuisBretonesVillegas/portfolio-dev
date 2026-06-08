@@ -285,6 +285,128 @@
     }
     .view-all:hover { text-decoration: underline; }
 
+    /* ── SKILLS ── */
+    .skills {
+      max-width: 940px;
+      margin: 0 auto 5rem;
+      padding: 0 2rem;
+    }
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+      gap: 1.25rem;
+    }
+    .skill-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.4rem 1.5rem;
+    }
+    .skill-card h3 {
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-bottom: 0.85rem;
+      color: var(--text);
+    }
+    .skill-card ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+    .skill-card li {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      padding-left: 1rem;
+      position: relative;
+    }
+    .skill-card li::before {
+      content: '—';
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+      font-size: 0.75rem;
+    }
+
+    /* ── CERTIFICATIONS ── */
+    .certs {
+      max-width: 940px;
+      margin: 0 auto 5rem;
+      padding: 0 2rem;
+    }
+    .cert-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .cert-item {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.25rem 1.5rem;
+    }
+    .cert-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.35rem;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .cert-name {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .cert-sub {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 0.75rem;
+    }
+    .cert-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      padding: 0.2rem 0.6rem;
+      border-radius: 20px;
+      white-space: nowrap;
+    }
+    .badge-progress {
+      background: rgba(29, 78, 216, 0.12);
+      color: var(--accent);
+      border: 1px solid rgba(29, 78, 216, 0.3);
+    }
+    .badge-planned {
+      background: rgba(100, 116, 139, 0.1);
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+    }
+    .progress-wrap {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .progress-track {
+      flex: 1;
+      height: 5px;
+      background: var(--border);
+      border-radius: 99px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      background: var(--accent);
+      border-radius: 99px;
+    }
+    .progress-pct {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--accent);
+      min-width: 2.5rem;
+      text-align: right;
+    }
+
     /* ── FOOTER ── */
     footer {
       display: flex;
@@ -382,11 +504,98 @@
           <p>Low-level USB protocol analysis of a Corsair wireless audio dongle — descriptor enumeration, interface mapping, and traffic capture on Arch Linux.</p>
           <div class="tags">
             <span class="tag tag-blue">USB</span>
-            <span class="tag tag-green">NETWORKING</span>
+            <span class="tag tag-blue">NETWORKING</span>
           </div>
         </a>
       </div>
       <a href="/projects/" class="view-all">View all projects →</a>
+    </section>
+
+    <section class="skills">
+      <h2 class="section-header">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+        Skills
+      </h2>
+      <div class="skills-grid">
+        <div class="skill-card">
+          <h3>Networking & Infrastructure</h3>
+          <ul>
+            <li>TCP/IP stack, routing and switching</li>
+            <li>Traffic analysis with Wireshark</li>
+            <li>Network design with Cisco Packet Tracer</li>
+            <li>VLANs, BGP, subnetting</li>
+          </ul>
+        </div>
+        <div class="skill-card">
+          <h3>DevOps & Cloud</h3>
+          <ul>
+            <li>Docker — build, deploy, manage containers</li>
+            <li>AWS service administration</li>
+            <li>Basic cloud architecture</li>
+          </ul>
+        </div>
+        <div class="skill-card">
+          <h3>Systems & Administration</h3>
+          <ul>
+            <li>Linux/Unix advanced user administration</li>
+            <li>Permissions, environment config, automation</li>
+            <li>Bash/Shell scripting</li>
+          </ul>
+        </div>
+        <div class="skill-card">
+          <h3>Development & Version Control</h3>
+          <ul>
+            <li>Git and GitHub</li>
+            <li>Repository management and change tracking</li>
+            <li>Technical project documentation</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="certs">
+      <h2 class="section-header">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>
+        Certifications
+      </h2>
+      <div class="cert-list">
+        <div class="cert-item">
+          <div class="cert-header">
+            <span class="cert-name">CCNA</span>
+            <span class="cert-badge badge-progress">IN PROGRESS</span>
+          </div>
+          <p class="cert-sub">Cisco Certified Network Associate</p>
+          <div class="progress-wrap">
+            <div class="progress-track"><div class="progress-fill" style="width:60%"></div></div>
+            <span class="progress-pct">60%</span>
+          </div>
+        </div>
+        <div class="cert-item">
+          <div class="cert-header">
+            <span class="cert-name">AWS Cloud Practitioner</span>
+            <span class="cert-badge badge-progress">IN PROGRESS</span>
+          </div>
+          <p class="cert-sub">AWS Certified Cloud Practitioner</p>
+          <div class="progress-wrap">
+            <div class="progress-track"><div class="progress-fill" style="width:40%"></div></div>
+            <span class="progress-pct">40%</span>
+          </div>
+        </div>
+        <div class="cert-item">
+          <div class="cert-header">
+            <span class="cert-name">CCNP</span>
+            <span class="cert-badge badge-planned">PLANNED</span>
+          </div>
+          <p class="cert-sub">Cisco Certified Network Professional</p>
+        </div>
+        <div class="cert-item">
+          <div class="cert-header">
+            <span class="cert-name">AWS Solutions Architect – Associate</span>
+            <span class="cert-badge badge-planned">PLANNED</span>
+          </div>
+          <p class="cert-sub">Designing resilient, cost-efficient architectures on AWS</p>
+        </div>
+      </div>
     </section>
   </main>
 
