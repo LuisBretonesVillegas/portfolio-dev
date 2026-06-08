@@ -2,31 +2,105 @@
 import Portfolio from '../../layouts/Portfolio.astro';
 ---
 <Portfolio title="Blog | Luis Bretones">
-  <section class="section" style="padding-top: 4rem;">
-    <p class="section-title">Blog // Posts</p>
-    <p class="blog-intro">Personal log where I document progress, builds, and things I learn along the way.</p>
-    <div class="repo-feed">
-      <a href="/blog/usbmon-arch-linux/" class="repo-item">
-        <div class="repo-item-header">
-          <span class="repo-item-name">getting-started-with-usbmon-on-arch-linux</span>
-          <span class="repo-item-src">read →</span>
-        </div>
-        <div class="repo-item-tags">
-          <span class="repo-item-tag">arch-linux</span>
-          <span class="repo-item-tag">USB</span>
-          <span class="repo-item-tag">wireshark</span>
-        </div>
-        <p class="repo-item-desc">Setting up Wireshark and usbmon to capture USB traffic without running as root.</p>
-      </a>
-    </div>
-  </section>
-</Portfolio>
+  <style>
+    .blog-header {
+      padding: 4rem 0 2.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .blog-header h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 0.4rem;
+    }
+    .blog-header p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+    .post-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .post-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 2rem;
+      padding: 1.75rem 0;
+      border-bottom: 1px solid var(--border);
+      text-decoration: none;
+      color: var(--text);
+      transition: padding-left 0.2s;
+    }
+    .post-card:hover { padding-left: 0.5rem; }
+    .post-card:last-child { border-bottom: none; }
+    .post-card-body { flex: 1; }
+    .post-card-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 0.4rem;
+      transition: color 0.2s;
+    }
+    .post-card:hover .post-card-title { color: var(--accent); }
+    .post-card-desc {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-bottom: 0.75rem;
+    }
+    .post-card-tags { display: flex; gap: 0.35rem; flex-wrap: wrap; }
+    .post-card-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.62rem;
+      font-weight: 500;
+      padding: 0.15rem 0.5rem;
+      border-radius: 2px;
+      border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
+      color: var(--accent);
+    }
+    .post-card-arrow {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      white-space: nowrap;
+      padding: 0.45rem 0.9rem;
+      border: 1px solid var(--accent);
+      border-radius: 3px;
+      color: var(--accent);
+      transition: background 0.15s, color 0.15s;
+    }
+    .post-card:hover .post-card-arrow {
+      background: var(--accent);
+      color: #fff;
+    }
+    @media (max-width: 768px) {
+      .post-card { flex-direction: column; align-items: flex-start; gap: 1rem; }
+      .post-card-arrow { align-self: flex-start; }
+    }
+  </style>
 
-<style>
-  .blog-intro {
-    font-size: 0.9rem;
-    color: var(--text-muted);
-    margin-bottom: 1.5rem;
-    line-height: 1.7;
-  }
-</style>
+  <div class="blog-header">
+    <h2>Blog</h2>
+    <p>Personal log where I document progress, builds, and things I learn along the way.</p>
+  </div>
+
+  <div class="post-list">
+    <a href="/blog/usbmon-arch-linux/" class="post-card">
+      <div class="post-card-body">
+        <p class="post-card-title">Getting started with usbmon on Arch Linux</p>
+        <p class="post-card-desc">Setting up Wireshark and usbmon to capture USB traffic without running as root.</p>
+        <div class="post-card-tags">
+          <span class="post-card-tag">arch-linux</span>
+          <span class="post-card-tag">USB</span>
+          <span class="post-card-tag">wireshark</span>
+        </div>
+      </div>
+      <span class="post-card-arrow">Read post →</span>
+    </a>
+  </div>
+</Portfolio>
