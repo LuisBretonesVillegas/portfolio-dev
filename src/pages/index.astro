@@ -462,17 +462,13 @@
       animation: bounce 1.8s ease-in-out infinite;
     }
     .scroll-hint.hidden { opacity: 0; pointer-events: none; }
-    @media (max-width: 768px) {
-      .scroll-hint { display: block; }
-      .hero { position: relative; }
-    }
     @keyframes bounce {
       0%, 100% { transform: translateX(-50%) translateY(0); }
       50%       { transform: translateX(-50%) translateY(8px); }
     }
 
     /* ── RESPONSIVE ── */
-    @media (max-width: 768px) {
+    @media (max-width: 900px) {
       .hero-inner { flex-direction: column; text-align: center; gap: 1.75rem; }
       .tagline { margin-inline: auto; }
       .actions { align-items: center; }
@@ -480,6 +476,8 @@
       .action-btns { justify-content: center; }
       .grid { grid-template-columns: 1fr; }
       nav { padding: 0.875rem 1.25rem; }
+      .scroll-hint { display: block; }
+      .hero { position: relative; }
     }
   </style>
 </head>
