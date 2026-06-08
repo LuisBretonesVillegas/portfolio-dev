@@ -1,24 +1,64 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
 
+/* ── Fonts ── */
 :root {
-  --sl-font: 'Inter', sans-serif;
+  --sl-font: 'DM Sans', sans-serif;
   --sl-font-mono: 'JetBrains Mono', monospace;
 }
 
-body, .sl-markdown-content, header, nav, aside {
-  font-family: 'Inter', sans-serif !important;
-}
-
-/* Light mode */
+/* ── Light mode ── */
 :root[data-theme='light'] {
-  --sl-color-accent-low: #dbeafe;
-  --sl-color-accent: #1d4ed8;
-  --sl-color-accent-high: #1e3a8a;
+  --sl-color-bg: #f5f0e8;
+  --sl-color-bg-nav: rgba(245, 240, 232, 0.92);
+  --sl-color-bg-sidebar: #f0ebe2;
+  --sl-color-bg-inline-code: #e8e3da;
+  --sl-color-hairline: #e5e7eb;
+  --sl-color-hairline-light: #ede8df;
+  --sl-color-text: #111111;
+  --sl-color-text-accent: #1a5c00;
+  --sl-color-accent-low: #d4e8cc;
+  --sl-color-accent: #1a5c00;
+  --sl-color-accent-high: #0f3a00;
+  --sl-color-white: #111111;
+  --sl-color-black: #f5f0e8;
 }
 
-/* Dark mode */
+/* ── Dark mode ── */
 :root[data-theme='dark'] {
-  --sl-color-accent-low: #1e3a8a;
-  --sl-color-accent: #3b82f6;
-  --sl-color-accent-high: #93c5fd;
+  --sl-color-bg: #0a0a0a;
+  --sl-color-bg-nav: rgba(10, 10, 10, 0.92);
+  --sl-color-bg-sidebar: #111111;
+  --sl-color-bg-inline-code: #1a1a1a;
+  --sl-color-hairline: #222222;
+  --sl-color-hairline-light: #1a1a1a;
+  --sl-color-text: #fafafa;
+  --sl-color-text-accent: #4aaf20;
+  --sl-color-accent-low: #1a3d0a;
+  --sl-color-accent: #4aaf20;
+  --sl-color-accent-high: #7dd654;
+  --sl-color-white: #fafafa;
+  --sl-color-black: #0a0a0a;
+}
+
+/* ── Nav / header cleanup ── */
+header.header {
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--sl-color-hairline);
+}
+
+/* ── Sidebar ── */
+.sidebar-pane {
+  background: var(--sl-color-bg-sidebar);
+  border-right: 1px solid var(--sl-color-hairline);
+}
+
+/* ── Content prose ── */
+.sl-markdown-content {
+  font-family: 'DM Sans', sans-serif;
+}
+
+.sl-markdown-content code,
+.sl-markdown-content pre {
+  font-family: 'JetBrains Mono', monospace;
 }
