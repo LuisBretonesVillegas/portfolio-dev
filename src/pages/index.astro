@@ -43,14 +43,30 @@ import Portfolio from '../layouts/Portfolio.astro';
       max-width: 460px;
       margin-bottom: 2rem;
     }
-    .hero-keywords {
+    .hero-actions { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+    .btn {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.7rem;
-      letter-spacing: 0.1em;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
       text-transform: uppercase;
-      color: var(--text-muted);
-      line-height: 1.9;
+      padding: 0.55rem 1.1rem;
+      border-radius: 3px;
+      text-decoration: none;
+      transition: background 0.15s, color 0.15s, border-color 0.15s;
     }
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+      border: 1px solid var(--accent);
+    }
+    .btn-primary:hover { background: #0f3a00; border-color: #0f3a00; }
+    .btn-secondary {
+      background: transparent;
+      color: var(--accent);
+      border: 1px solid var(--accent);
+    }
+    .btn-secondary:hover { background: color-mix(in srgb, var(--accent) 10%, transparent); }
     .hero-right { padding-top: 5rem; display: flex; justify-content: center; }
     .avatar {
       width: 280px;
@@ -209,17 +225,17 @@ import Portfolio from '../layouts/Portfolio.astro';
         Building toward CCNA and AWS certifications.<br />
         Documenting what I learn and build along the way.
       </p>
-      <p class="hero-keywords">
-        Networking // Cloud Infrastructure //<br />
-        Linux // Wireshark // Docker
-      </p>
+      <div class="hero-actions">
+        <a href="/projects/" class="btn btn-primary">Projects →</a>
+        <a href="#skills" class="btn btn-secondary">Skills →</a>
+      </div>
     </div>
     <div class="hero-right">
       <img src="/avatar.jpeg" alt="Luis Bretones" class="avatar" />
     </div>
   </section>
 
-  <section class="section" id="skills">
+  <section class="section" id="skills" style="scroll-margin-top: 80px;">
     <p class="section-title">Skills // Current stack</p>
     <div class="skill-grid">
       <div class="skill-cell c-green">
