@@ -17,11 +17,11 @@ export default defineConfig({
 				{ label: 'Home', link: '/' },
 				{
 					label: 'Projects',
-					autogenerate: { directory: 'projects' },
+					items: [{ autogenerate: { directory: 'projects' } }],
 				},
 				{
 					label: 'Blog',
-					autogenerate: { directory: 'blog' },
+					items: [{ autogenerate: { directory: 'blog' } }],
 				},
 				{ label: 'Contact', link: '/contact/' },
 			],
