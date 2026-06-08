@@ -436,6 +436,28 @@
     }
     .footer-links a:hover { color: var(--accent); }
 
+    /* ── SCROLL HINT ── */
+    .scroll-hint {
+      display: none;
+      position: absolute;
+      bottom: 1.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      color: var(--text-muted);
+      opacity: 0.6;
+      transition: opacity 0.4s;
+      animation: bounce 1.8s ease-in-out infinite;
+    }
+    .scroll-hint.hidden { opacity: 0; pointer-events: none; }
+    @media (max-width: 768px) {
+      .scroll-hint { display: block; }
+      .hero { position: relative; }
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50%       { transform: translateX(-50%) translateY(8px); }
+    }
+
     /* ── RESPONSIVE ── */
     @media (max-width: 600px) {
       .hero-inner { flex-direction: column; text-align: center; gap: 1.75rem; }
@@ -502,9 +524,14 @@
           </div>
         </div>
       </div>
+      <a href="#skills" class="scroll-hint" id="scrollHint" aria-label="Scroll down">
+        <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+          <polyline points="6 9 12 15 18 9"/>
+        </svg>
+      </a>
     </section>
 
-    <section class="projects">
+    <section id="skills" class="projects">
       <h2 class="section-header">
         <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 010 14.14M4.93 4.93a10 10 0 000 14.14"/></svg>
         Technical Projects
@@ -627,6 +654,12 @@
       root.setAttribute('data-theme', next);
       localStorage.setItem('theme', next);
     });
+
+    const hint = document.getElementById('scrollHint');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 80) hint.classList.add('hidden');
+      else hint.classList.remove('hidden');
+    }, { passive: true });
   </script>
 
 </body>
