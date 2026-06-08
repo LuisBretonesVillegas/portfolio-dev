@@ -39,7 +39,7 @@ No professional industry experience yet. Actively building hands-on skills throu
 
 | Area | Detail |
 |------|--------|
-| Linux / Unix | Advanced user-level system administration — permissions, environment configuration, task automation |
+| Linux / Unix | Advanced user-level system administration: permissions, environment configuration, task automation |
 | Scripting & CLI | Fluent use of Bash/Shell for troubleshooting and configuration management |
 
 ### Development & Version Control

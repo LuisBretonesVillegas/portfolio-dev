@@ -10,11 +10,8 @@ export default defineConfig({
 			customCss: ['./src/styles/custom.css'],
 			components: {
 				Footer: './src/components/Footer.astro',
+				SiteTitle: './src/components/SiteTitle.astro',
 			},
-			social: [
-				{ icon: 'github', label: 'GitHub', href: 'https://github.com/LuisBretonesVillegas' },
-				{ icon: 'linkedin', label: 'LinkedIn', href: 'https://www.linkedin.com/in/luis-bretones-villegas-02b103315/' },
-			],
 			sidebar: [
 				{ label: 'Home', link: '/' },
 				{
