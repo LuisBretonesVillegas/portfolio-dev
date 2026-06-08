@@ -15,8 +15,8 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg: #ffffff;
-      --bg-card: #f9fafb;
+      --bg: #f5f0e8;
+      --bg-card: #ede8df;
       --text: #111111;
       --text-muted: #6b7280;
       --accent: #1a5c00;
@@ -263,7 +263,6 @@
       font-weight: 600;
       letter-spacing: 0.12em;
       text-transform: uppercase;
-      color: var(--accent);
       margin-bottom: 0.85rem;
     }
     .skill-cell-tags { display: flex; flex-wrap: wrap; gap: 0.35rem; }
@@ -271,25 +270,42 @@
       font-size: 0.78rem;
       padding: 0.2rem 0.55rem;
       border-radius: 4px;
-      border: 1px solid var(--border);
-      color: var(--text);
       background: var(--bg);
-      transition: border-color 0.15s, color 0.15s;
       cursor: default;
     }
-    .skill-tag:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* per-category colors */
+    .c-green .skill-cell-title { color: var(--accent); }
+    .c-green .skill-tag { border: 1px solid color-mix(in srgb, var(--accent) 40%, transparent); color: var(--accent); }
+
+    .c-blue .skill-cell-title { color: #3d7fc1; }
+    .c-blue .skill-tag { border: 1px solid #a3c4e8; color: #3d7fc1; }
+
+    .c-orange .skill-cell-title { color: #b85c2a; }
+    .c-orange .skill-tag { border: 1px solid #dda882; color: #b85c2a; }
+
+    .c-purple .skill-cell-title { color: #6b5fa0; }
+    .c-purple .skill-tag { border: 1px solid #b8aed6; color: #6b5fa0; }
+
+    .c-teal .skill-cell-title { color: #2e8c76; }
+    .c-teal .skill-tag { border: 1px solid #8fcfc0; color: #2e8c76; }
+
+    .c-muted .skill-cell-title { color: var(--text-muted); }
+    .c-muted .skill-tag { border: 1px solid var(--border); color: var(--text-muted); }
 
     /* ── REPO FEED ── */
-    .repo-feed { display: flex; flex-direction: column; }
+    .repo-feed { display: flex; flex-direction: column; gap: 0.75rem; }
     .repo-item {
       display: block;
-      padding: 1.1rem 0;
-      border-top: 1px solid var(--border);
+      padding: 1rem 1.1rem;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      background: var(--bg);
       text-decoration: none;
       color: var(--text);
-      transition: background 0.15s;
+      transition: border-color 0.15s;
     }
-    .repo-item:last-child { border-bottom: 1px solid var(--border); }
+    .repo-item:hover { border-color: var(--accent); }
     .repo-item-header {
       display: flex;
       align-items: center;
@@ -300,19 +316,18 @@
     .repo-item-name {
       font-family: 'JetBrains Mono', monospace;
       font-size: 0.875rem;
+      font-weight: 600;
       color: var(--text);
       transition: color 0.2s;
     }
-    .repo-item-name::before { content: '~/'; color: var(--text-muted); }
+    .repo-item-name::before { content: '~/'; color: var(--text-muted); font-weight: 400; }
     .repo-item:hover .repo-item-name { color: var(--accent); }
     .repo-item-src {
       font-family: 'JetBrains Mono', monospace;
       font-size: 0.72rem;
-      color: var(--text-muted);
+      color: var(--accent);
       white-space: nowrap;
-      transition: color 0.2s;
     }
-    .repo-item:hover .repo-item-src { color: var(--accent); }
     .repo-item-tags {
       display: flex;
       gap: 0.35rem;
@@ -325,8 +340,8 @@
       font-weight: 500;
       padding: 0.15rem 0.5rem;
       border-radius: 3px;
-      border: 1px solid var(--border);
-      color: var(--text-muted);
+      border: 1px solid color-mix(in srgb, var(--accent) 40%, transparent);
+      color: var(--accent);
     }
     .repo-item-desc {
       font-size: 0.875rem;
@@ -334,87 +349,85 @@
       line-height: 1.6;
     }
     .view-all {
-      display: inline-block;
-      margin-top: 1rem;
+      display: block;
+      margin-top: 0.75rem;
+      padding: 0.7rem;
       font-family: 'JetBrains Mono', monospace;
       font-size: 0.75rem;
       color: var(--accent);
       text-decoration: none;
+      text-align: center;
+      border: 1px dashed var(--border);
+      border-radius: 4px;
+      transition: border-color 0.15s;
     }
-    .view-all:hover { text-decoration: underline; }
+    .view-all:hover { border-color: var(--accent); }
 
     /* ── CERTIFICATIONS ── */
-    .cert-list { display: flex; flex-direction: column; gap: 1.1rem; }
-    .cert-item {
+    .cert-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.85rem;
+    }
+    .cert-card {
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 1.1rem 1rem 0.9rem;
       display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1rem;
-      flex-wrap: wrap;
+      flex-direction: column;
+      gap: 0.6rem;
+      position: relative;
+      overflow: hidden;
     }
-    .cert-name {
-      font-size: 0.9rem;
+    .cert-card.active { border-color: var(--accent); }
+    .cert-card.active::before {
+      content: '';
+      position: absolute;
+      inset: 0 0 auto 0;
+      height: 3px;
+      background: var(--accent);
+    }
+    .cert-vendor {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.58rem;
       font-weight: 600;
-      margin-bottom: 0.15rem;
-    }
-    .cert-sub {
-      font-size: 0.78rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
       color: var(--text-muted);
     }
-    .cert-right {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      flex-shrink: 0;
+    .cert-acronym {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      font-weight: 800;
+      line-height: 1;
+      color: var(--text);
     }
-    .cert-badge {
+    .cert-card.active .cert-acronym { color: var(--accent); }
+    .cert-fullname {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+      flex: 1;
+    }
+    .cert-status {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.6rem;
+      font-size: 0.58rem;
       font-weight: 700;
       letter-spacing: 0.08em;
-      padding: 0.2rem 0.55rem;
-      border-radius: 99px;
-      white-space: nowrap;
+      text-transform: uppercase;
+      align-self: flex-start;
+      padding: 0.2rem 0.5rem;
+      border-radius: 3px;
     }
-    .badge-progress {
-      background: rgba(22, 163, 74, 0.1);
+    .cert-status.status-active {
+      background: color-mix(in srgb, var(--accent) 12%, transparent);
       color: var(--accent);
-      border: 1px solid rgba(22, 163, 74, 0.3);
+      border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
     }
-    [data-theme="dark"] .badge-progress {
-      background: rgba(34, 197, 94, 0.1);
-      border-color: rgba(34, 197, 94, 0.3);
-    }
-    .badge-planned {
+    .cert-status.status-planned {
       background: transparent;
       color: var(--text-muted);
       border: 1px solid var(--border);
-    }
-    .progress-wrap {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      min-width: 120px;
-    }
-    .progress-track {
-      flex: 1;
-      height: 3px;
-      background: var(--border);
-      border-radius: 99px;
-      overflow: hidden;
-    }
-    .progress-fill {
-      height: 100%;
-      background: var(--accent);
-      border-radius: 99px;
-    }
-    .progress-pct {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.7rem;
-      font-weight: 600;
-      color: var(--accent);
-      min-width: 2rem;
-      text-align: right;
     }
 
     /* ── FOOTER ── */
@@ -460,7 +473,7 @@
       .skill-grid { grid-template-columns: repeat(2, 1fr); }
       .skill-cell:nth-child(3n) { border-right: 1px solid var(--border); }
       .skill-cell:nth-child(2n) { border-right: none; }
-      .cert-item { flex-direction: column; align-items: flex-start; }
+      .cert-grid { grid-template-columns: repeat(2, 1fr); }
       .repo-item-header { flex-direction: column; gap: 0.25rem; }
     }
   </style>
@@ -518,7 +531,7 @@
     <section class="section" id="skills">
       <p class="section-title">Skills // Current stack</p>
       <div class="skill-grid">
-        <div class="skill-cell">
+        <div class="skill-cell c-green">
           <p class="skill-cell-title">Networking</p>
           <div class="skill-cell-tags">
             <span class="skill-tag">TCP/IP</span>
@@ -530,7 +543,7 @@
             <span class="skill-tag">Cisco IOS</span>
           </div>
         </div>
-        <div class="skill-cell">
+        <div class="skill-cell c-blue">
           <p class="skill-cell-title">Cloud & Infra</p>
           <div class="skill-cell-tags">
             <span class="skill-tag">AWS</span>
@@ -540,7 +553,7 @@
             <span class="skill-tag">GitHub Actions</span>
           </div>
         </div>
-        <div class="skill-cell">
+        <div class="skill-cell c-orange">
           <p class="skill-cell-title">Analysis & Tools</p>
           <div class="skill-cell-tags">
             <span class="skill-tag">Wireshark</span>
@@ -550,7 +563,7 @@
             <span class="skill-tag">tcpdump</span>
           </div>
         </div>
-        <div class="skill-cell">
+        <div class="skill-cell c-purple">
           <p class="skill-cell-title">Programming</p>
           <div class="skill-cell-tags">
             <span class="skill-tag">Python</span>
@@ -559,7 +572,7 @@
             <span class="skill-tag">Git</span>
           </div>
         </div>
-        <div class="skill-cell">
+        <div class="skill-cell c-teal">
           <p class="skill-cell-title">OS & Systems</p>
           <div class="skill-cell-tags">
             <span class="skill-tag">Arch Linux</span>
@@ -568,7 +581,7 @@
             <span class="skill-tag">VirtualBox</span>
           </div>
         </div>
-        <div class="skill-cell">
+        <div class="skill-cell c-muted">
           <p class="skill-cell-title">Project Management</p>
           <div class="skill-cell-tags">
             <span class="skill-tag">Git Flow</span>
@@ -597,55 +610,35 @@
           <p class="repo-item-desc">Low-level USB protocol analysis of a Corsair wireless audio dongle: descriptor enumeration, interface mapping, and traffic capture on Arch Linux.</p>
         </a>
       </div>
-      <a href="/projects/" class="view-all">view_all →</a>
+      <a href="/projects/" class="view-all">~/explore_all →</a>
     </section>
 
     <section class="section">
-      <p class="section-title">Certifications</p>
-      <div class="cert-list">
-        <div class="cert-item">
-          <div>
-            <p class="cert-name">CCNA</p>
-            <p class="cert-sub">Cisco Certified Network Associate</p>
-          </div>
-          <div class="cert-right">
-            <span class="cert-badge badge-progress">IN PROGRESS</span>
-            <div class="progress-wrap">
-              <div class="progress-track"><div class="progress-fill" style="width:33%"></div></div>
-              <span class="progress-pct">33%</span>
-            </div>
-          </div>
+      <p class="section-title">Certifications // Roadmap</p>
+      <div class="cert-grid">
+        <div class="cert-card active">
+          <span class="cert-vendor">Cisco</span>
+          <span class="cert-acronym">CCNA</span>
+          <span class="cert-fullname">Cisco Certified Network Associate</span>
+          <span class="cert-status status-active">In progress</span>
         </div>
-        <div class="cert-item">
-          <div>
-            <p class="cert-name">AWS Cloud Practitioner</p>
-            <p class="cert-sub">AWS Certified Cloud Practitioner</p>
-          </div>
-          <div class="cert-right">
-            <span class="cert-badge badge-progress">IN PROGRESS</span>
-            <div class="progress-wrap">
-              <div class="progress-track"><div class="progress-fill" style="width:16%"></div></div>
-              <span class="progress-pct">16%</span>
-            </div>
-          </div>
+        <div class="cert-card active">
+          <span class="cert-vendor">AWS</span>
+          <span class="cert-acronym">CCP</span>
+          <span class="cert-fullname">AWS Certified Cloud Practitioner</span>
+          <span class="cert-status status-active">In progress</span>
         </div>
-        <div class="cert-item">
-          <div>
-            <p class="cert-name">CCNP</p>
-            <p class="cert-sub">Cisco Certified Network Professional</p>
-          </div>
-          <div class="cert-right">
-            <span class="cert-badge badge-planned">PLANNED</span>
-          </div>
+        <div class="cert-card">
+          <span class="cert-vendor">Cisco</span>
+          <span class="cert-acronym">CCNP</span>
+          <span class="cert-fullname">Cisco Certified Network Professional</span>
+          <span class="cert-status status-planned">Planned</span>
         </div>
-        <div class="cert-item">
-          <div>
-            <p class="cert-name">AWS Solutions Architect</p>
-            <p class="cert-sub">Associate — resilient architectures on AWS</p>
-          </div>
-          <div class="cert-right">
-            <span class="cert-badge badge-planned">PLANNED</span>
-          </div>
+        <div class="cert-card">
+          <span class="cert-vendor">AWS</span>
+          <span class="cert-acronym">SAA</span>
+          <span class="cert-fullname">AWS Solutions Architect Associate</span>
+          <span class="cert-status status-planned">Planned</span>
         </div>
       </div>
     </section>
