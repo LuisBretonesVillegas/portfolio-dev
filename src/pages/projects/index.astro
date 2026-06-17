@@ -1,86 +1,125 @@
 ---
+import { getCollection } from 'astro:content';
 import Portfolio from '../../layouts/Portfolio.astro';
+
+const allDocs = await getCollection('docs');
+const projects = allDocs
+  .filter(e => e.id.startsWith('projects/') && !e.id.match(/^projects\/index\.mdx?$/))
+  .sort((a, b) => {
+    const dateA = a.data.date ? new Date(a.data.date).getTime() : 0;
+    const dateB = b.data.date ? new Date(b.data.date).getTime() : 0;
+    return dateB - dateA;
+  });
+
+function formatDate(date: Date): string {
+  return date.toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+  });
+}
 ---
 <Portfolio title="Projects | Luis Bretones">
   <style>
     .projects-header {
       padding: 4rem 0 2.5rem;
-      border-bottom: 1px solid var(--border);
     }
     .projects-header h2 {
       font-family: 'Playfair Display', serif;
-      font-size: 2rem;
+      font-size: 2.75rem;
       font-weight: 800;
       color: var(--text);
-      margin-bottom: 0.4rem;
+      margin-bottom: 0.5rem;
+      line-height: 1.15;
     }
     .projects-header p {
-      font-size: 0.9rem;
+      font-size: 0.95rem;
       color: var(--text-muted);
+      max-width: 480px;
+      line-height: 1.6;
     }
+
     .project-list {
-      display: flex;
-      flex-direction: column;
-      gap: 0;
+      padding-bottom: 3rem;
     }
-    .project-card {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 2rem;
-      padding: 1.75rem 0;
-      border-bottom: 1px solid var(--border);
+
+    .project-item {
+      display: block;
+      padding: 2rem 0;
+      border-top: 1px solid var(--border);
       text-decoration: none;
       color: var(--text);
-      transition: padding-left 0.2s;
+      transition: padding-left 0.2s ease;
     }
-    .project-card:hover { padding-left: 0.5rem; }
-    .project-card:last-child { border-bottom: none; }
-    .project-card-body { flex: 1; }
-    .project-card-title {
+    .project-item:last-child {
+      border-bottom: 1px solid var(--border);
+    }
+    .project-item:hover {
+      padding-left: 0.6rem;
+    }
+
+    .project-date {
+      display: block;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.6rem;
+    }
+
+    .project-title {
       font-family: 'Playfair Display', serif;
-      font-size: 1.15rem;
+      font-size: 1.4rem;
       font-weight: 700;
       color: var(--text);
-      margin-bottom: 0.4rem;
+      line-height: 1.3;
+      margin-bottom: 0.6rem;
       transition: color 0.2s;
     }
-    .project-card:hover .project-card-title { color: var(--accent); }
-    .project-card-desc {
-      font-size: 0.875rem;
-      color: var(--text-muted);
-      line-height: 1.6;
-      margin-bottom: 0.75rem;
+    .project-item:hover .project-title {
+      color: var(--accent);
     }
-    .project-card-tags { display: flex; gap: 0.35rem; flex-wrap: wrap; }
-    .project-card-tag {
+
+    .project-desc {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.65;
+      margin-bottom: 0.85rem;
+    }
+
+    .project-tags {
+      display: flex;
+      gap: 0.35rem;
+      flex-wrap: wrap;
+    }
+    .project-tag {
       font-family: 'JetBrains Mono', monospace;
       font-size: 0.62rem;
       font-weight: 500;
       padding: 0.15rem 0.5rem;
-      border-radius: 2px;
       border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
+      border-radius: 2px;
       color: var(--accent);
     }
-    .project-card-arrow {
+
+    .project-read {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      margin-top: 1.1rem;
       font-family: 'JetBrains Mono', monospace;
       font-size: 0.72rem;
       font-weight: 600;
-      letter-spacing: 0.06em;
-      white-space: nowrap;
-      padding: 0.45rem 0.9rem;
-      border: 1px solid var(--accent);
-      border-radius: 3px;
+      letter-spacing: 0.04em;
       color: var(--accent);
-      transition: background 0.15s, color 0.15s;
     }
-    .project-card:hover .project-card-arrow {
-      background: var(--accent);
-      color: #fff;
+    .project-read .arrow {
+      transition: transform 0.2s ease;
     }
-    @media (max-width: 768px) {
-      .project-card { flex-direction: column; align-items: flex-start; gap: 1rem; }
-      .project-card-arrow { align-self: flex-start; }
+    .project-item:hover .project-read .arrow {
+      transform: translateX(5px);
     }
   </style>
 
@@ -90,31 +129,27 @@ import Portfolio from '../../layouts/Portfolio.astro';
   </div>
 
   <div class="project-list">
-    <a href="/projects/portfolio-dev/" class="project-card">
-      <div class="project-card-body">
-        <p class="project-card-title">Building My Personal Portfolio</p>
-        <p class="project-card-desc">Designing and building this site from scratch: Astro + Starlight, custom CSS design system, warm cream palette, GitHub Actions deployment, and full mobile-responsive layout.</p>
-        <div class="project-card-tags">
-          <span class="project-card-tag">astro</span>
-          <span class="project-card-tag">starlight</span>
-          <span class="project-card-tag">css</span>
-          <span class="project-card-tag">github-actions</span>
-        </div>
-      </div>
-      <span class="project-card-arrow">View project →</span>
-    </a>
-    <a href="/projects/protocol-analysis-wireless-audio-transceivers/" class="project-card">
-      <div class="project-card-body">
-        <p class="project-card-title">Protocol Analysis of Wireless Audio Transceivers</p>
-        <p class="project-card-desc">Low-level USB protocol analysis of a Corsair wireless audio dongle: descriptor enumeration, interface mapping, and traffic capture on Arch Linux.</p>
-        <div class="project-card-tags">
-          <span class="project-card-tag">USB</span>
-          <span class="project-card-tag">networking</span>
-          <span class="project-card-tag">arch-linux</span>
-          <span class="project-card-tag">wireshark</span>
-        </div>
-      </div>
-      <span class="project-card-arrow">View project →</span>
-    </a>
+    {projects.map(project => {
+      const url = `/${project.id.replace(/\.mdx?$/, '')}/`;
+      return (
+        <a href={url} class="project-item">
+          {project.data.date && (
+            <time class="project-date">{formatDate(project.data.date)}</time>
+          )}
+          <p class="project-title">{project.data.title}</p>
+          {project.data.description && (
+            <p class="project-desc">{project.data.description}</p>
+          )}
+          {project.data.tags && project.data.tags.length > 0 && (
+            <div class="project-tags">
+              {project.data.tags.map(tag => (
+                <span class="project-tag">{tag}</span>
+              ))}
+            </div>
+          )}
+          <span class="project-read">View project <span class="arrow">→</span></span>
+        </a>
+      );
+    })}
   </div>
 </Portfolio>
