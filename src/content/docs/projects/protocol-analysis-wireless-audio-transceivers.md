@@ -1,5 +1,8 @@
 ---
 title: Protocol Analysis of Wireless Audio Transceivers
+date: 2026-06-08
+description: Low-level USB protocol analysis of a Corsair wireless audio dongle - descriptor enumeration, interface mapping, and traffic capture on Arch Linux.
+tags: [usb, networking, arch-linux, wireshark]
 ---
 
 Low-level analysis of the USB communication protocol used by a Corsair wireless audio dongle. The project covers descriptor enumeration, interface mapping, USB traffic capture on Arch Linux, and active techniques to stimulate isochronous audio streams for inspection.

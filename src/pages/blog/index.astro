@@ -1,86 +1,133 @@
 ---
+import { getCollection } from 'astro:content';
 import Portfolio from '../../layouts/Portfolio.astro';
+
+const allDocs = await getCollection('docs');
+const posts = allDocs
+  .filter(e => e.id.startsWith('blog/') && !e.id.match(/^blog\/index\.mdx?$/))
+  .sort((a, b) => {
+    const dateA = a.data.date ? new Date(a.data.date).getTime() : 0;
+    const dateB = b.data.date ? new Date(b.data.date).getTime() : 0;
+    return dateB - dateA;
+  });
+
+function formatDate(date: Date): string {
+  return date.toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+  });
+}
 ---
 <Portfolio title="Blog | Luis Bretones">
   <style>
     .blog-header {
       padding: 4rem 0 2.5rem;
-      border-bottom: 1px solid var(--border);
     }
     .blog-header h2 {
       font-family: 'Playfair Display', serif;
-      font-size: 2rem;
+      font-size: 2.75rem;
       font-weight: 800;
       color: var(--text);
-      margin-bottom: 0.4rem;
+      margin-bottom: 0.5rem;
+      line-height: 1.15;
     }
     .blog-header p {
-      font-size: 0.9rem;
+      font-size: 0.95rem;
       color: var(--text-muted);
+      max-width: 480px;
+      line-height: 1.6;
     }
+
     .post-list {
-      display: flex;
-      flex-direction: column;
-      gap: 0;
+      padding-bottom: 3rem;
     }
-    .post-card {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 2rem;
-      padding: 1.75rem 0;
-      border-bottom: 1px solid var(--border);
+
+    .post-item {
+      display: block;
+      padding: 2rem 0 2rem 0;
+      border-top: 1px solid var(--border);
       text-decoration: none;
       color: var(--text);
-      transition: padding-left 0.2s;
+      transition: padding-left 0.2s ease;
     }
-    .post-card:hover { padding-left: 0.5rem; }
-    .post-card:last-child { border-bottom: none; }
-    .post-card-body { flex: 1; }
-    .post-card-title {
+    .post-item:last-child {
+      border-bottom: 1px solid var(--border);
+    }
+    .post-item:hover {
+      padding-left: 0.6rem;
+    }
+
+    .post-date {
+      display: block;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.6rem;
+    }
+
+    .post-title {
       font-family: 'Playfair Display', serif;
-      font-size: 1.15rem;
+      font-size: 1.4rem;
       font-weight: 700;
       color: var(--text);
-      margin-bottom: 0.4rem;
+      line-height: 1.3;
+      margin-bottom: 0.6rem;
       transition: color 0.2s;
     }
-    .post-card:hover .post-card-title { color: var(--accent); }
-    .post-card-desc {
-      font-size: 0.875rem;
-      color: var(--text-muted);
-      line-height: 1.6;
-      margin-bottom: 0.75rem;
+    .post-item:hover .post-title {
+      color: var(--accent);
     }
-    .post-card-tags { display: flex; gap: 0.35rem; flex-wrap: wrap; }
-    .post-card-tag {
+
+    .post-desc {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.65;
+      margin-bottom: 0.85rem;
+    }
+
+    .post-tags {
+      display: flex;
+      gap: 0.35rem;
+      flex-wrap: wrap;
+    }
+    .post-tag {
       font-family: 'JetBrains Mono', monospace;
       font-size: 0.62rem;
       font-weight: 500;
       padding: 0.15rem 0.5rem;
-      border-radius: 2px;
       border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
+      border-radius: 2px;
       color: var(--accent);
     }
-    .post-card-arrow {
+
+    .post-read {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      margin-top: 1.1rem;
       font-family: 'JetBrains Mono', monospace;
       font-size: 0.72rem;
       font-weight: 600;
-      letter-spacing: 0.06em;
-      white-space: nowrap;
-      padding: 0.45rem 0.9rem;
-      border: 1px solid var(--accent);
-      border-radius: 3px;
+      letter-spacing: 0.04em;
       color: var(--accent);
-      transition: background 0.15s, color 0.15s;
     }
-    .post-card:hover .post-card-arrow {
-      background: var(--accent);
-      color: #fff;
+    .post-read .arrow {
+      transition: transform 0.2s ease;
     }
-    @media (max-width: 768px) {
-      .post-card { flex-direction: column; align-items: flex-start; gap: 1rem; }
-      .post-card-arrow { align-self: flex-start; }
+    .post-item:hover .post-read .arrow {
+      transform: translateX(5px);
+    }
+
+    .empty-state {
+      padding: 3rem 0;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      font-style: italic;
+      border-top: 1px solid var(--border);
     }
   </style>
 
@@ -90,17 +137,30 @@ import Portfolio from '../../layouts/Portfolio.astro';
   </div>
 
   <div class="post-list">
-    <a href="/blog/usbmon-arch-linux/" class="post-card">
-      <div class="post-card-body">
-        <p class="post-card-title">Getting started with usbmon on Arch Linux</p>
-        <p class="post-card-desc">Setting up Wireshark and usbmon to capture USB traffic without running as root.</p>
-        <div class="post-card-tags">
-          <span class="post-card-tag">arch-linux</span>
-          <span class="post-card-tag">USB</span>
-          <span class="post-card-tag">wireshark</span>
-        </div>
-      </div>
-      <span class="post-card-arrow">Read post →</span>
-    </a>
+    {posts.length === 0 && (
+      <p class="empty-state">No posts yet.</p>
+    )}
+    {posts.map(post => {
+      const url = `/${post.id.replace(/\.mdx?$/, '')}/`;
+      return (
+        <a href={url} class="post-item">
+          {post.data.date && (
+            <time class="post-date">{formatDate(post.data.date)}</time>
+          )}
+          <p class="post-title">{post.data.title}</p>
+          {post.data.description && (
+            <p class="post-desc">{post.data.description}</p>
+          )}
+          {post.data.tags && post.data.tags.length > 0 && (
+            <div class="post-tags">
+              {post.data.tags.map(tag => (
+                <span class="post-tag">{tag}</span>
+              ))}
+            </div>
+          )}
+          <span class="post-read">Read post <span class="arrow">→</span></span>
+        </a>
+      );
+    })}
   </div>
 </Portfolio>
