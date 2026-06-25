@@ -1,0 +1,260 @@
+---
+const CHAPTERS = [
+  'Introduction to Computers, Programs, and Java',
+  'Elementary Programming',
+  'Selections',
+  'Mathematical Functions, Characters, and Strings',
+  'Loops',
+  'Methods',
+  'Single-Dimensional Arrays',
+  'Multidimensional Arrays',
+  'Objects and Classes',
+  'Thinking in Objects',
+  'Inheritance and Polymorphism',
+  'Exception Handling and Text I/O',
+  'Abstract Classes and Interfaces',
+  'JavaFX Basics',
+  'Event-Driven Programming and Animations',
+  'JavaFX Controls and Multimedia',
+  'Binary I/O',
+  'Recursion',
+  'Generics',
+  'Lists, Stacks, Queues, and Priority Queues',
+  'Sets and Maps',
+  'Developing Efficient Algorithms',
+  'Sorting',
+  'Implementing Lists, Stacks, Queues, and Priority Queues',
+  'Binary Search Trees',
+  'AVL Trees',
+  'Hashing',
+  'Graphs and Applications',
+  'Weighted Graphs and Applications',
+];
+---
+
+<div class="jp">
+  <div class="jp-stats">
+    <span class="jp-count" id="jp-count">. . .</span>
+    <span class="jp-pct" id="jp-pct"></span>
+  </div>
+  <div class="jp-track">
+    <div class="jp-bar" id="jp-bar"></div>
+  </div>
+  <div class="jp-dates" id="jp-dates" hidden></div>
+
+  <ol class="jp-list" id="jp-list">
+    {CHAPTERS.map((title, i) => (
+      <li class="jp-item" data-chapter={i + 1}>
+        <span class="jp-n">{String(i + 1).padStart(2, '0')}</span>
+        <span class="jp-t">{title}</span>
+        <span class="jp-mark"></span>
+      </li>
+    ))}
+  </ol>
+
+  <div class="jp-log" id="jp-log" hidden>
+    <h3 class="jp-log-title">Devlog</h3>
+    <div id="jp-log-entries"></div>
+  </div>
+</div>
+
+<style>
+  .jp {
+    margin: 1.5rem 0;
+  }
+  .jp-stats {
+    display: flex;
+    align-items: baseline;
+    gap: 0.6rem;
+    margin-bottom: 0.5rem;
+  }
+  .jp-count {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--sl-color-white);
+  }
+  .jp-pct {
+    font-size: 0.9rem;
+    color: var(--sl-color-gray-3);
+  }
+  .jp-track {
+    background: var(--sl-color-gray-5);
+    border-radius: 6px;
+    height: 10px;
+    overflow: hidden;
+    width: 100%;
+  }
+  .jp-bar {
+    background: var(--sl-color-accent);
+    height: 100%;
+    width: 0%;
+    transition: width 0.7s ease;
+  }
+  .jp-dates {
+    margin-top: 0.6rem;
+    font-size: 0.8rem;
+    color: var(--sl-color-gray-3);
+  }
+
+  .jp-list {
+    list-style: none;
+    margin: 1.5rem 0 0;
+    padding: 0;
+    border-top: 1px solid var(--sl-color-gray-5);
+  }
+  .jp-item {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    padding: 0.55rem 0.5rem;
+    border-bottom: 1px solid var(--sl-color-gray-5);
+    font-size: 0.9rem;
+    line-height: 1.3;
+    color: var(--sl-color-gray-3);
+    transition: background 0.2s ease, color 0.2s ease;
+  }
+  .jp-n {
+    flex-shrink: 0;
+    width: 1.7rem;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--sl-color-gray-4);
+    font-variant-numeric: tabular-nums;
+  }
+  .jp-t {
+    flex: 1;
+    min-width: 0;
+  }
+  .jp-mark {
+    flex-shrink: 0;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--sl-color-gray-4);
+  }
+  .jp-item.done {
+    color: var(--sl-color-white);
+  }
+  .jp-item.done .jp-n {
+    color: var(--sl-color-accent);
+  }
+  .jp-item.done .jp-mark::after {
+    content: '\2713 done';
+    color: var(--sl-color-accent);
+  }
+  .jp-item.current {
+    background: var(--sl-color-accent-low);
+    color: var(--sl-color-white);
+  }
+  .jp-item.current .jp-n {
+    color: var(--sl-color-accent-high);
+  }
+  .jp-item.current .jp-mark::after {
+    content: 'in progress';
+    color: var(--sl-color-accent-high);
+    font-style: italic;
+  }
+
+  .jp-log {
+    margin-top: 2rem;
+  }
+  .jp-log-title {
+    margin-bottom: 1rem;
+  }
+  .jp-entry {
+    border-left: 2px solid var(--sl-color-accent);
+    padding: 0 0 0 1rem;
+    margin-bottom: 1.5rem;
+  }
+  .jp-entry-head {
+    display: flex;
+    align-items: baseline;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+    margin-bottom: 0.3rem;
+  }
+  .jp-entry-date {
+    font-size: 0.78rem;
+    color: var(--sl-color-gray-3);
+    font-variant-numeric: tabular-nums;
+  }
+  .jp-entry-title {
+    font-weight: 600;
+    color: var(--sl-color-white);
+  }
+  .jp-entry-notes {
+    margin: 0;
+    color: var(--sl-color-gray-2);
+  }
+</style>
+
+<script>
+  const url = 'https://raw.githubusercontent.com/LuisBretonesVillegas/JAVA-SUMMER-2026/main/progress.json';
+
+  function fmtDate(iso) {
+    try {
+      return new Date(iso + 'T00:00:00').toLocaleDateString('en-GB', {
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric',
+      });
+    } catch {
+      return iso;
+    }
+  }
+
+  fetch(url)
+    .then((r) => r.json())
+    .then((data) => {
+      const total = data.total || 29;
+      const done = data.completed || 0;
+      const pct = Math.min((done / total) * 100, 100).toFixed(0);
+
+      const count = document.getElementById('jp-count');
+      const pctEl = document.getElementById('jp-pct');
+      const bar = document.getElementById('jp-bar');
+      if (count) count.textContent = done + ' / ' + total + ' chapters';
+      if (pctEl) pctEl.textContent = pct + '%';
+      if (bar) bar.style.width = pct + '%';
+
+      document.querySelectorAll('.jp-item').forEach((item) => {
+        const n = Number(item.getAttribute('data-chapter'));
+        if (n <= done) item.classList.add('done');
+        if (n === done + 1) item.classList.add('current');
+      });
+
+      const log = Array.isArray(data.log) ? data.log : [];
+
+      const datesEl = document.getElementById('jp-dates');
+      if (datesEl && data.started) {
+        const lastUpdated = log.length ? log[0].date : data.started;
+        datesEl.textContent = 'Started ' + fmtDate(data.started) + '  ·  Last updated ' + fmtDate(lastUpdated);
+        datesEl.hidden = false;
+      }
+
+      if (log.length) {
+        const wrap = document.getElementById('jp-log');
+        const entries = document.getElementById('jp-log-entries');
+        if (entries) {
+          entries.innerHTML = log
+            .map((e) => {
+              const head = 'Chapter ' + e.chapter + (e.title ? ' - ' + e.title : '');
+              return (
+                '<div class="jp-entry">' +
+                '<div class="jp-entry-head">' +
+                '<span class="jp-entry-title">' + head + '</span>' +
+                '<span class="jp-entry-date">' + fmtDate(e.date) + '</span>' +
+                '</div>' +
+                '<p class="jp-entry-notes">' + (e.notes || '') + '</p>' +
+                '</div>'
+              );
+            })
+            .join('');
+        }
+        if (wrap) wrap.hidden = false;
+      }
+    })
+    .catch(() => {
+      const count = document.getElementById('jp-count');
+      if (count) count.textContent = 'Progress data unavailable';
+    });
+</script>

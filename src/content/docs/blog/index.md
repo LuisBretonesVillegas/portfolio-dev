@@ -7,4 +7,5 @@ Each post is a snapshot: a lab result, a config that finally worked, a concept t
 
 ## Posts
 
+- **[Java Summer 2026](/blog/java-summer-2026/)**: Raw documentation of learning Java from scratch — notes, exercises, and reflections, chapter by chapter.
 - **[Getting started with usbmon on Arch Linux](/blog/usbmon-arch-linux/)**: Setting up Wireshark and usbmon to capture USB traffic without running as root.

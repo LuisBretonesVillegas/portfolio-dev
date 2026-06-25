@@ -12,6 +12,9 @@ export const collections = {
 				date: z.coerce.date().optional(),
 				// Optional list of tags, shown as chips in the blog listing.
 				tags: z.array(z.string()).optional(),
+				// Optional URL to a progress.json; if set, the blog listing shows a
+				// dynamic "Updated" date pulled from that file's latest log entry.
+				progressUrl: z.string().optional(),
 			}),
 		}),
 	}),
