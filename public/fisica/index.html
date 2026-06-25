@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Física para Informática · Plan de verano 2026</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<style>
+  :root{
+    --bg:#0d1117; --panel:#131a24; --panel2:#0f151d; --line:#243042;
+    --ink:#e7edf5; --dim:#8a99ad; --faint:#5d6a7d;
+    --amber:#ffb454; --cyan:#46c7d6; --green:#5ad29a; --violet:#9d8cff; --red:#ff6b6b;
+    --mono:'JetBrains Mono','SF Mono',ui-monospace,Consolas,monospace;
+    --sans:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.6;
+    background-image:radial-gradient(circle at 1px 1px,#1a2230 1px,transparent 0);background-size:34px 34px;}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 22px}
+
+  /* HERO */
+  header{border-bottom:1px solid var(--line);padding:60px 0 42px;position:relative;overflow:hidden}
+  header .wrap{position:relative;z-index:2}
+  .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.32em;text-transform:uppercase;color:var(--cyan);margin-bottom:18px}
+  h1{font-size:clamp(34px,6vw,62px);font-weight:800;letter-spacing:-.02em;line-height:1.02}
+  h1 .em{color:var(--amber)}
+  .lede{color:var(--dim);max-width:620px;margin-top:18px;font-size:17px}
+  .maxwell{position:absolute;top:0;right:0;height:100%;width:46%;opacity:.20;pointer-events:none}
+  .hero-meta{display:flex;gap:26px;flex-wrap:wrap;margin-top:30px;font-family:var(--mono);font-size:13px;color:var(--faint)}
+  .hero-meta b{color:var(--green);font-weight:600}
+
+  /* NAV */
+  nav{position:sticky;top:0;z-index:30;background:rgba(13,17,23,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:4px;overflow-x:auto;padding:0}
+  nav a{font-family:var(--mono);font-size:12.5px;padding:14px 15px;color:var(--dim);white-space:nowrap;border-bottom:2px solid transparent;transition:.15s}
+  nav a:hover{color:var(--ink)}
+  nav a.active{color:var(--amber);border-color:var(--amber)}
+
+  section{padding:54px 0;border-bottom:1px solid var(--line)}
+  .sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:8px}
+  .sec-num{font-family:var(--mono);font-size:13px;color:var(--faint)}
+  h2{font-size:clamp(24px,4vw,34px);font-weight:800;letter-spacing:-.01em}
+  .sub{color:var(--dim);margin-bottom:30px;max-width:680px}
+
+  /* TIMELINE */
+  .week{display:grid;grid-template-columns:120px 1fr;gap:0;border:1px solid var(--line);border-radius:12px;margin-bottom:14px;overflow:hidden;background:var(--panel)}
+  .week .when{background:var(--panel2);padding:18px 16px;border-right:1px solid var(--line)}
+  .week .wk{font-family:var(--mono);font-size:11px;color:var(--cyan);letter-spacing:.1em}
+  .week .date{font-size:15px;font-weight:700;margin-top:4px}
+  .week .body{padding:18px 20px}
+  .week .topic{font-weight:700;font-size:16px;color:var(--amber)}
+  .week .focus{color:var(--dim);font-size:14px;margin-top:6px}
+  .week .tags{margin-top:12px;display:flex;gap:7px;flex-wrap:wrap}
+  .pill{font-family:var(--mono);font-size:11px;padding:4px 9px;border-radius:20px;border:1px solid var(--line);color:var(--dim)}
+  .pill.rel{border-color:#33506b;color:var(--cyan)}
+  .pill.ex{border-color:#5a4a2a;color:var(--amber)}
+  .week.rest .when{opacity:.55}
+  .week.rest .topic{color:var(--faint)}
+
+  .note{border-left:3px solid var(--violet);background:rgba(157,140,255,.07);padding:14px 18px;border-radius:0 8px 8px 0;margin:22px 0;font-size:14px;color:var(--dim)}
+  .note b{color:var(--violet)}
+  .warn{border-left-color:var(--red);background:rgba(255,107,107,.07)}
+  .warn b{color:var(--red)}
+
+  /* CHEAT */
+  .topic-card{border:1px solid var(--line);border-radius:14px;margin-bottom:18px;background:var(--panel);overflow:hidden}
+  .topic-card>summary{list-style:none;cursor:pointer;padding:20px 24px;display:flex;align-items:center;gap:16px;user-select:none}
+  .topic-card>summary::-webkit-details-marker{display:none}
+  .tnum{font-family:var(--mono);font-size:13px;font-weight:700;color:var(--bg);background:var(--amber);width:30px;height:30px;border-radius:8px;display:grid;place-items:center;flex-shrink:0}
+  .tnum.c2{background:var(--cyan)}.tnum.c3{background:var(--green)}.tnum.c4{background:var(--violet)}.tnum.c5{background:#ff8fab}.tnum.c6{background:#7fd1ff}
+  .ttitle{font-weight:700;font-size:18px;flex:1}
+  .tmeta{font-family:var(--mono);font-size:11px;color:var(--faint)}
+  .chev{color:var(--faint);transition:.2s;font-family:var(--mono)}
+  .topic-card[open] .chev{transform:rotate(90deg)}
+  .tbody{padding:6px 24px 26px;border-top:1px solid var(--line)}
+  .frow{display:flex;justify-content:space-between;align-items:center;gap:18px;padding:13px 0;border-bottom:1px dashed var(--line)}
+  .frow:last-child{border-bottom:none}
+  .flabel{color:var(--dim);font-size:14px;max-width:46%}
+  .fmath{font-size:15px;text-align:right;overflow-x:auto}
+  .grp{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--cyan);margin:22px 0 6px;padding-top:8px}
+  .grp:first-child{margin-top:8px}
+
+  /* EXERCISES */
+  .extable{width:100%;border-collapse:collapse;border:1px solid var(--line);border-radius:12px;overflow:hidden;font-size:14px}
+  .extable th{background:var(--panel2);text-align:left;padding:13px 16px;font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--cyan);border-bottom:1px solid var(--line)}
+  .extable td{padding:13px 16px;border-bottom:1px solid var(--line);vertical-align:top}
+  .extable tr:last-child td{border-bottom:none}
+  .extable td:first-child{font-family:var(--mono);color:var(--amber);font-weight:700;white-space:nowrap}
+  .core{color:var(--green);font-family:var(--mono);font-weight:600}
+
+  /* ANALYSIS */
+  .bars{display:flex;flex-direction:column;gap:14px;margin:8px 0 4px}
+  .bar-row{display:grid;grid-template-columns:130px 1fr 64px;align-items:center;gap:14px}
+  .bar-lab{font-weight:700;font-size:14px}
+  .bar-lab small{display:block;font-weight:400;color:var(--faint);font-family:var(--mono);font-size:11px}
+  .bar-track{height:26px;background:var(--panel2);border-radius:6px;overflow:hidden;border:1px solid var(--line)}
+  .bar-fill{height:100%;border-radius:5px 0 0 5px;display:flex;align-items:center;padding-left:10px;font-family:var(--mono);font-size:11px;color:#0d1117;font-weight:700;min-width:30px;transition:width .8s ease}
+  .bar-val{font-family:var(--mono);font-size:14px;font-weight:700;text-align:right}
+  .tier{display:inline-block;font-family:var(--mono);font-size:10px;padding:2px 7px;border-radius:4px;margin-left:8px;vertical-align:middle}
+  .tier.alta{background:rgba(90,210,154,.16);color:var(--green)}
+  .tier.media{background:rgba(255,180,84,.16);color:var(--amber)}
+  .tier.baja{background:rgba(255,107,107,.16);color:var(--red)}
+  .splitcols{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:8px}
+  @media(max-width:680px){.splitcols{grid-template-columns:1fr}.bar-row{grid-template-columns:96px 1fr 50px;gap:9px}}
+
+  footer{padding:40px 0 70px;color:var(--faint);font-size:13px}
+  footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px}
+  code{font-family:var(--mono);background:var(--panel2);padding:2px 6px;border-radius:5px;font-size:.88em;color:var(--amber)}
+  @media(max-width:640px){.week{grid-template-columns:1fr}.week .when{border-right:none;border-bottom:1px solid var(--line)}.frow{flex-direction:column;align-items:flex-start}.fmath{text-align:left}.flabel{max-width:100%}}
+</style>
+</head>
+<body data-pagefind-ignore>
+
+<header>
+  <svg class="maxwell" viewBox="0 0 400 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0 300 Q50 150 100 300 T200 300 T300 300 T400 300" stroke="#ffb454" stroke-width="2"/>
+    <path d="M0 300 Q50 450 100 300 T200 300 T300 300 T400 300" stroke="#46c7d6" stroke-width="2"/>
+    <circle cx="100" cy="300" r="4" fill="#5ad29a"/><circle cx="200" cy="300" r="4" fill="#5ad29a"/><circle cx="300" cy="300" r="4" fill="#5ad29a"/>
+  </svg>
+  <div class="wrap">
+    <div class="eyebrow">Física para Informática · Verano 2026</div>
+    <h1>Del <span class="em">fotón</span> a la <span class="em">onda</span>,<br>en doce semanas.</h1>
+    <p class="lede">Plan de estudio centrado en física, chuletario con todas las fórmulas de los seis temas y guía de qué ejercicios hacer en cada relación. Construido a partir de tu temario, relaciones y exámenes de convocatorias previas.</p>
+    <div class="hero-meta">
+      <span>Temas <b>6</b></span>
+      <span>Relaciones <b>5</b></span>
+      <span>Exámenes analizados <b>6</b></span>
+      <span>Cierre <b>6 sep</b></span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#plan">01 · Plan</a>
+  <a href="#tipler">02 · Tipler</a>
+  <a href="#metodo">03 · Método</a>
+  <a href="#cheat">04 · Chuletario</a>
+  <a href="#ejercicios">05 · Ejercicios</a>
+  <a href="#semanal">06 · Semanal</a>
+  <a href="#analisis">07 · Análisis</a>
+</div></nav>
+
+<!-- PLAN -->
+<section id="plan">
+<div class="wrap">
+  <div class="sec-head"><span class="sec-num">01</span><h2>Cronograma de física</h2></div>
+  <p class="sub">Estrategia: <b>dominio secuencial de los Temas 1, 2 y 3</b>. No avanzas al siguiente tema hasta cerrar el anterior. Reparto por peso: T1 → 2 semanas, T2 → 4, T3 → 5. Cada bloque termina con un examen del tema; si no lo apruebas sin fallos graves, te comes la semana siguiente con ese tema. T4 y T5 quedan para el cuatrimestre; el T6 no entra.</p>
+
+  <div class="week"><div class="when"><div class="wk">SEMANA 2</div><div class="date">28 jun</div></div>
+    <div class="body"><div class="topic" style="color:var(--amber)">TEMA 1 · Fundamentos</div>
+      <div class="focus">Teoría completa: radiación EM, fotón, efecto fotoeléctrico, teoría de bandas y semiconductores. Primera tanda de ejercicios.</div>
+      <div class="tags"><span class="pill rel">Relación 1</span><span class="pill ex">ej. 1–12</span></div></div></div>
+
+  <div class="week"><div class="when"><div class="wk">SEMANA 3</div><div class="date">5 jul</div></div>
+    <div class="body"><div class="topic" style="color:var(--amber)">TEMA 1 · CIERRE</div>
+      <div class="focus">Termina semiconductores y repaso vectorial. Examen del tema cronometrado. <b>No pasas al Tema 2 hasta aprobarlo sin fallos graves.</b></div>
+      <div class="tags"><span class="pill rel">Relación 1</span><span class="pill ex">ej. 13–20 + examen</span></div></div></div>
+
+  <div class="week"><div class="when"><div class="wk">SEMANA 4</div><div class="date">12 jul</div></div>
+    <div class="body"><div class="topic" style="color:var(--cyan)">TEMA 2 · Campo eléctrico</div>
+      <div class="focus">Coulomb, campo de distribuciones y Ley de Gauss.</div>
+      <div class="tags"><span class="pill rel">Relación 2</span><span class="pill ex">ej. 1–12</span></div></div></div>
+
+  <div class="week"><div class="when"><div class="wk">SEMANA 5</div><div class="date">19 jul</div></div>
+    <div class="body"><div class="topic" style="color:var(--cyan)">TEMA 2 · Campo eléctrico</div>
+      <div class="focus">Potencial, relación E↔V y movimiento de cargas.</div>
+      <div class="tags"><span class="pill rel">Relación 2</span><span class="pill ex">ej. 13–25</span></div></div></div>
+
+  <div class="week"><div class="when"><div class="wk">SEMANA 6</div><div class="date">26 jul</div></div>
+    <div class="body"><div class="topic" style="color:var(--cyan)">TEMA 2 · Campo eléctrico</div>
+      <div class="focus">Dieléctricos, condensadores y energía electrostática.</div>
+      <div class="tags"><span class="pill rel">Relación 2</span><span class="pill ex">ej. 26–41</span></div></div></div>
+
+  <div class="week"><div class="when"><div class="wk">SEMANA 7</div><div class="date">2 ago</div></div>
+    <div class="body"><div class="topic" style="color:var(--cyan)">TEMA 2 · CIERRE</div>
+      <div class="focus">Rehaz lo fallado de la Relación 2. Examen del tema cronometrado. <b>No pasas al Tema 3 hasta aprobarlo sin fallos graves.</b></div>
+      <div class="tags"><span class="pill rel">Relación 2</span><span class="pill ex">repaso + examen</span></div></div></div>
+
+  <div class="week"><div class="when"><div class="wk">SEMANA 8</div><div class="date">9 ago</div></div>
+    <div class="body"><div class="topic" style="color:var(--green)">TEMA 3 · Corriente continua</div>
+      <div class="focus">Densidad de corriente, Ley de Ohm y Ley de Joule.</div>
+      <div class="tags"><span class="pill rel">Relación 3</span><span class="pill ex">ej. 1–14</span></div></div></div>
+
+  <div class="week"><div class="when"><div class="wk">SEMANA 9</div><div class="date">16 ago</div></div>
+    <div class="body"><div class="topic" style="color:var(--green)">TEMA 3 · Corriente continua</div>
+      <div class="focus">Generadores, máxima transferencia de potencia e inicio de Kirchhoff.</div>
+      <div class="tags"><span class="pill rel">Relación 3</span><span class="pill ex">ej. 15–27</span></div></div></div>
+
+  <div class="week"><div class="when"><div class="wk">SEMANA 10</div><div class="date">23 ago</div></div>
+    <div class="body"><div class="topic" style="color:var(--green)">TEMA 3 · Corriente continua</div>
+      <div class="focus">Kirchhoff avanzado, Thévenin/Norton y diodos.</div>
+      <div class="tags"><span class="pill rel">Relación 3</span><span class="pill ex">ej. 28–40</span></div></div></div>
+
+  <div class="week"><div class="when"><div class="wk">SEMANA 11</div><div class="date">30 ago</div></div>
+    <div class="body"><div class="topic" style="color:var(--green)">TEMA 3 · Corriente continua</div>
+      <div class="focus">Diodos Zener y transitorios RC.</div>
+      <div class="tags"><span class="pill rel">Relación 3</span><span class="pill ex">ej. 41–51</span></div></div></div>
+
+  <div class="week"><div class="when"><div class="wk">SEMANA 12</div><div class="date">6 sep</div></div>
+    <div class="body"><div class="topic" style="color:var(--green)">TEMA 3 · CIERRE</div>
+      <div class="focus">Rehaz lo fallado de la Relación 3. Examen del tema cronometrado. Cierre del verano: los tres temas dominados.</div>
+      <div class="tags"><span class="pill rel">Relación 3</span><span class="pill ex">repaso + examen</span></div></div></div>
+
+  <div class="note"><b>Regla de avance.</b> Cada bloque termina con un examen del tema. Un tema está <b>cerrado</b> cuando resuelves su relación completa sin mirar soluciones y apruebas ese examen sin fallos graves. Solo entonces pasas al siguiente. Las fechas son orientativas: <b>si un tema no está cerrado, se come la primera semana del siguiente bloque</b>; el principio manda sobre el calendario.</div>
+
+  <div class="note warn"><b>Riesgo del modelo secuencial.</b> Si T1 o T2 se alargan, T3 se queda sin semanas. T3 es el más largo (51 ejercicios) y el más rentable, así que vigila el reloj en T1 y T2: T1 no debería pasar de 2 semanas (es el más corto y cerrado). Si en la S7 aún no has cerrado T2, recorta el repaso y prioriza arrancar T3.</div>
+
+  <div class="note warn"><b>Temas 4, 5 y 6.</b> Fuera del verano. T4 y T5 los prepararás en el cuatrimestre a base de ejercicios comunes (patrones marcados en la sección de ejercicios). El T6 (Ondas EM) queda descartado porque no entra en tu examen.</div>
+</div>
+</section>
+
+<!-- TIPLER -->
+<section id="tipler">
+<div class="wrap">
+  <div class="sec-head"><span class="sec-num">02</span><h2>Capítulos del Tipler-Mosca</h2></div>
+  <p class="sub">Mapa de cada tema a los capítulos de <em>Física para la Ciencia y la Tecnología, Vol. 2</em> (Tipler &amp; Mosca, 6ª ed., Reverté). Los temas 1 y 6 cruzan varias partes del libro, porque tu temario junta electromagnetismo con física moderna y óptica.</p>
+
+  <table class="extable">
+    <tr><th>Tema</th><th>Capítulos Tipler Vol. 2</th><th>Qué cubre cada capítulo</th></tr>
+    <tr><td>TEMA 1 · Fundamentos</td><td><b>34</b> · <b>38</b></td><td>Cap. 34 dualidad onda-partícula, fotón y efecto fotoeléctrico. Cap. 38 sólidos: teoría de bandas, semiconductores intrínsecos/extrínsecos y unión PN.</td></tr>
+    <tr><td>TEMA 2 · Campo eléctrico</td><td><b>21</b> · <b>22</b> · <b>23</b> · <b>24</b></td><td>21 distribuciones discretas y Coulomb · 22 distribuciones continuas y Ley de Gauss · 23 potencial · 24 capacidad, dieléctricos y energía electrostática.</td></tr>
+    <tr><td>TEMA 3 · Corriente continua</td><td><b>25</b> · (38)</td><td>Cap. 25 corriente, Ohm, Joule, generadores, Kirchhoff, Thévenin y transitorios RC. Los diodos se apoyan en la unión PN del cap. 38.</td></tr>
+    <tr><td>TEMA 4 · Campo magnético</td><td><b>26</b> · <b>27</b></td><td>26 fuerza magnética (Lorentz, ciclotrón, Hall) y fuerza sobre corrientes · 27 Biot-Savart, Ampère y magnetismo en la materia.</td></tr>
+    <tr><td>TEMA 5 · Inducción EM</td><td><b>28</b> · <b>29</b></td><td>28 Faraday-Lenz, fem de movimiento, autoinducción, energía magnética y circuitos RL · 29 circuitos LC y RLC (apartado 29.4).</td></tr>
+    <tr><td>TEMA 6 · Ondas EM</td><td><b>30</b> · <b>31</b> · <b>33</b></td><td>30 ecuaciones de Maxwell y ondas EM · 31 propiedades de la luz: reflexión, refracción (Snell), polarización (Malus, Brewster) · 33 interferencia (películas delgadas, doble rendija).</td></tr>
+  </table>
+
+  <div class="note"><b>Cómo usarlo.</b> El libro tiene más profundidad y más problemas que tus diapositivas. Lee del Tipler los capítulos del tema que toque esa semana (columna central), pero céntrate en los apartados que aparecen en tu chuletario; el resto (circuitos CA con fasores del cap. 29, óptica geométrica del cap. 32, difracción avanzada del cap. 33) cae fuera de tu temario. Los problemas resueltos del final de cada capítulo del Tipler son tu mejor complemento a las relaciones.</div>
+
+  <div class="note warn"><b>Edición.</b> La numeración es de la 6ª ed. de Reverté. En la 4ª/5ª ed. el cap. 24 se titula "Energía electrostática y capacidad" pero cubre lo mismo. Si tu PDF del Tipler numera distinto los capítulos de física moderna (34–38), guíate por el título del capítulo, no solo por el número.</div>
+</div>
+</section>
+
+<!-- METODO -->
+<section id="metodo">
+<div class="wrap">
+  <div class="sec-head"><span class="sec-num">03</span><h2>Método de estudio</h2></div>
+  <p class="sub">Cómo atacar cada tema para que rinda en el examen, no solo para "verlo".</p>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px">
+    <div class="topic-card" style="padding:22px 24px"><div style="font-family:var(--mono);color:var(--amber);font-size:13px;margin-bottom:8px">01 · TEORÍA ACTIVA</div><p style="color:var(--dim);font-size:14px">Lee el tema y reescribe cada fórmula clave de memoria en el chuletario. Si no puedes reproducir la deducción de $c=1/\sqrt{\mu_0\varepsilon_0}$ o de $\tau=RC$, vuelve a esa diapositiva.</p></div>
+    <div class="topic-card" style="padding:22px 24px"><div style="font-family:var(--mono);color:var(--cyan);font-size:13px;margin-bottom:8px">02 · RELACIÓN CON RESULTADO TAPADO</div><p style="color:var(--dim);font-size:14px">Tus relaciones traen solo resultados. Resuelve el ejercicio entero antes de mirar el número. Si no coincide, localiza el paso, no la respuesta.</p></div>
+    <div class="topic-card" style="padding:22px 24px"><div style="font-family:var(--mono);color:var(--green);font-size:13px;margin-bottom:8px">03 · EXAMEN CRONOMETRADO</div><p style="color:var(--dim);font-size:14px">Tras cada bloque de 2 temas, haz un examen real corregido (tienes 6). Mismo tiempo que en el aula. Mide, no leas.</p></div>
+    <div class="topic-card" style="padding:22px 24px"><div style="font-family:var(--mono);color:var(--violet);font-size:13px;margin-bottom:8px">04 · ERRORES → OBSIDIAN</div><p style="color:var(--dim);font-size:14px">Cada fallo recurrente va a la sección "Trampas frecuentes" del .md del tema. Repásalas el día antes del examen.</p></div>
+  </div>
+</div>
+</section>
+
+<!-- CHEAT -->
+<section id="cheat">
+<div class="wrap">
+  <div class="sec-head"><span class="sec-num">04</span><h2>Chuletario de fórmulas</h2></div>
+  <p class="sub">Todas las fórmulas importantes de los seis temas. Despliega cada tema. Las constantes están al pie.</p>
+
+  <!-- T1 -->
+  <details class="topic-card" open><summary><span class="tnum">1</span><span class="ttitle">TEMA 1 · Fundamentos</span><span class="tmeta">Relación 1</span><span class="chev">▸</span></summary>
+  <div class="tbody">
+    <div class="grp">Interacciones</div>
+    <div class="frow"><span class="flabel">Ley de Coulomb</span><span class="fmath">$F_e=k_e\dfrac{Q_1Q_2}{r^2}$</span></div>
+    <div class="frow"><span class="flabel">Ley de gravitación</span><span class="fmath">$F_g=G\dfrac{M_1M_2}{r^2}$</span></div>
+    <div class="frow"><span class="flabel">Cociente eléctrica/gravitatoria (p–e)</span><span class="fmath">$\dfrac{F_e}{F_g}=\dfrac{k_e e^2}{G m_p m_e}\approx10^{39}$</span></div>
+    <div class="frow"><span class="flabel">Equivalencia masa-energía</span><span class="fmath">$E=mc^2$</span></div>
+    <div class="grp">Radiación EM</div>
+    <div class="frow"><span class="flabel">Onda: relación f–λ</span><span class="fmath">$f=\dfrac{1}{T}=\dfrac{c}{\lambda}$</span></div>
+    <div class="frow"><span class="flabel">Energía del fotón</span><span class="fmath">$W=hf=\dfrac{hc}{\lambda}$</span></div>
+    <div class="frow"><span class="flabel">Atajo en eV</span><span class="fmath">$W(\text{eV})=\dfrac{1{,}242\cdot10^{-6}}{\lambda(\text{m})}$</span></div>
+    <div class="frow"><span class="flabel">Definición de eV</span><span class="fmath">$W=e\,\Delta V,\ \ 1\,\text{eV}=1{,}6\cdot10^{-19}\,\text{J}$</span></div>
+    <div class="grp">Efecto fotoeléctrico</div>
+    <div class="frow"><span class="flabel">Energía cinética máxima</span><span class="fmath">$E_{cin}=\tfrac12 m_e v^2=hf-\varphi$</span></div>
+    <div class="grp">Bandas y semiconductores</div>
+    <div class="frow"><span class="flabel">Energía de Fermi</span><span class="fmath">$E_{F0}=\dfrac{h^2}{2m_e}\left(\dfrac{3n_e}{8\pi}\right)^{2/3}$</span></div>
+    <div class="frow"><span class="flabel">Potencial de contacto</span><span class="fmath">$V_c=\varphi_1-\varphi_2$</span></div>
+    <div class="frow"><span class="flabel">Semiconductor intrínseco</span><span class="fmath">$n=p=n_i$</span></div>
+    <div class="frow"><span class="flabel">n_i con la temperatura</span><span class="fmath">$n_i=A\,T^{3/2}e^{-E_g/2k_BT}$</span></div>
+    <div class="frow"><span class="flabel">Ley de acción de masas</span><span class="fmath">$n\,p=n_i^2$</span></div>
+    <div class="frow"><span class="flabel">Tipo N (donador)</span><span class="fmath">$n\approx N_D,\ \ p=n_i^2/N_D$</span></div>
+    <div class="frow"><span class="flabel">Tipo P (aceptor)</span><span class="fmath">$p\approx N_A,\ \ n=n_i^2/N_A$</span></div>
+    <div class="grp">Vectores</div>
+    <div class="frow"><span class="flabel">Escalar / Vectorial</span><span class="fmath">$\vec A\cdot\vec B=AB\cos\theta,\ \ |\vec A\times\vec B|=AB\sin\theta$</span></div>
+  </div></details>
+
+  <!-- T2 -->
+  <details class="topic-card"><summary><span class="tnum c2">2</span><span class="ttitle">TEMA 2 · Campo eléctrico</span><span class="tmeta">Relación 2</span><span class="chev">▸</span></summary>
+  <div class="tbody">
+    <div class="grp">Fuerza y campo</div>
+    <div class="frow"><span class="flabel">Coulomb / constante</span><span class="fmath">$\vec F=K\dfrac{q_1q_2}{r^2}\hat r,\ \ K=\dfrac{1}{4\pi\varepsilon_0}$</span></div>
+    <div class="frow"><span class="flabel">Campo eléctrico</span><span class="fmath">$\vec F=q\vec E,\ \ \vec E=K\dfrac{q}{r^2}\hat r$</span></div>
+    <div class="frow"><span class="flabel">Varilla infinita</span><span class="fmath">$E=\dfrac{2K\lambda}{y}$</span></div>
+    <div class="frow"><span class="flabel">Anillo (eje)</span><span class="fmath">$E=\dfrac{KQx}{(x^2+a^2)^{3/2}}$</span></div>
+    <div class="frow"><span class="flabel">Disco / plano infinito</span><span class="fmath">$E=2K\pi\sigma\!\left(1-\tfrac{x}{\sqrt{x^2+R^2}}\right)\!,\ E_\infty=\tfrac{\sigma}{2\varepsilon_0}$</span></div>
+    <div class="grp">Ley de Gauss</div>
+    <div class="frow"><span class="flabel">Forma integral / diferencial</span><span class="fmath">$\oint\vec E\cdot d\vec A=\dfrac{Q_{int}}{\varepsilon_0},\ \nabla\cdot\vec E=\dfrac{\rho}{\varepsilon_0}$</span></div>
+    <div class="frow"><span class="flabel">Esfera uniforme</span><span class="fmath">$E=K\tfrac{Q}{r^2}(r{>}R),\ K\tfrac{Q}{R^3}r\,(r{<}R)$</span></div>
+    <div class="grp">Potencial</div>
+    <div class="frow"><span class="flabel">Definición / dif. potencial</span><span class="fmath">$V_a=-\!\int_\infty^a\!\vec E\cdot d\vec l=K\tfrac{q}{r_a}$</span></div>
+    <div class="frow"><span class="flabel">Campo desde potencial</span><span class="fmath">$\vec E=-\nabla V$</span></div>
+    <div class="grp">Dipolo</div>
+    <div class="frow"><span class="flabel">Momento / par / energía</span><span class="fmath">$\vec p=q\vec L,\ \vec\tau=\vec p\times\vec E,\ U=-\vec p\cdot\vec E$</span></div>
+    <div class="grp">Conductores y dieléctricos</div>
+    <div class="frow"><span class="flabel">Campo en superficie de conductor</span><span class="fmath">$E=\dfrac{\sigma}{\varepsilon_0}\hat n$</span></div>
+    <div class="frow"><span class="flabel">Polarización / susceptibilidad</span><span class="fmath">$\vec P=\varepsilon_0\chi_e\vec E,\ \ \varepsilon_r=1+\chi_e$</span></div>
+    <div class="frow"><span class="flabel">Campo dentro del dieléctrico</span><span class="fmath">$E=\dfrac{E_0}{\varepsilon_r},\ \ \varepsilon=\varepsilon_r\varepsilon_0$</span></div>
+    <div class="frow"><span class="flabel">Carga de polarización</span><span class="fmath">$\sigma_P=\pm\dfrac{\varepsilon_r-1}{\varepsilon_r}\sigma$</span></div>
+    <div class="grp">Condensadores</div>
+    <div class="frow"><span class="flabel">Capacidad / plano-paralelo</span><span class="fmath">$C=\dfrac{Q}{V}=\dfrac{\varepsilon_r\varepsilon_0 A}{d}$</span></div>
+    <div class="frow"><span class="flabel">Serie / paralelo</span><span class="fmath">$\tfrac{1}{C_{eq}}=\sum\tfrac1{C_i}\ \mid\ C_{eq}=\sum C_i$</span></div>
+    <div class="grp">Energía</div>
+    <div class="frow"><span class="flabel">Condensador</span><span class="fmath">$U=\tfrac12 CV^2=\tfrac12\tfrac{Q^2}{C}=\tfrac12 QV$</span></div>
+    <div class="frow"><span class="flabel">Densidad de energía</span><span class="fmath">$u=\tfrac12\varepsilon_0 E^2$</span></div>
+  </div></details>
+
+  <!-- T3 -->
+  <details class="topic-card"><summary><span class="tnum c3">3</span><span class="ttitle">TEMA 3 · Corriente continua</span><span class="tmeta">Relación 3</span><span class="chev">▸</span></summary>
+  <div class="tbody">
+    <div class="grp">Corriente y Ohm</div>
+    <div class="frow"><span class="flabel">Intensidad</span><span class="fmath">$I=\dfrac{dq}{dt}$</span></div>
+    <div class="frow"><span class="flabel">Ohm micro / conductividad</span><span class="fmath">$\vec J=\sigma\vec E,\ \ \sigma=ne\mu$</span></div>
+    <div class="frow"><span class="flabel">Ohm macro / resistencia</span><span class="fmath">$V=IR,\ \ R=\dfrac{\rho l}{S}$</span></div>
+    <div class="frow"><span class="flabel">Serie / paralelo</span><span class="fmath">$R_{eq}=\sum R_i\ \mid\ \tfrac1{R_{eq}}=\sum\tfrac1{R_i}$</span></div>
+    <div class="grp">Joule y generadores</div>
+    <div class="frow"><span class="flabel">Potencia disipada</span><span class="fmath">$P=I\Delta V=I^2R=\dfrac{V^2}{R}$</span></div>
+    <div class="frow"><span class="flabel">Generador real / máx. transferencia</span><span class="fmath">$V=\varepsilon-Ir;\ \ P_{max}\ \text{si}\ R=r$</span></div>
+    <div class="grp">Circuitos</div>
+    <div class="frow"><span class="flabel">Kirchhoff mallas / nudos</span><span class="fmath">$\sum\Delta V=0;\ \ \sum I_{ent}=\sum I_{sal}$</span></div>
+    <div class="frow"><span class="flabel">Thévenin</span><span class="fmath">$\varepsilon_{Th}=V_{AB},\ \ R_{Th}=R_{AB}^{(fem\,corto)}$</span></div>
+    <div class="frow"><span class="flabel">Norton</span><span class="fmath">$I_N=\dfrac{\varepsilon_{Th}}{R_{Th}},\ \ R_N=R_{Th}$</span></div>
+    <div class="grp">Diodos</div>
+    <div class="frow"><span class="flabel">Curva característica (Shockley)</span><span class="fmath">$I=I_0\!\left(e^{V_d/\eta V_T}-1\right)$</span></div>
+    <div class="frow"><span class="flabel">Conducción (modelo 1)</span><span class="fmath">$\text{directa y } V_d>V_\gamma$</span></div>
+    <div class="frow"><span class="flabel">Potencia del diodo</span><span class="fmath">$P=V_d I$</span></div>
+    <div class="grp">Transitorios RC</div>
+    <div class="frow"><span class="flabel">Carga</span><span class="fmath">$Q(t)=C\varepsilon\!\left(1-e^{-t/\tau}\right),\ I=\tfrac{\varepsilon}{R}e^{-t/\tau}$</span></div>
+    <div class="frow"><span class="flabel">Descarga / constante de tiempo</span><span class="fmath">$Q(t)=Q_0 e^{-t/\tau},\ \ \tau=RC$</span></div>
+  </div></details>
+
+  <!-- T4 -->
+  <details class="topic-card"><summary><span class="tnum c4">4</span><span class="ttitle">TEMA 4 · Campo magnético</span><span class="tmeta">Relación 4</span><span class="chev">▸</span></summary>
+  <div class="tbody">
+    <div class="grp">Carga en campo magnético</div>
+    <div class="frow"><span class="flabel">Lorentz</span><span class="fmath">$\vec F=q(\vec E+\vec v\times\vec B)$</span></div>
+    <div class="frow"><span class="flabel">Radio de Larmor / periodo</span><span class="fmath">$R=\dfrac{mv}{qB},\ \ T=\dfrac{2\pi m}{qB}$</span></div>
+    <div class="frow"><span class="flabel">Selector de velocidades</span><span class="fmath">$v=\dfrac{E}{B}$</span></div>
+    <div class="frow"><span class="flabel">Efecto Hall</span><span class="fmath">$V_H=\dfrac{IB}{neb}$</span></div>
+    <div class="grp">Fuerza sobre corrientes</div>
+    <div class="frow"><span class="flabel">Elemento / conductor recto</span><span class="fmath">$d\vec F=I\,d\vec l\times\vec B,\ \ \vec F=I\vec L\times\vec B$</span></div>
+    <div class="frow"><span class="flabel">Espira: momento, par, energía</span><span class="fmath">$\vec m=NIS\hat n,\ \tau=NISB\sin\theta,\ U=-\vec m\cdot\vec B$</span></div>
+    <div class="grp">Biot-Savart</div>
+    <div class="frow"><span class="flabel">Ley general</span><span class="fmath">$d\vec B=\dfrac{\mu_0}{4\pi}\dfrac{I\,d\vec l\times\hat r}{r^2}$</span></div>
+    <div class="frow"><span class="flabel">Conductor infinito</span><span class="fmath">$B=\dfrac{\mu_0 I}{2\pi r}$</span></div>
+    <div class="frow"><span class="flabel">Conductor finito</span><span class="fmath">$B=\dfrac{\mu_0 I}{4\pi y}(\sin\theta_1+\sin\theta_2)$</span></div>
+    <div class="frow"><span class="flabel">Espira: centro / eje</span><span class="fmath">$\dfrac{\mu_0 I}{2R}\ \mid\ \dfrac{\mu_0 I R^2}{2(R^2+x^2)^{3/2}}$</span></div>
+    <div class="frow"><span class="flabel">Solenoide: centro / extremo</span><span class="fmath">$\mu_0 nI\ \mid\ \tfrac12\mu_0 nI$</span></div>
+    <div class="grp">Fuerza entre conductores y Ampère</div>
+    <div class="frow"><span class="flabel">Hilos paralelos</span><span class="fmath">$\dfrac{F}{L}=\dfrac{\mu_0 I_1 I_2}{2\pi d}$</span></div>
+    <div class="frow"><span class="flabel">Gauss magnético / Ampère</span><span class="fmath">$\oint\vec B\cdot d\vec A=0,\ \oint\vec B\cdot d\vec l=\mu_0 I_{enc}$</span></div>
+    <div class="frow"><span class="flabel">Ampère-Maxwell</span><span class="fmath">$\oint\vec B\cdot d\vec l=\mu_0 I+\mu_0\varepsilon_0\tfrac{d\Phi_E}{dt}$</span></div>
+    <div class="grp">Materia magnética</div>
+    <div class="frow"><span class="flabel">Campos y permeabilidad</span><span class="fmath">$\vec B=\mu_0(\vec H+\vec M),\ \vec M=\chi_m\vec H,\ \mu=\mu_0\mu_r$</span></div>
+  </div></details>
+
+  <!-- T5 -->
+  <details class="topic-card"><summary><span class="tnum c5">5</span><span class="ttitle">TEMA 5 · Inducción EM</span><span class="tmeta">Relación 5</span><span class="chev">▸</span></summary>
+  <div class="tbody">
+    <div class="grp">Faraday-Lenz</div>
+    <div class="frow"><span class="flabel">Ley de Faraday / flujo</span><span class="fmath">$\varepsilon=-\dfrac{d\Phi_B}{dt},\ \Phi_B=\int\vec B\cdot d\vec A$</span></div>
+    <div class="frow"><span class="flabel">fem de movimiento</span><span class="fmath">$\varepsilon=Blv$</span></div>
+    <div class="frow"><span class="flabel">Generador alterno (fem máx.)</span><span class="fmath">$\varepsilon=NBA\omega\sin\omega t,\ \varepsilon_{max}=NBA\,2\pi f$</span></div>
+    <div class="grp">Autoinducción</div>
+    <div class="frow"><span class="flabel">Definición / fem</span><span class="fmath">$\varepsilon=-L\dfrac{dI}{dt},\ L=\dfrac{N\Phi}{I}$</span></div>
+    <div class="frow"><span class="flabel">Solenoide / mutua</span><span class="fmath">$L=\mu_0 n^2 A l,\ \ M_{12}=M_{21}$</span></div>
+    <div class="frow"><span class="flabel">Transformador</span><span class="fmath">$\dfrac{V_2}{V_1}=\dfrac{N_2}{N_1}$</span></div>
+    <div class="grp">Transitorios RL</div>
+    <div class="frow"><span class="flabel">Conexión / desconexión</span><span class="fmath">$I=\tfrac{\varepsilon}{R}(1-e^{-t/\tau}),\ \ I_0 e^{-t/\tau}$</span></div>
+    <div class="frow"><span class="flabel">Constante de tiempo</span><span class="fmath">$\tau=\dfrac{L}{R}$</span></div>
+    <div class="grp">Energía magnética</div>
+    <div class="frow"><span class="flabel">En la bobina / densidad</span><span class="fmath">$U_L=\tfrac12 LI^2,\ \ u_m=\dfrac{B^2}{2\mu_0}$</span></div>
+    <div class="grp">Circuitos LC / RLC</div>
+    <div class="frow"><span class="flabel">Frecuencia angular</span><span class="fmath">$\omega=\dfrac{1}{\sqrt{LC}},\ T=2\pi\sqrt{LC}$</span></div>
+    <div class="frow"><span class="flabel">Carga e intensidad máx.</span><span class="fmath">$q=Q_{max}\cos\omega t,\ I_{max}=\omega Q_{max}$</span></div>
+    <div class="frow"><span class="flabel">Amortiguamiento RLC</span><span class="fmath">$\beta=\dfrac{R}{2L},\ \text{crítico }R=2\sqrt{L/C}$</span></div>
+  </div></details>
+
+  <!-- T6 -->
+  <details class="topic-card"><summary><span class="tnum c6">6</span><span class="ttitle">TEMA 6 · Ondas electromagnéticas</span><span class="tmeta">cuestiones de examen</span><span class="chev">▸</span></summary>
+  <div class="tbody">
+    <div class="grp">Onda EM</div>
+    <div class="frow"><span class="flabel">Velocidad de la luz</span><span class="fmath">$c=\dfrac{1}{\sqrt{\mu_0\varepsilon_0}}$</span></div>
+    <div class="frow"><span class="flabel">Relación E–B / número de onda</span><span class="fmath">$E=cB,\ k=\tfrac{2\pi}{\lambda},\ \omega=2\pi f$</span></div>
+    <div class="grp">Energía</div>
+    <div class="frow"><span class="flabel">Vector de Poynting</span><span class="fmath">$\vec S=\dfrac{1}{\mu_0}\vec E\times\vec B,\ S=\dfrac{E^2}{\mu_0 c}$</span></div>
+    <div class="frow"><span class="flabel">Intensidad / presión</span><span class="fmath">$I=\dfrac{E_{max}^2}{2\mu_0 c},\ P=\dfrac{S}{c}\ \text{ó}\ \dfrac{2S}{c}$</span></div>
+    <div class="grp">Medios</div>
+    <div class="frow"><span class="flabel">Índice de refracción</span><span class="fmath">$n=\dfrac{c}{v}=\sqrt{\varepsilon_r\mu_r}\approx\sqrt{\varepsilon_r}$</span></div>
+    <div class="frow"><span class="flabel">Longitud de onda en medio</span><span class="fmath">$\lambda'=\dfrac{\lambda}{n}\ \ (f\ \text{constante})$</span></div>
+    <div class="grp">Óptica</div>
+    <div class="frow"><span class="flabel">Snell</span><span class="fmath">$n_A\sin\theta_A=n_B\sin\theta_B$</span></div>
+    <div class="frow"><span class="flabel">Ángulo crítico</span><span class="fmath">$\sin\theta_c=\dfrac{n_B}{n_A}$</span></div>
+    <div class="frow"><span class="flabel">Malus / Brewster</span><span class="fmath">$I=I_0\cos^2\theta,\ \tan\theta_B=\dfrac{n_B}{n_A}$</span></div>
+    <div class="grp">Interferencia</div>
+    <div class="frow"><span class="flabel">Constructiva / destructiva</span><span class="fmath">$\delta=m\lambda\ \mid\ \delta=(m+\tfrac12)\lambda$</span></div>
+  </div></details>
+
+  <div class="note"><b>Constantes.</b>
+  $k_e=9\cdot10^{9}\,\text{N·m}^2\text{C}^{-2}$ · $\varepsilon_0=8{,}85\cdot10^{-12}\,\text{C}^2\text{N}^{-1}\text{m}^{-2}$ · $\mu_0=4\pi\cdot10^{-7}\,\text{T·m/A}$ · $h=6{,}626\cdot10^{-34}\,\text{J·s}=4{,}136\cdot10^{-15}\,\text{eV·s}$ · $e=1{,}602\cdot10^{-19}\,\text{C}$ · $k_B=1{,}381\cdot10^{-23}\,\text{J/K}=8{,}617\cdot10^{-5}\,\text{eV/K}$ · $c=3\cdot10^{8}\,\text{m/s}$ · $G=6{,}67\cdot10^{-11}\,\text{N·m}^2\text{kg}^{-2}$. Conversión: $1\,\text{eV}=1{,}6\cdot10^{-19}\,\text{J}$ · $1\,\text{T}=10^4\,\text{G}$.</div>
+</div>
+</section>
+
+<!-- EJERCICIOS -->
+<section id="ejercicios">
+<div class="wrap">
+  <div class="sec-head"><span class="sec-num">05</span><h2>Guía de ejercicios por relación</h2></div>
+  <p class="sub">Cada relación se corresponde con un tema. En <span class="core">verde</span>, el núcleo imprescindible (los que más se parecen a lo que cae en examen). Descripciones verificadas con los enunciados completos de cada relación.</p>
+
+  <div class="grp" style="color:var(--amber);font-size:13px;margin-top:10px">Relación 1 · TEMA 1 · Fundamentos</div>
+  <table class="extable">
+    <tr><th>Bloque</th><th>Ejercicios</th><th>Qué practicas</th></tr>
+    <tr><td>Densidades de carga</td><td>1–4</td><td>Densidad superficial (1), volumétrica (2), carga de un cilindro (3) y de una esfera con $\rho(r)$ no homogénea por integración (4).</td></tr>
+    <tr><td class="core">Radiación y fotón</td><td class="core">5, 6, 8</td><td>Tabla del espectro en eV (5), nº de fotones de un láser por potencia y tiempo (6), $E=mc^2$ del electrón con su $\lambda$ y $f$ (8).</td></tr>
+    <tr><td>Energía térmica</td><td>7</td><td>Energía media de un gas $W=k_BT$ en eV. Concepto suelto, fácil.</td></tr>
+    <tr><td class="core">Efecto fotoeléctrico</td><td class="core">9, 10, 11</td><td>$\lambda$ máx y $f$ umbral (9), efecto fotoeléctrico del potasio con velocidad de electrones (10, cae en examen), hallar $\varphi$ y $h$ con dos frecuencias (11).</td></tr>
+    <tr><td class="core">Semiconductores</td><td class="core">12, 13, 14, 15</td><td>Pares e⁻-hueco por fotón (12), banda prohibida de un LDR (13), tabla Ge intrínseco/N/P a 300 y 350 K (14, cae en examen), Si con doble dopaje (15).</td></tr>
+    <tr><td class="core">Vectores</td><td class="core">16, 17, 18</td><td>Vector entre dos puntos (16), cosenos directores (17), unitario/escalar/ángulo/área del paralelogramo (18).</td></tr>
+    <tr><td>Vectores avanzados</td><td>19, 20</td><td>Ángulo entre vectores con incógnita (19), derivada de un vector paramétrico (20).</td></tr>
+  </table>
+
+  <div class="grp" style="color:var(--cyan);font-size:13px;margin-top:26px">Relación 2 · TEMA 2 · Campo eléctrico</div>
+  <table class="extable">
+    <tr><th>Bloque</th><th>Ejercicios</th><th>Qué practicas</th></tr>
+    <tr><td class="core">Coulomb y campo</td><td class="core">1, 2, 4, 5, 6, 7</td><td>Reparto de carga entre esferas conductoras en contacto (1), fuerza y aceleración (2), equilibrio de cargas (5), campo y fuerza por superposición (7). El 5 y el 7 caen mucho.</td></tr>
+    <tr><td>Dipolo y flujo</td><td>8, 9</td><td>Momento dipolar de la molécula de agua (8), flujo de campo según la orientación (9).</td></tr>
+    <tr><td class="core">Ley de Gauss</td><td class="core">10, 11, 13</td><td>Esfera con $\rho$ uniforme (10), esfera con cavidad (11), y esfera maciza + cáscara conductora con carga inducida (13, cae en C1/P de exámenes).</td></tr>
+    <tr><td>Conductores</td><td>12</td><td>Densidad de carga inducida en una lámina metálica.</td></tr>
+    <tr><td class="core">Potencial ↔ campo</td><td class="core">14, 15, 16, 17, 18</td><td>$\vec E=-\nabla V$ (14, 16), campo desde dos potenciales (15), gráfica V→E (17), $\Delta V$ y trabajo del campo (18).</td></tr>
+    <tr><td class="core">Movimiento y placas</td><td class="core">23, 25</td><td>Electrón acelerado en campo uniforme (23), placas con protón acelerado: $\Delta V$, $\Delta U$ y velocidad (25, sale en Extraordinaria).</td></tr>
+    <tr><td>Potencial avanzado</td><td>19, 20, 21, 22, 24</td><td>Potencial de esfera cargada (19, 21), de dos cargas (20), dos esferas unidas (22), trabajo y potencia (24).</td></tr>
+    <tr><td class="core">Condensadores</td><td class="core">29, 30, 31, 32, 33, 34</td><td>Serie (29) vs paralelo (30), red mixta (31), conexión de dos cargados (32), dieléctrico con fuente conectada vs desconectada (33, 34).</td></tr>
+    <tr><td class="core">Energía y ruptura</td><td class="core">38, 40, 41</td><td>Densidad de energía (38), pérdida de energía al conectar condensadores (40), energía de cargar una esfera por dos métodos (41).</td></tr>
+  </table>
+
+  <div class="grp" style="color:var(--green);font-size:13px;margin-top:26px">Relación 3 · TEMA 3 · Corriente continua</div>
+  <table class="extable">
+    <tr><th>Bloque</th><th>Ejercicios</th><th>Qué practicas</th></tr>
+    <tr><td>Corriente y densidad</td><td>1, 2, 3, 4, 5</td><td>$I$ desde $\vec J$ (1), $I$ y $J(t)$ desde $q(t)$ (2), carga por integración gráfica (3) y analítica (4), tiempo de deriva de un electrón (5).</td></tr>
+    <tr><td class="core">Conductividad y Ohm</td><td class="core">6, 8, 10, 11, 14, 16</td><td>Conductividad de semiconductor (6, 8), velocidad de arrastre (10), divisor de tensión (11), resistencia equivalente (14), cable acero+cobre (16).</td></tr>
+    <tr><td class="core">Joule y potencia</td><td class="core">17, 18, 20, 22, 23</td><td>Trabajo del campo vs externo (17), calentador (18), pérdida en cables (20), eficiencia de transmisión (22), comparar potencias disipadas (23).</td></tr>
+    <tr><td class="core">Kirchhoff</td><td class="core">29, 34, 36, 37</td><td>Diferencia de potencial P-Q y potencias (29), intensidades y balance (34), potencial de un nudo (36), mallas completas con balance (37, el más completo).</td></tr>
+    <tr><td class="core">Thévenin/Norton</td><td class="core">38, 39</td><td>Thévenin para hallar $I$ (38), Thévenin + generador real con potencia (39). Caen en P3 de exámenes.</td></tr>
+    <tr><td class="core">Diodos</td><td class="core">41, 42, 44, 45, 46, 47</td><td>Modelo 1 (41) y modelo 2 (42), tensión de salida (44), Zener + rectificador (45), LED con resistencia (46), diodo láser (47).</td></tr>
+    <tr><td class="core">Transitorios RC</td><td class="core">48, 50, 51</td><td>Intensidades inicial/final y carga (48), fuga de un dieléctrico real (50), RC con $\tau$ e instantes (51).</td></tr>
+  </table>
+
+  <div class="grp" style="color:var(--violet);font-size:13px;margin-top:26px">Relación 4 · TEMA 4 · Campo magnético</div>
+  <table class="extable">
+    <tr><th>Bloque</th><th>Ejercicios</th><th>Qué practicas</th></tr>
+    <tr><td class="core">Lorentz, ciclotrón, Hall</td><td class="core">1, 3, 4, 6, 8</td><td>Fuerza magnética sobre protón (1), espectrómetro U-235/U-238 (3), rango de velocidades por radio (4), efecto Hall para medir B terrestre (6), flujo sanguíneo (8).</td></tr>
+    <tr><td>Comparar fuerzas / equilibrio</td><td>5, 7, 9, 10</td><td>Gravitatoria vs eléctrica vs magnética (5), fem en varilla que cae (7), fuerza y par sobre espira (9), hilo en equilibrio sin tensión (10).</td></tr>
+    <tr><td class="core">Biot-Savart (superposición)</td><td class="core">14, 16, 17, 18</td><td>Rectas + arcos combinados (14, 16, 17), circunferencia con recta y posible anulación (18). El patrón más repetido en examen.</td></tr>
+    <tr><td class="core">Varios cables y solenoide</td><td class="core">21, 22, 23, 25</td><td>Dos cables antiparalelos: campo nulo y fuerza (21, ≈ P2 Ordinaria), cilindro por Ampère (22), solenoide (23, 25).</td></tr>
+    <tr><td>Avanzados / materia</td><td>11, 12, 13, 24, 26, 27, 28</td><td>Elemento de corriente (11), optimización del anillo (12), corriente terrestre (13), átomo de Bohr (24), núcleo terrestre (26), hierro (27), desimantación (28).</td></tr>
+  </table>
+
+  <div class="grp" style="color:#ff8fab;font-size:13px;margin-top:26px">Relación 5 · TEMA 5 · Inducción EM</div>
+  <table class="extable">
+    <tr><th>Bloque</th><th>Ejercicios</th><th>Qué practicas</th></tr>
+    <tr><td class="core">Faraday-Lenz</td><td class="core">1, 2, 6, 7</td><td>fem por $B(t)$ con derivada (1), fem por tramos de una gráfica (2), espira en campo no uniforme por dos métodos (6), velocidad de barra para $I$ dada (7).</td></tr>
+    <tr><td>Sentido inducido y flujo</td><td>3, 4, 5</td><td>Dibujar sentido de la corriente por Lenz (3), flujo según la normal (4), $I$ inducida en solenoide con $B(t)$ y ángulo (5).</td></tr>
+    <tr><td class="core">Generador alterno</td><td class="core">8, 9</td><td>Campo necesario para un voltaje y frecuencia dados (8), radio, vueltas y peso de la espira (9, ≈ P3 Ordinaria).</td></tr>
+    <tr><td>Autoinducción</td><td>10, 11, 12, 13</td><td>$L$ de un solenoide (10), fuerza contraelectromotriz (11, 12), inducción mutua entre espiras (13).</td></tr>
+    <tr><td class="core">Transitorios RL</td><td class="core">14, 15</td><td>$\tau=L/R$, $I$ final, instante al 90% y potencia (14), RL+RC mixto inicial/final (15).</td></tr>
+    <tr><td class="core">LC / RLC y energía</td><td class="core">16, 17, 21, 22</td><td>Frecuencia propia e $I_{max}$ (16), oscilador con tolerancia (17), energía en cubo E+B (21), resonancia magnética: $L$, $I$, energía y potencia (22).</td></tr>
+    <tr><td>Densidad de energía</td><td>18, 19, 20</td><td>$u_m$ del campo terrestre (18), cerca de un hilo (19), deducir energía del solenoide (20).</td></tr>
+  </table>
+
+  <div class="note warn"><b>Tema 6 sin relación.</b> No hay relación específica del Tema 6 en tus archivos. Prepáralo con la teoría, las cuestiones de Maxwell/Snell/Malus/Brewster y los apartados de espectro de la Relación 1 (ej. 5–9). Si el profesor publica una Relación 6, sustituye esto por ella.</div>
+</div>
+</section>
+
+<!-- SEMANAL -->
+<section id="semanal">
+<div class="wrap">
+  <div class="sec-head"><span class="sec-num">06</span><h2>Plan semanal de ejercicios</h2></div>
+  <p class="sub">Primero lo importante: <b>tienes 5 relaciones para 6 temas</b>. Cada relación corresponde a un tema, salvo el Tema 6 (Ondas EM), que no tiene relación. Verificado con las citas de los exámenes ("Ver ejercicio 10 de la relación 1", "ejercicio 13 de la relación 2", etc.).</p>
+
+  <div class="grp" style="color:var(--amber)">Correspondencia relación ↔ tema</div>
+  <table class="extable">
+    <tr><th>Relación</th><th>Tema</th><th>Nº ejercicios</th><th>Contenido</th></tr>
+    <tr><td>Relación 1</td><td>TEMA 1 · Fundamentos</td><td>20</td><td>Carga, radiación/fotón, efecto fotoeléctrico, semiconductores, vectores.</td></tr>
+    <tr><td>Relación 2</td><td>TEMA 2 · Campo eléctrico</td><td>41</td><td>Coulomb, campo, Gauss, potencial, dieléctricos, condensadores, energía.</td></tr>
+    <tr><td>Relación 3</td><td>TEMA 3 · Corriente continua</td><td>51</td><td>Ohm, Joule, generadores, Kirchhoff, Thévenin/Norton, diodos, RC.</td></tr>
+    <tr><td>Relación 4</td><td>TEMA 4 · Campo magnético</td><td>28</td><td>Lorentz, Hall, Biot-Savart, Ampère, materia magnética.</td></tr>
+    <tr><td>Relación 5</td><td>TEMA 5 · Inducción EM</td><td>22</td><td>Faraday-Lenz, fem de movimiento, autoinducción, RL, LC/RLC.</td></tr>
+    <tr><td style="color:var(--red)">— ninguna —</td><td style="color:var(--red)">6 · Ondas EM</td><td>0</td><td>Sin relación. Se prepara con teoría, cuestiones de examen y los ej. 5–9 de la Relación 1 (espectro).</td></tr>
+  </table>
+
+  <div class="grp" style="color:var(--cyan);margin-top:32px">Calendario de ejercicios semana a semana</div>
+  <p class="sub" style="margin-bottom:20px">Reparto secuencial: la relación de cada tema se dosifica entre sus semanas de bloque (T1 → 2, T2 → 4, T3 → 5). En <span class="core">verde</span>, el núcleo imprescindible (lo que más se parece a lo que cae). Resuelve siempre antes de mirar el resultado.</p>
+
+  <div class="week"><div class="when"><div class="wk">SEMANA 2</div><div class="date">28 jun</div></div>
+    <div class="body"><div class="topic" style="color:var(--amber)">TEMA 1 · Relación 1, primera parte</div>
+      <div class="focus">Radiación, fotón y efecto fotoeléctrico. Los ejercicios 1–4 (densidades de carga) y el 7 y 8 nunca han caído — saltar.</div>
+      <div class="tags"><span class="pill rel">Relación 1</span><span class="pill ex">hacer: 5,6,8,9,10,11,12</span><span class="pill" style="border-color:#2a5a3a;color:var(--green)">núcleo: 5,6,9,10,12</span><span class="pill" style="border-color:#5a2a2a;color:var(--red)">saltar: 1,2,3,4,7,8,11</span></div></div></div>
+
+  <div class="week"><div class="when"><div class="wk">SEMANA 3</div><div class="date">5 jul</div></div>
+    <div class="body"><div class="topic" style="color:var(--amber)">TEMA 1 · CIERRE — Relación 1, resto</div>
+      <div class="focus">Semiconductores (13-15). Los ejercicios de vectores (16–20) nunca han caído en examen — saltar todos. Rehaz fallos y examen del tema.</div>
+      <div class="tags"><span class="pill rel">Relación 1</span><span class="pill ex">hacer: 13,14,15</span><span class="pill" style="border-color:#2a5a3a;color:var(--green)">núcleo: 13,14,15</span><span class="pill" style="border-color:#5a2a2a;color:var(--red)">saltar: 11,16,17,18,19,20</span></div></div></div>
+
+  <div class="week"><div class="when"><div class="wk">SEMANA 4</div><div class="date">12 jul</div></div>
+    <div class="body"><div class="topic" style="color:var(--cyan)">TEMA 2 · Relación 2 (1ª de 3)</div>
+      <div class="focus">Coulomb, campo de distribuciones y Ley de Gauss. Solo saltar el 8 (dipolo del agua, nunca en examen).</div>
+      <div class="tags"><span class="pill rel">Relación 2</span><span class="pill ex">hacer: 1–7, 9–12</span><span class="pill" style="border-color:#2a5a3a;color:var(--green)">núcleo: 1,2,3,5,7,10,11,13</span><span class="pill" style="border-color:#5a2a2a;color:var(--red)">saltar: 8</span></div></div></div>
+
+  <div class="week"><div class="when"><div class="wk">SEMANA 5</div><div class="date">19 jul</div></div>
+    <div class="body"><div class="topic" style="color:var(--cyan)">TEMA 2 · Relación 2 (2ª de 3)</div>
+      <div class="focus">Potencial, relación E↔V y movimiento de cargas. Saltar 19 (electrones en esfera), 21 (esfera a tierra) y 24 (trabajo 96kC): nunca han caído.</div>
+      <div class="tags"><span class="pill rel">Relación 2</span><span class="pill ex">hacer: 13–18, 20, 22, 23, 25</span><span class="pill" style="border-color:#2a5a3a;color:var(--green)">núcleo: 13,14,15,16,17,18,23,25</span><span class="pill" style="border-color:#5a2a2a;color:var(--red)">saltar: 19,21,24</span></div></div></div>
+
+  <div class="week"><div class="when"><div class="wk">SEMANA 6</div><div class="date">26 jul</div></div>
+    <div class="body"><div class="topic" style="color:var(--cyan)">TEMA 2 · Relación 2 (3ª de 3)</div>
+      <div class="focus">Condensadores, dieléctricos y energía. Saltar 26 (impresora de tinta), 35 (bujía), 37 (membrana), 39 (desfibrilador): contextos específicos que nunca han caído.</div>
+      <div class="tags"><span class="pill rel">Relación 2</span><span class="pill ex">hacer: 27–34, 36, 38, 40, 41</span><span class="pill" style="border-color:#2a5a3a;color:var(--green)">núcleo: 29,30,31,32,33,34,36,38,40,41</span><span class="pill" style="border-color:#5a2a2a;color:var(--red)">saltar: 26,35,37,39</span></div></div></div>
+
+  <div class="week"><div class="when"><div class="wk">SEMANA 7</div><div class="date">2 ago</div></div>
+    <div class="body"><div class="topic" style="color:var(--cyan)">TEMA 2 · CIERRE — repaso Relación 2</div>
+      <div class="focus">Rehaz lo fallado de toda la Relación 2 y examen del tema.</div>
+      <div class="tags"><span class="pill rel">Relación 2</span><span class="pill ex">repaso + examen</span></div></div></div>
+
+  <div class="week"><div class="when"><div class="wk">SEMANA 8</div><div class="date">9 ago</div></div>
+    <div class="body"><div class="topic" style="color:var(--green)">TEMA 3 · Relación 3 (1ª de 4)</div>
+      <div class="focus">Conductividad, Ohm y asociaciones. Los ej. 1–5 (corriente desde q(t), deriva) y 9 (comparar materiales) y 12–13 (potenciómetro, demostración) nunca han caído.</div>
+      <div class="tags"><span class="pill rel">Relación 3</span><span class="pill ex">hacer: 6,7,8,10,11,14,15</span><span class="pill" style="border-color:#2a5a3a;color:var(--green)">núcleo: 6,8,10,11,14</span><span class="pill" style="border-color:#5a2a2a;color:var(--red)">saltar: 1,2,3,4,5,9,12,13</span></div></div></div>
+
+  <div class="week"><div class="when"><div class="wk">SEMANA 9</div><div class="date">16 ago</div></div>
+    <div class="body"><div class="topic" style="color:var(--green)">TEMA 3 · Relación 3 (2ª de 4)</div>
+      <div class="focus">Joule, potencia, generadores y Kirchhoff. Saltar 19 (energía con I(t)), 21 (capacidad en kWh), 23 (demostración R que más disipa), 25 (horas de batería de coche): nunca han caído.</div>
+      <div class="tags"><span class="pill rel">Relación 3</span><span class="pill ex">hacer: 15,16,17,18,20,22,24,26,27</span><span class="pill" style="border-color:#2a5a3a;color:var(--green)">núcleo: 16,17,18,20,22,26,27</span><span class="pill" style="border-color:#5a2a2a;color:var(--red)">saltar: 19,21,23,25</span></div></div></div>
+
+  <div class="week"><div class="when"><div class="wk">SEMANA 10</div><div class="date">23 ago</div></div>
+    <div class="body"><div class="topic" style="color:var(--green)">TEMA 3 · Relación 3 (3ª de 4)</div>
+      <div class="focus">Kirchhoff, Thévenin/Norton y primer diodo. Saltar 30 (Wheatstone), 31 (amperímetro mal colocado) y 40 (unión PN zona de transición): nunca han caído.</div>
+      <div class="tags"><span class="pill rel">Relación 3</span><span class="pill ex">hacer: 28,29,32,33,34,35,36,37,38,39,41,42</span><span class="pill" style="border-color:#2a5a3a;color:var(--green)">núcleo: 29,34,36,37,38,39,41,42</span><span class="pill" style="border-color:#5a2a2a;color:var(--red)">saltar: 30,31,40</span></div></div></div>
+
+  <div class="week"><div class="when"><div class="wk">SEMANA 11</div><div class="date">30 ago</div></div>
+    <div class="body"><div class="topic" style="color:var(--green)">TEMA 3 · Relación 3 (4ª de 4)</div>
+      <div class="focus">Diodos completos y transitorios RC. Solo saltar el 50 (condensador con fuga dieléctrica real): nunca ha caído.</div>
+      <div class="tags"><span class="pill rel">Relación 3</span><span class="pill ex">hacer: 41–49, 51</span><span class="pill" style="border-color:#2a5a3a;color:var(--green)">núcleo: 41,42,44,45,46,47,48,49,51</span><span class="pill" style="border-color:#5a2a2a;color:var(--red)">saltar: 50</span></div></div></div>
+
+  <div class="week"><div class="when"><div class="wk">SEMANA 12</div><div class="date">6 sep</div></div>
+    <div class="body"><div class="topic" style="color:var(--green)">TEMA 3 · CIERRE — repaso Relación 3</div>
+      <div class="focus">Rehaz lo fallado de toda la Relación 3 y examen del tema. Cierre del verano.</div>
+      <div class="tags"><span class="pill rel">Relación 3</span><span class="pill ex">repaso + examen</span></div></div></div>
+
+  <div class="note"><b>Cómo cuadra.</b> Cada relación se dosifica dentro de su bloque y termina con una semana de cierre (repaso + examen): Rel 1 → S2–S3; Rel 2 → S4–S7; Rel 3 → S8–S12. Las pills <span style="color:var(--red);font-family:var(--mono);font-size:12px">rojas</span> marcan los que puedes saltar (53 en total entre las 3 relaciones, cruzado con 17 exámenes). Las <span style="color:var(--green);font-family:var(--mono);font-size:12px">verdes</span> son el núcleo que sí cae. Si un tema se alarga, recorta primero los saltables.</div>
+
+  <div class="note warn"><b>Sin ejercicios de T4, T5 ni T6 este verano.</b> Las Relaciones 4 y 5 quedan para el cuatrimestre. El Tema 6 no tiene relación y no entra en tu examen. Toda tu munición de ejercicios de verano son las Relaciones 1, 2 y 3.</div>
+</div>
+</section>
+
+<!-- ANALISIS -->
+<section id="analisis" style="border-bottom:none">
+<div class="wrap">
+  <div class="sec-head"><span class="sec-num">07</span><h2>Análisis de exámenes</h2></div>
+  <p class="sub">Repartí la puntuación de cada ejercicio (sumando todos sus apartados) por tema en los 6 exámenes corregidos que tienes, comprobé que cada examen suma 10 y calculé cuántos puntos se lleva cada tema de media. Así de claro: dónde está la nota.</p>
+
+  <div class="grp" style="color:var(--amber)">Desglose por examen · puntos asignados a cada tema</div>
+  <table class="extable">
+    <tr><th>Examen</th><th>T1</th><th>T2</th><th>T3</th><th>T4</th><th>T5</th><th>Suma</th></tr>
+    <tr><td style="color:var(--cyan)">Parcial A 23-24</td><td>2,5</td><td>5,0</td><td>2,5</td><td>—</td><td>—</td><td><b>10,0</b></td></tr>
+    <tr><td style="color:var(--cyan)">Parcial B 23-24</td><td>—</td><td>5,0</td><td>5,0</td><td>—</td><td>—</td><td><b>10,0</b></td></tr>
+    <tr><td style="color:var(--cyan)">Parcial A 2024</td><td>2,0</td><td>4,5</td><td>3,0</td><td>—</td><td>—</td><td><b>9,5</b></td></tr>
+    <tr><td style="color:var(--cyan)">Parcial B 2024</td><td>2,0</td><td>2,5</td><td>5,5</td><td>—</td><td>—</td><td><b>10,0</b></td></tr>
+    <tr><td style="color:var(--amber)">Ordinaria 24-25</td><td>—</td><td>1,5</td><td>2,0</td><td>2,5</td><td>4,0</td><td><b>10,0</b></td></tr>
+    <tr><td style="color:var(--amber)">Extraordin. 24-25</td><td>—</td><td>2,5</td><td>2,5</td><td>2,5</td><td>2,5</td><td><b>10,0</b></td></tr>
+  </table>
+  <div class="note"><b>Lectura clave.</b> Hay dos formatos distintos, y mezclarlos engaña. Los <b style="color:var(--cyan)">parciales</b> (azul) solo evalúan T1–T3, así que T4 y T5 nunca pueden aparecer ahí. Los <b style="color:var(--amber)">finales</b> (ámbar) evalúan T2–T5. Por eso el peso de cada tema se interpreta dentro de su formato, no en una media única que castigaría artificialmente a T4 y T5.</div>
+
+  <div class="splitcols">
+    <div>
+      <div class="grp" style="color:var(--cyan)">Peso en el PARCIAL (T1–T3) · media de 4 exámenes</div>
+      <div class="bars">
+        <div class="bar-row"><div class="bar-lab">TEMA 2<small>Campo eléctrico</small></div><div class="bar-track"><div class="bar-fill" style="width:42%;background:var(--cyan)">42%</div></div><div class="bar-val" style="color:var(--cyan)">4,25</div></div>
+        <div class="bar-row"><div class="bar-lab">TEMA 3<small>Corriente CC</small></div><div class="bar-track"><div class="bar-fill" style="width:40%;background:var(--green)">40%</div></div><div class="bar-val" style="color:var(--green)">4,00</div></div>
+        <div class="bar-row"><div class="bar-lab">TEMA 1<small>Fundamentos</small></div><div class="bar-track"><div class="bar-fill" style="width:16%;background:var(--amber)">16%</div></div><div class="bar-val" style="color:var(--amber)">1,62</div></div>
+      </div>
+    </div>
+    <div>
+      <div class="grp" style="color:var(--amber)">Peso en el FINAL (T2–T5) · media de 2 exámenes</div>
+      <div class="bars">
+        <div class="bar-row"><div class="bar-lab">TEMA 5<small>Inducción</small></div><div class="bar-track"><div class="bar-fill" style="width:32%;background:#ff8fab">32%</div></div><div class="bar-val" style="color:#ff8fab">3,25</div></div>
+        <div class="bar-row"><div class="bar-lab">TEMA 4<small>Campo magnético</small></div><div class="bar-track"><div class="bar-fill" style="width:25%;background:var(--violet)">25%</div></div><div class="bar-val" style="color:var(--violet)">2,50</div></div>
+        <div class="bar-row"><div class="bar-lab">TEMA 3<small>Corriente CC</small></div><div class="bar-track"><div class="bar-fill" style="width:22%;background:var(--green)">22%</div></div><div class="bar-val" style="color:var(--green)">2,25</div></div>
+        <div class="bar-row"><div class="bar-lab">TEMA 2<small>Campo eléctrico</small></div><div class="bar-track"><div class="bar-fill" style="width:20%;background:var(--cyan)">20%</div></div><div class="bar-val" style="color:var(--cyan)">2,00</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="grp" style="color:var(--amber);margin-top:30px">Importancia final de cada tema · puntos esperables y prioridad</div>
+  <p class="sub" style="margin-bottom:18px">Nota esperable de cada tema según el examen al que te presentes. La prioridad combina cuánto puntúa con lo difícil que es asegurar esos puntos.</p>
+  <table class="extable">
+    <tr><th>Tema</th><th>En el parcial</th><th>En el final</th><th>Prioridad</th></tr>
+    <tr><td>TEMA 5 · Inducción</td><td>no entra</td><td><b style="color:#ff8fab">≈ 3,3 / 10</b></td><td><span class="tier alta">MÁXIMA (final)</span> El tema con más peso del final.</td></tr>
+    <tr><td>TEMA 2 · Campo eléctrico</td><td><b style="color:var(--cyan)">≈ 4,3 / 10</b></td><td><b style="color:var(--cyan)">≈ 2,0 / 10</b></td><td><span class="tier alta">MÁXIMA</span> Cae siempre, en los dos formatos.</td></tr>
+    <tr><td>TEMA 3 · Corriente continua</td><td><b style="color:var(--green)">≈ 4,0 / 10</b></td><td><b style="color:var(--green)">≈ 2,3 / 10</b></td><td><span class="tier alta">MÁXIMA</span> Diodos, Kirchhoff y Thévenin son recurrentes.</td></tr>
+    <tr><td>TEMA 4 · Campo magnético</td><td>no entra</td><td><b style="color:var(--violet)">≈ 2,5 / 10</b></td><td><span class="tier alta">ALTA (final)</span> Cae un problema fijo de Biot-Savart/espiras, y pesa más de lo que parecía.</td></tr>
+    <tr><td>TEMA 1 · Fundamentos</td><td><b style="color:var(--amber)">≈ 1,6 / 10</b></td><td>raro</td><td><span class="tier media">MEDIA (parcial)</span> Puntos fáciles si dominas fotón y dopaje.</td></tr>
+    <tr><td>TEMA 6 · Ondas EM</td><td>no entra</td><td>0 en estos exámenes</td><td><span class="tier baja">BAJA / INCIERTA</span> No apareció en los 6 exámenes. Verifica si entra.</td></tr>
+  </table>
+
+  <div class="note"><b>Conclusión operativa.</b> Si te juegas la nota en el <b>final</b>: el orden de rentabilidad es <b>T5 &gt; T4 ≈ T3 ≈ T2</b>. Los cuatro temas pesan parecido (entre 2,0 y 2,5) salvo el Tema 5, que vale un tercio del examen y casi siempre es un circuito LC/RL con análisis de instantes y porcentaje de energía (lo viste en P4 de Ordinaria y Extraordinaria). Ojo: el Tema 4 pesa tanto como T2 o T3 en el final, no lo subestimes. En el <b>parcial</b>, T2 y T3 se reparten más del 80% de la nota: dominar campo eléctrico y circuitos te garantiza el aprobado.</div>
+
+  <div class="note warn"><b>Límites de este análisis.</b> Son 6 exámenes, muestra pequeña: trátalo como tendencia, no como ley. El ejercicio de "conductividad de semiconductor dopado" lo conté en T1 por el concepto de dopaje, aunque usa la conductividad de T3 (si lo cuentas en T3, T1 baja y T3 sube ~0,5 pts en el parcial). El Tema 6 no apareció en ningún examen de los que tienes; eso no garantiza que no entre, así que confirma con el profesor o exámenes más antiguos antes de descartarlo.</div>
+</div>
+</section>
+
+<footer><div class="wrap">
+  <span>Física para Informática · Plan de verano 2026</span>
+  <span>Generado a partir de tu temario, capítulos del Tipler-Mosca Vol. 2, 5 relaciones y 6 exámenes corregidos.</span>
+</div></footer>
+
+<script>
+document.addEventListener("DOMContentLoaded",function(){
+  renderMathInElement(document.body,{delimiters:[
+    {left:"$$",right:"$$",display:true},
+    {left:"$",right:"$",display:false}
+  ],throwOnError:false});
+
+  // nav scrollspy
+  const links=[...document.querySelectorAll('nav a')];
+  const secs=links.map(a=>document.querySelector(a.getAttribute('href')));
+  const obs=new IntersectionObserver((es)=>{
+    es.forEach(e=>{if(e.isIntersecting){
+      const id='#'+e.target.id;
+      links.forEach(l=>l.classList.toggle('active',l.getAttribute('href')===id));
+    }});
+  },{rootMargin:'-45% 0px -50% 0px'});
+  secs.forEach(s=>s&&obs.observe(s));
+});
+</script>
+</body>
+</html>
