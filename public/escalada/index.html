@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plan Escalada — Luis</title>
+<style>
+:root {
+  --ink:       #0F0E0B;
+  --chalk:     #F5F3ED;
+  --mid:       #E5E1D6;
+  --muted:     #7A7468;
+  --line:      #D0CBC0;
+  --card:      #FDFCF8;
+  --fire:      #D44E18;
+  --fire-lt:   #F5C4A4;
+  --fire-dk:   #8A3010;
+  --slate:     #374050;
+  --slate-lt:  #C4D0DE;
+  --moss:      #3A6824;
+  --moss-lt:   #CEEAB8;
+  --water:     #1A6882;
+  --water-lt:  #BCDFF0;
+  --amber:     #A87014;
+  --amber-lt:  #F0E0B0;
+  --danger:    #982020;
+  --danger-lt: #F5D4D4;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:Georgia,serif;background:var(--chalk);color:var(--ink);line-height:1.65;font-size:15px;}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:200;background:var(--ink);border-bottom:2px solid var(--fire);display:flex;align-items:stretch;overflow-x:auto;scrollbar-width:none;}
+nav::-webkit-scrollbar{display:none;}
+.nb{font-family:Arial,sans-serif;font-weight:900;font-size:.85rem;letter-spacing:.04em;color:var(--fire);padding:0 18px;display:flex;align-items:center;border-right:1px solid #222;text-decoration:none;white-space:nowrap;}
+nav a:not(.nb){font-family:Arial,sans-serif;font-size:.64rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#888;text-decoration:none;padding:0 13px;display:flex;align-items:center;white-space:nowrap;border-right:1px solid #1A1A14;transition:color .12s,background .12s;}
+nav a:not(.nb):hover{color:var(--chalk);background:#1A1A14;}
+
+/* HERO */
+.hero{background:var(--ink);padding:60px 40px 52px;position:relative;overflow:hidden;}
+.hero::after{content:'';position:absolute;right:0;top:0;bottom:0;width:45%;background:repeating-linear-gradient(58deg,transparent,transparent 22px,rgba(212,78,24,.035) 22px,rgba(212,78,24,.035) 23px);pointer-events:none;}
+.hi{max-width:1080px;margin:0 auto;position:relative;}
+.h-tag{font-family:Arial,sans-serif;font-size:.62rem;letter-spacing:.26em;text-transform:uppercase;color:var(--fire);margin-bottom:16px;}
+.hero h1{font-size:clamp(2rem,5.5vw,3.8rem);font-weight:400;line-height:1.05;letter-spacing:-.025em;color:var(--chalk);margin-bottom:20px;}
+.hero h1 em{font-style:normal;color:var(--fire);}
+.h-sub{font-family:Arial,sans-serif;font-size:.88rem;line-height:1.75;color:#7A7868;max-width:520px;margin-bottom:36px;}
+.kpis{display:flex;gap:2px;flex-wrap:wrap;}
+.kpi{background:#161510;padding:16px 20px;min-width:100px;}
+.kv{font-family:Arial,sans-serif;font-weight:900;font-size:1.8rem;color:var(--fire);line-height:1;margin-bottom:3px;}
+.kl{font-family:Arial,sans-serif;font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:#484640;}
+
+/* WRAP */
+.wrap{max-width:1080px;margin:0 auto;padding:0 24px 100px;}
+
+/* SECTION */
+.sec{padding-top:68px;}
+.s-tag{font-family:Arial,sans-serif;font-size:.6rem;letter-spacing:.24em;text-transform:uppercase;color:var(--fire);margin-bottom:7px;}
+.s-title{font-size:clamp(1.4rem,3.5vw,2.1rem);font-weight:400;letter-spacing:-.015em;line-height:1.15;margin-bottom:16px;}
+.s-rule{width:28px;height:2px;background:var(--line);margin-bottom:24px;}
+.s-lead{font-family:Arial,sans-serif;font-size:.85rem;line-height:1.78;color:var(--muted);max-width:660px;margin-bottom:24px;}
+
+/* PHASE STRIP */
+.phase-strip{display:flex;gap:2px;margin:20px 0;}
+.ps{padding:18px 16px 20px;flex:1;min-width:0;}
+.ps.p1{background:#1C1008;border-top:3px solid var(--fire);}
+.ps.p2{background:#101C10;border-top:3px solid var(--moss);}
+.ps.p3{background:#0C1620;border-top:3px solid var(--water);}
+.ps.p4{background:#1A0C0C;border-top:3px solid var(--danger);}
+.ps-num{font-family:Arial,sans-serif;font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;margin-bottom:5px;}
+.ps.p1 .ps-num{color:var(--fire);}
+.ps.p2 .ps-num{color:var(--moss);}
+.ps.p3 .ps-num{color:var(--water);}
+.ps.p4 .ps-num{color:var(--danger);}
+.ps-name{font-size:.95rem;color:var(--chalk);line-height:1.2;margin-bottom:4px;}
+.ps-wks{font-family:Arial,sans-serif;font-size:.7rem;color:#504840;margin-bottom:8px;}
+.ps-desc{font-family:Arial,sans-serif;font-size:.73rem;line-height:1.52;color:#686058;}
+
+/* TIMELINE TABLE */
+.tl-table{width:100%;border-collapse:collapse;font-family:Arial,sans-serif;font-size:.78rem;margin:16px 0;}
+.tl-table th{background:var(--ink);color:var(--chalk);padding:9px 12px;text-align:left;font-size:.63rem;letter-spacing:.1em;text-transform:uppercase;}
+.tl-table td{padding:8px 12px;border-bottom:1px solid var(--line);vertical-align:top;line-height:1.5;}
+.tl-table tr:nth-child(even) td{background:#F6F3EC;}
+.tl-table tr.dl td{background:var(--amber-lt)!important;font-style:italic;color:var(--amber);}
+.tl-table tr.ts td{background:var(--moss-lt)!important;font-weight:700;}
+
+/* SESSION TABLE — the main thing */
+.sess-wrap{margin:20px 0;}
+.sess-day{background:var(--ink);color:var(--chalk);padding:11px 16px;font-family:Arial,sans-serif;font-weight:700;font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;display:flex;align-items:center;gap:12px;cursor:pointer;user-select:none;}
+.sess-day span.badge{background:var(--fire);color:#fff;padding:2px 8px;font-size:.6rem;border-radius:1px;}
+.sess-day span.badge.moss{background:var(--moss);}
+.sess-day span.badge.water{background:var(--water);}
+.sess-day span.badge.amber{background:var(--amber);}
+.sess-day span.badge.slate{background:var(--slate);}
+.sess-body{border:1px solid var(--line);border-top:none;}
+.ex-table{width:100%;border-collapse:collapse;font-family:Arial,sans-serif;font-size:.78rem;}
+.ex-table thead tr{background:#F0EDE4;}
+.ex-table th{padding:8px 12px;text-align:left;font-size:.62rem;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-weight:700;border-bottom:1px solid var(--line);}
+.ex-table td{padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top;line-height:1.5;}
+.ex-table tr:last-child td{border-bottom:none;}
+.ex-table tr:hover td{background:#F5F2EB;}
+.cat{display:inline-block;font-size:.58rem;letter-spacing:.09em;text-transform:uppercase;padding:2px 6px;border-radius:1px;font-weight:700;}
+.cat.fi{background:#FFE0CC;color:var(--fire-dk);}
+.cat.pu{background:var(--water-lt);color:var(--water);}
+.cat.co{background:var(--moss-lt);color:var(--moss);}
+.cat.an{background:var(--amber-lt);color:var(--amber);}
+.cat.lg{background:var(--slate-lt);color:var(--slate);}
+.cat.em{background:#DDD;color:#444;}
+.cat.sw{background:#C8F0FF;color:#0A5070;}
+.note-row td{background:#FAFAF2!important;font-style:italic;font-size:.73rem;color:var(--muted);padding:6px 12px;}
+
+/* ALERT */
+.alert{padding:13px 17px;margin:16px 0;border-left:3px solid;font-family:Arial,sans-serif;font-size:.82rem;line-height:1.65;}
+.alert b{display:block;font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;margin-bottom:3px;}
+.alert.info{border-color:var(--water);background:var(--water-lt);}
+.alert.warn{border-color:var(--amber);background:var(--amber-lt);}
+.alert.danger{border-color:var(--danger);background:var(--danger-lt);}
+.alert.ok{border-color:var(--moss);background:var(--moss-lt);}
+
+/* SEMÁFORO */
+.sem{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin:16px 0;}
+.sc{padding:16px 14px;font-family:Arial,sans-serif;}
+.sc.g{background:#0A1E0A;color:#90E080;}
+.sc.y{background:#201800;color:#E8D040;}
+.sc.r{background:#200000;color:#F09090;}
+.sc-lvl{font-size:.95rem;font-weight:700;margin-bottom:5px;}
+.sc-txt{font-size:.73rem;line-height:1.5;opacity:.85;}
+
+/* OBJECTIVE BOX */
+.obj-box{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:2px;margin:20px 0;}
+.ob{padding:18px 16px;}
+.ob.done{background:#10200A;}
+.ob.next{background:#1A1408;}
+.ob.far{background:#0E1420;}
+.ob.goal{background:#1A0808;}
+.ob-grade{font-family:Arial,sans-serif;font-weight:900;font-size:1.6rem;line-height:1;margin-bottom:5px;}
+.ob.done .ob-grade{color:var(--moss);}
+.ob.next .ob-grade{color:var(--fire);}
+.ob.far .ob-grade{color:var(--water);}
+.ob.goal .ob-grade{color:var(--danger);}
+.ob-time{font-family:Arial,sans-serif;font-size:.7rem;margin-bottom:6px;}
+.ob.done .ob-time{color:#4A7040;}
+.ob.next .ob-time{color:#804020;}
+.ob.far .ob-time{color:#305060;}
+.ob.goal .ob-time{color:#803030;}
+.ob-note{font-family:Arial,sans-serif;font-size:.72rem;line-height:1.5;}
+.ob.done .ob-note{color:#507040;}
+.ob.next .ob-note{color:#806040;}
+.ob.far .ob-note{color:#406070;}
+.ob.goal .ob-note{color:#806060;}
+
+/* COLLAPSIBLE details */
+details.day{margin:6px 0;}
+details.day summary{list-style:none;background:var(--ink);color:var(--chalk);font-family:Arial,sans-serif;font-weight:700;font-size:.74rem;letter-spacing:.1em;text-transform:uppercase;padding:12px 16px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;user-select:none;}
+details.day summary::-webkit-details-marker{display:none;}
+details.day summary::after{content:'▸';color:var(--fire);}
+details.day[open] summary::after{content:'▾';}
+details.day > *:not(summary){border:1px solid var(--line);border-top:none;}
+
+/* FOOTER */
+footer{background:var(--ink);color:#3A3830;padding:24px 40px;font-family:Arial,sans-serif;font-size:.7rem;line-height:1.6;margin-top:60px;}
+
+@media(max-width:700px){
+  .hero{padding:40px 20px;}
+  .wrap{padding:0 16px 80px;}
+  .phase-strip{flex-direction:column;}
+  .sem{grid-template-columns:1fr;}
+  .obj-box{grid-template-columns:1fr 1fr;}
+}
+</style>
+</head>
+<body data-pagefind-ignore>
+
+<nav>
+  <a class="nb" href="#top">LUIS · ESCALADA</a>
+  <a href="#objetivo">Objetivo</a>
+  <a href="#fases">Fases</a>
+  <a href="#fase1">Fase 1</a>
+  <a href="#fase2">Fase 2</a>
+  <a href="#fase3">Fase 3</a>
+  <a href="#fase4">Fase 4</a>
+  <a href="#protocolos">Protocolos</a>
+  <a href="#lesiones">Lesiones</a>
+  <a href="#nutricion">Nutrición</a>
+</nav>
+
+<!-- HERO -->
+<div class="hero" id="top">
+  <div class="hi">
+    <p class="h-tag">Plan de entrenamiento · Almería · Julio 2026</p>
+    <h1>De <em>6b</em> a <em>7c+</em>.<br>Sin atajos.</h1>
+    <p class="h-sub">Plan estructurado por fases de rendimiento, no por estaciones. Cada fase tiene un objetivo físico concreto, ejercicios con series, reps y descansos, y criterios de paso a la siguiente.</p>
+    <div class="kpis">
+      <div class="kpi"><div class="kv">4</div><div class="kl">Fases</div></div>
+      <div class="kpi"><div class="kv">38</div><div class="kl">Semanas plan</div></div>
+      <div class="kpi"><div class="kv">3–5</div><div class="kl">Años hasta 7c+</div></div>
+      <div class="kpi"><div class="kv">12–18</div><div class="kl">Meses hasta 7a</div></div>
+      <div class="kpi"><div class="kv">4</div><div class="kl">Días carga máx/sem</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+
+<!-- OBJETIVO Y TIEMPO REALISTA -->
+<section class="sec" id="objetivo">
+  <p class="s-tag">Tiempo realista</p>
+  <h2 class="s-title">¿Cuánto se tarda en llegar a 7c+?</h2>
+  <div class="s-rule"></div>
+  <p class="s-lead">Con 6b actual, fingerboard previo y 9–12 dominadas, estás en el rango intermedio. El camino hasta 7c+ es largo porque requiere construcción tendinosa, fuerza máxima de dedos y técnica que tienen límites biológicos de velocidad.</p>
+
+  <div class="obj-box">
+    <div class="ob next">
+      <div class="ob-grade">7a</div>
+      <div class="ob-time">12–18 meses</div>
+      <div class="ob-note">Hito del primer año. Requiere base tendinosa sólida y fuerza de dedos inicial. Alcanzable con el plan si se ejecuta con consistencia.</div>
+    </div>
+    <div class="ob far">
+      <div class="ob-grade">7b</div>
+      <div class="ob-time">2–3 años</div>
+      <div class="ob-note">Requiere max hangs consolidados, dominadas lastradas con +15kg y técnica de movimiento eficiente en desplome.</div>
+    </div>
+    <div class="ob far">
+      <div class="ob-grade">7c</div>
+      <div class="ob-time">3–4 años</div>
+      <div class="ob-note">Umbral donde la técnica pesa tanto como la fuerza. La fuerza de dedos necesaria es ~160% BW en 20mm (MVC-7).</div>
+    </div>
+    <div class="ob goal">
+      <div class="ob-grade">7c+</div>
+      <div class="ob-time">4–5 años</div>
+      <div class="ob-note">Objetivo final. Requiere años de trabajo específico acumulado. Los pros que ves en redes llevan 8–12 años escalando antes de llegar aquí.</div>
+    </div>
+  </div>
+
+  <div class="alert warn">
+    <b>Por qué estos plazos son inamovibles</b>
+    El tendón produce colágeno tipo I a un ritmo máximo determinado biológicamente. No se puede acelerar más allá de cierto punto con más volumen: solo se lesiona. La clave es consistencia sin interrupciones por lesión, no intensidad máxima desde el primer día.
+  </div>
+</section>
+
+<!-- ESTRUCTURA DE FASES -->
+<section class="sec" id="fases">
+  <p class="s-tag">Macrociclo</p>
+  <h2 class="s-title">Estructura por fases</h2>
+  <div class="s-rule"></div>
+  <p class="s-lead">El plan se organiza por objetivo físico, no por calendario. La duración de cada fase depende de tu capacidad de recuperación y de alcanzar los criterios de paso. Estimaciones basadas en tu perfil actual.</p>
+
+  <div class="phase-strip">
+    <div class="ps p1" style="flex:2">
+      <div class="ps-num">Fase 1</div>
+      <div class="ps-name">Rehab + Base tendinosa</div>
+      <div class="ps-wks">8–10 semanas</div>
+      <div class="ps-desc">Resolver el codo. Density hangs, base de dominadas y core. 3–4 días/semana.</div>
+    </div>
+    <div class="ps p2" style="flex:2">
+      <div class="ps-num">Fase 2</div>
+      <div class="ps-name">Fuerza base</div>
+      <div class="ps-wks">10–12 semanas</div>
+      <div class="ps-desc">Max hangs sin lastre. Dominadas lastradas 5×5. Front lever straddle. 3–4 días/semana.</div>
+    </div>
+    <div class="ps p3" style="flex:1.5">
+      <div class="ps-num">Fase 3</div>
+      <div class="ps-name">Fuerza máxima</div>
+      <div class="ps-wks">8–10 semanas</div>
+      <div class="ps-desc">Max hangs con lastre progresivo. Proyectar 7a a rojo.</div>
+    </div>
+    <div class="ps p4" style="flex:1.5">
+      <div class="ps-num">Fase 4</div>
+      <div class="ps-name">Power-endurance / Pico</div>
+      <div class="ps-wks">6–8 semanas</div>
+      <div class="ps-desc">Repeaters + resistencia específica. Encadenar 7a, atacar 7a+.</div>
+    </div>
+  </div>
+
+  <div class="alert info">
+    <b>Descarga cada 3–4 semanas</b>
+    Semana de descarga = volumen −40%, sin intensidad máxima, misma frecuencia. Las descargas están marcadas en las tablas. No saltarlas: es cuando el cuerpo asimila la carga y el tendón reconstruye. Sin descarga, la fatiga acumulada enmascara las ganancias.
+  </div>
+
+  <table class="tl-table">
+    <thead>
+      <tr><th>Sem.</th><th>Fase</th><th>Dedos</th><th>Dom./sem.</th><th>Core nivel</th><th>Criterio avance</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>1–3</td><td>F1 — Rehab</td><td>DH 20mm · 5×20–30s</td><td>4×5–7 BW</td><td>Tuck FL · Hollow</td><td>Codo ≤2/10</td></tr>
+      <tr class="dl"><td>4</td><td>DESCARGA</td><td>3×20s 20mm</td><td>3×4</td><td>Mantener</td><td>—</td></tr>
+      <tr><td>5–7</td><td>F1 — Acumulación</td><td>DH 18–20mm · 5×30–40s</td><td>4×8–10 BW</td><td>Adv.Tuck FL · TTB</td><td>—</td></tr>
+      <tr class="dl"><td>8</td><td>DESCARGA</td><td>3×22s 20mm</td><td>3×6</td><td>Mantener</td><td>—</td></tr>
+      <tr class="ts"><td>9–10</td><td>TEST / Consolidación F1</td><td>DH 18mm máx tiempo</td><td>AMRAP BW</td><td>Straddle FL inicio</td><td>≥12 dom · DH 18mm &gt;16s · codo 0/10</td></tr>
+      <tr><td>11–13</td><td>F2 — Max hangs inicio</td><td>MaxHang 20mm · 4×10s BW</td><td>5×5 +lastre inicio</td><td>Straddle FL 4×8s</td><td>—</td></tr>
+      <tr class="dl"><td>14</td><td>DESCARGA</td><td>2×8s 20mm</td><td>3×4 BW</td><td>Adv.Tuck</td><td>—</td></tr>
+      <tr><td>15–17</td><td>F2 — Max hangs 18mm</td><td>MaxHang 18mm · 4–5×10s BW</td><td>5×5 +2.5–5kg</td><td>Straddle FL 4×10s</td><td>—</td></tr>
+      <tr class="dl"><td>18</td><td>DESCARGA</td><td>2×8s 20mm</td><td>3×4</td><td>Mantener</td><td>—</td></tr>
+      <tr><td>19–21</td><td>F2 — Consolidación</td><td>MaxHang 18mm · 5×10s +lastre</td><td>5×5 pico</td><td>Full FL progresión</td><td>—</td></tr>
+      <tr class="ts"><td>22</td><td>TEST F2</td><td>DH 18mm máx · 1RM dom.</td><td>AMRAP BW</td><td>Full FL test</td><td>≥16 dom · 1RM &gt;+10kg · DH 18mm &gt;22s</td></tr>
+      <tr><td>23–25</td><td>F3 — F. máxima</td><td>MaxHang 18mm +lastre máx · 5×8s</td><td>5×5 pico</td><td>Full FL + TTB</td><td>—</td></tr>
+      <tr class="dl"><td>26</td><td>DESCARGA</td><td>2×8s 20mm BW</td><td>3×4</td><td>Mantener</td><td>—</td></tr>
+      <tr><td>27–29</td><td>F3 — Pico fuerza</td><td>MaxHang 18mm +lastre · 5×8s</td><td>5×5 pico + lock-offs</td><td>Full FL + core din.</td><td>—</td></tr>
+      <tr class="ts"><td>30</td><td>TEST F3</td><td>1RM dedos estimado</td><td>1RM dom.</td><td>Full FL tiempo</td><td>Encadenar 7a</td></tr>
+      <tr><td>31–33</td><td>F4 — Power-endurance</td><td>IntHangs 7/3 · 4–5 series 18mm</td><td>4×8 BW explosivo</td><td>Full FL + core din.</td><td>—</td></tr>
+      <tr class="dl"><td>34</td><td>DESCARGA</td><td>2 series IntHangs</td><td>3×6</td><td>Mantener</td><td>—</td></tr>
+      <tr><td>35–37</td><td>F4 — Pico</td><td>IntHangs 5 series 18mm</td><td>5×8 desc 90s</td><td>Core dinámico</td><td>—</td></tr>
+      <tr class="ts"><td>38</td><td>TEST FINAL / PICO</td><td>Mant. IntHangs</td><td>3×6</td><td>—</td><td>Encadenar 7a+ · inicio 7b</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- FASE 1 -->
+<section class="sec" id="fase1">
+  <p class="s-tag">Semanas 1–10</p>
+  <h2 class="s-title">Fase 1 — Rehab y base tendinosa</h2>
+  <div class="s-rule"></div>
+  <p class="s-lead">Objetivo: resolver el codo, acondicionar los tendones y construir la base de dominadas y core sobre la que se apoyarán todas las fases siguientes. Sin base tendinosa sólida, los max hangs de Fase 2 lesionan.</p>
+
+  <!-- GARAJE A -->
+  <details class="day" open>
+    <summary>Garaje A — Martes &nbsp;<span class="badge">Dedos + Dominadas + Core</span>&nbsp;<span class="badge amber">60 min · 8–10h</span></summary>
+    <table class="ex-table">
+      <thead><tr><th>Orden</th><th>Ejercicio</th><th>Series × Reps / Tiempo</th><th>Descanso</th><th>Notas</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td><span class="cat fi">Dedos</span> Calentamiento en jugs o barra</td><td>3 × 10s colgado</td><td>30s</td><td>Escápulas activas abajo. Codos ligeramente flexionados. Nunca pasivo.</td></tr>
+        <tr><td>2</td><td><span class="cat fi">Dedos</span> Density Hang 20mm — principal</td><td>Sem.1: 5×20s · Sem.2: 5×24s · Sem.3: 5×28s · Sem.5: 5×30s · Sem.6–7: 5×34–38s en 18mm · Sem.9: 5×40s en 18mm</td><td>Duración × 2 (ej: 30s colgado → 60s desc)</td><td>Open-hand. RPE 5–7/10. Dolor máx 2/10. Si RPE baja a 4 → aumentar 4s la semana siguiente o pasar a 18mm.</td></tr>
+        <tr><td>3</td><td><span class="cat pu">Tirón</span> Dominadas BW</td><td>Sem.1: 4×5 · Sem.2: 4×6 · Sem.3: 4×7 · Sem.5: 4×8 · Sem.6–7: 4×9 · Sem.9: 5×9</td><td>3 min</td><td>Agarre neutro o pronado estrecho. Excéntrico 3–4s. Subida explosiva. No al fallo. Sem.4 (descarga): 3×4.</td></tr>
+        <tr><td>4</td><td><span class="cat co">Core</span> Hollow body hold</td><td>3 × 20s → 3 × 30s</td><td>40s</td><td>Pelvis posterior. Lumbar pegada al suelo. Progresar 5s/semana.</td></tr>
+        <tr><td>5</td><td><span class="cat co">Core</span> Front lever progresión</td><td>Sem.1–3: Tuck 3×10s · Sem.4–5: Adv.Tuck 3×11s · Sem.6–7: Adv.Tuck 4×12s · Sem.8 (desc): 3×10s · Sem.9: Straddle 4×9s</td><td>60s</td><td>Progresar solo cuando se mantiene limpio. Bajar lento desde la posición si no aguantas el hold completo.</td></tr>
+        <tr><td>6</td><td><span class="cat co">Core</span> Elevaciones rodilla colgado</td><td>3 × 8 → 10</td><td>60s</td><td>Escápulas activas. Bajar con control. Sem. 6+: Toes-to-bar completo.</td></tr>
+      </tbody>
+    </table>
+  </details>
+
+  <!-- GARAJE B -->
+  <details class="day" open>
+    <summary>Garaje B — Jueves &nbsp;<span class="badge moss">Dedos mant. + Antagonistas + Core</span>&nbsp;<span class="badge amber">60 min · 8–10h</span></summary>
+    <table class="ex-table">
+      <thead><tr><th>Orden</th><th>Ejercicio</th><th>Series × Reps / Tiempo</th><th>Descanso</th><th>Notas</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td><span class="cat fi">Dedos</span> Density Hang 20mm — mantenimiento</td><td>3 × 25s</td><td>50s</td><td>No es sesión de máximos. Carga de tendón sin fatiga acumulada.</td></tr>
+        <tr><td>2</td><td><span class="cat an">Antag.</span> Tyler Twist inverso</td><td>3 × 15</td><td>90s</td><td>Disco 0.5–1kg. Excéntrico 4–5s. Diario si hay síntomas. Tyler et al. 2014: eficaz en 6 sem.</td></tr>
+        <tr><td>3</td><td><span class="cat an">Antag.</span> Curl de muñeca excéntrico</td><td>3 × 10</td><td>90s</td><td>Disco 0.5–1.5kg. Antebrazo apoyado. 5s bajando. Solo fase excéntrica.</td></tr>
+        <tr><td>4</td><td><span class="cat an">Antag.</span> Serie T con goma</td><td>3 × 12</td><td>60s</td><td>Goma anclada a barra. Inclinado 45°. Brazos a los lados (T). Movimiento lento.</td></tr>
+        <tr><td>5</td><td><span class="cat an">Antag.</span> Serie Y con goma</td><td>3 × 12</td><td>60s</td><td>Igual pero brazos a 135°. Trapecio inferior.</td></tr>
+        <tr><td>6</td><td><span class="cat an">Antag.</span> Rotación externa con goma</td><td>3 × 15</td><td>60s</td><td>Toalla bajo axila. Codo 90°. Goma lateral. Infraespinoso.</td></tr>
+        <tr><td>7</td><td><span class="cat an">Antag.</span> Band pull-apart</td><td>3 × 15</td><td>45s</td><td>Goma al pecho. Tirar hasta que toque el pecho. Escápulas juntas.</td></tr>
+        <tr><td>8</td><td><span class="cat co">Core</span> L-sit en paralelas</td><td>3 × 15s → 20s</td><td>60s</td><td>Protrusión escapular activa. Pies a altura de cadera mínimo.</td></tr>
+      </tbody>
+    </table>
+  </details>
+
+  <!-- GARAJE C (viernes, ligero) -->
+  <details class="day">
+    <summary>Garaje C — Viernes &nbsp;<span class="badge slate">Jugs + Core ligero</span>&nbsp;<span class="badge amber">40 min · 8–10h</span></summary>
+    <table class="ex-table">
+      <thead><tr><th>Orden</th><th>Ejercicio</th><th>Series × Reps</th><th>Descanso</th><th>Notas</th></tr></thead>
+      <tbody>
+        <tr class="note-row"><td colspan="5">No es sesión de dedos. Los jugs no estresan las poleas. RPE máximo 6/10 en todo. Pre-roca: sin fatiga.</td></tr>
+        <tr><td>1</td><td><span class="cat pu">Tirón</span> Dominadas en jugs</td><td>3 × 8</td><td>90s</td><td>RPE 6/10. No al fallo. Si el codo molesta: eliminar este ejercicio ese día.</td></tr>
+        <tr><td>2</td><td><span class="cat co">Core</span> Front lever progresión</td><td>3 × 10s en la progresión actual del martes (misma posición, no es sesión de máximos)</td><td>60s</td><td>Si el martes es Straddle 4×10s, el viernes es Straddle 3×10s. Siempre un escalón por debajo en volumen.</td></tr>
+        <tr><td>3</td><td><span class="cat an">Antag.</span> Band pull-apart</td><td>2 × 15</td><td>45s</td><td>Mantenimiento mínimo de hombro.</td></tr>
+        <tr><td>4</td><td><span class="cat an">Antag.</span> Tyler Twist</td><td>2 × 15</td><td>60s</td><td>Diario si hay síntomas activos. Siempre en este día.</td></tr>
+      </tbody>
+    </table>
+  </details>
+
+  <!-- PISCINA -->
+  <details class="day">
+    <summary>Piscina — Lunes &nbsp;<span class="badge water">Cardio + Movilidad hombro</span>&nbsp;<span class="badge amber">30–40 min</span></summary>
+    <table class="ex-table">
+      <thead><tr><th>Orden</th><th>Ejercicio</th><th>Volumen</th><th>Descanso</th><th>Notas</th></tr></thead>
+      <tbody>
+        <tr class="note-row"><td colspan="5">5 metros es suficiente para trabajo interválico. No hacen falta largos.</td></tr>
+        <tr><td>1</td><td><span class="cat sw">Piscina</span> HIIT en agua</td><td>10 series × (nado máx ~10s + 20s descanso)</td><td>20s entre series</td><td>Cardio sin carga articular. Base aeróbica que transfiere a resistencia en roca.</td></tr>
+        <tr><td>2</td><td><span class="cat sw">Piscina</span> Movilidad hombro en agua</td><td>5 min · rotaciones amplias y péndulos</td><td>—</td><td>Resistencia del agua ideal para manguito. Complementa la rehab.</td></tr>
+        <tr><td>3</td><td><span class="cat sw">Piscina</span> Flotación en decúbito supino</td><td>3–5 min</td><td>—</td><td>Recuperación del SNC. En semanas de alta carga.</td></tr>
+      </tbody>
+    </table>
+  </details>
+
+  <!-- MIÉRCOLES -->
+  <details class="day">
+    <summary>Complementario — Miércoles &nbsp;<span class="badge slate">Piernas + Empuje + Core</span>&nbsp;<span class="badge amber">45 min · tarde/noche</span></summary>
+    <table class="ex-table">
+      <thead><tr><th>Orden</th><th>Ejercicio</th><th>Series × Reps</th><th>Descanso</th><th>Notas</th></tr></thead>
+      <tbody>
+        <tr class="note-row"><td colspan="5">Tarde o noche cuando el calor ha bajado. Sin restricción de tendón. Tren inferior y empuje para equilibrar el tirón dominante.</td></tr>
+        <tr><td>1</td><td><span class="cat lg">Piernas</span> Sentadilla BW o Pistol squat</td><td>4 × 12 BW / 4 × 6 pistol asistida</td><td>2 min</td><td>Heel hooks, smearing, posición de pie en roca. Progresar a pistol cuando 12 BW es fácil.</td></tr>
+        <tr><td>2</td><td><span class="cat lg">Piernas</span> Romanian deadlift con discos</td><td>3 × 10</td><td>90s</td><td>Disco en cada mano o mochila cargada. Cadena posterior para heel hooks y desplome.</td></tr>
+        <tr><td>3</td><td><span class="cat em">Empuje</span> Fondos en paralelas</td><td>4 × 12</td><td>90s</td><td>Antagonista principal del tirón. Escápulas controladas. Protege el hombro a largo plazo.</td></tr>
+        <tr><td>4</td><td><span class="cat co">Core</span> Hollow body hold</td><td>3 × 25s</td><td>40s</td><td>Complementario. Sin intensidad máxima.</td></tr>
+        <tr><td>5</td><td><span class="cat co">Core</span> Glute bridge una pierna</td><td>3 × 12 / lado</td><td>45s</td><td>Activación posterior. Técnica de pie en roca.</td></tr>
+      </tbody>
+    </table>
+  </details>
+
+  <!-- SÁBADO -->
+  <details class="day">
+    <summary>Movilidad — Sábado &nbsp;<span class="badge slate">Movilidad + Visualización</span>&nbsp;<span class="badge amber">20–25 min</span></summary>
+    <table class="ex-table">
+      <thead><tr><th>Orden</th><th>Ejercicio</th><th>Tiempo</th><th>Notas</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td><span class="cat co">Movilidad</span> Caderas: frog stretch + pigeon</td><td>90s / posición</td><td>Activo, no pasivo mantenido. Consuegra: estático antes de entrenar reduce fuerza hasta 30%.</td></tr>
+        <tr><td>2</td><td><span class="cat co">Movilidad</span> Cat-cow + columna torácica</td><td>2 × 10 reps</td><td>Movilidad espinal. Reducción de tensión lumbar.</td></tr>
+        <tr><td>3</td><td><span class="cat co">Movilidad</span> Movilidad activa de hombros</td><td>5 min</td><td>Círculos, rotaciones, péndulos. Sin tensión.</td></tr>
+        <tr><td>4</td><td><span class="cat co">Mental</span> Visualización del proyecto</td><td>10 min</td><td>Secuencia completa del domingo: movimiento a movimiento, incluyendo posición de pies.</td></tr>
+      </tbody>
+    </table>
+  </details>
+
+  <!-- DOMINGO -->
+  <details class="day" open>
+    <summary>Roca — Domingo &nbsp;<span class="badge">Sesión completa 4–6h</span></summary>
+    <table class="ex-table">
+      <thead><tr><th>Fase</th><th>Duración</th><th>Contenido</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Calentamiento</strong></td><td>30–40 min</td><td>Cardio suave (marcha) → 2–3 vías 3 grados bajo límite. Primera a ritmo paseo, segunda a ritmo normal.</td></tr>
+        <tr><td><strong>Volumen técnico</strong></td><td>45–60 min</td><td>3–4 vías a vista 1–2 grados bajo límite. Drills: silent feet (no pisar con ruido), sticky feet (no reajustar), downclimbing en vías fáciles. Foco en pies.</td></tr>
+        <tr><td><strong>Proyecto</strong></td><td>90–120 min</td><td>Bolt-to-bolt → 2–3 intentos a rojo con 20–45 min descanso entre intentos (recuperación ATP-PCr).</td></tr>
+        <tr><td><strong>Enfriamiento</strong></td><td>15 min</td><td>2 vías muy fáciles. Estiramientos activos extensores. Hidratación.</td></tr>
+      </tbody>
+    </table>
+  </details>
+
+  <h3 style="font-family:Arial,sans-serif;font-size:.9rem;font-weight:700;margin:28px 0 12px;">Progresión de carga — Fase 1</h3>
+  <table class="tl-table">
+    <thead><tr><th>Sem.</th><th>Density hang</th><th>Descanso DH</th><th>Dominadas (mar)</th><th>Front lever</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>5 × 20s · 20mm</td><td>40s</td><td>4 × 5</td><td>Tuck · 3 × 10s</td></tr>
+      <tr><td>2</td><td>5 × 24s · 20mm</td><td>48s</td><td>4 × 6</td><td>Tuck · 3 × 12s</td></tr>
+      <tr><td>3</td><td>5 × 28s · 20mm</td><td>56s</td><td>4 × 7</td><td>Adv.Tuck · 3 × 10s</td></tr>
+      <tr class="dl"><td>4</td><td>3 × 20s · 20mm</td><td>40s</td><td>3 × 4</td><td>Tuck · 3 × 8s</td></tr>
+      <tr><td>5</td><td>5 × 30s · 20mm</td><td>60s</td><td>4 × 8</td><td>Adv.Tuck · 4 × 11s</td></tr>
+      <tr><td>6</td><td>5 × 34s · 18mm</td><td>68s</td><td>4 × 9</td><td>Adv.Tuck · 4 × 12s</td></tr>
+      <tr><td>7</td><td>5 × 38s · 18mm</td><td>76s</td><td>4 × 9</td><td>Straddle FL · 3 × 8s</td></tr>
+      <tr class="dl"><td>8</td><td>3 × 22s · 20mm</td><td>44s</td><td>3 × 6</td><td>Adv.Tuck · 3 × 10s</td></tr>
+      <tr><td>9</td><td>5 × 40s · 18mm</td><td>80s</td><td>5 × 9</td><td>Straddle FL · 4 × 9s</td></tr>
+      <tr class="ts"><td>10</td><td>TEST: DH 18mm máx · DH 20mm máx</td><td>—</td><td>AMRAP</td><td>Straddle FL máx tiempo</td></tr>
+    </tbody>
+  </table>
+
+  <div class="alert ok">
+    <b>Criterio para pasar a Fase 2</b>
+    Codo asintomático ≤2/10 durante 2 semanas consecutivas + ≥12 dominadas limpias + DH 18mm &gt;16s sostenidos.
+  </div>
+</section>
+
+<!-- FASE 2 -->
+<section class="sec" id="fase2">
+  <p class="s-tag">Semanas 11–22</p>
+  <h2 class="s-title">Fase 2 — Fuerza base</h2>
+  <div class="s-rule"></div>
+  <p class="s-lead">Se introducen los max hangs (protocolo Eva López MAW) y las dominadas lastradas (5×5 Hörst). Las sesiones de garaje A y B mantienen la misma estructura que Fase 1 pero cambia el contenido de los dedos.</p>
+
+  <details class="day" open>
+    <summary>Garaje A — Martes &nbsp;<span class="badge">Max Hangs + Dom. lastradas + Core</span>&nbsp;<span class="badge amber">75 min · 8–10h</span></summary>
+    <table class="ex-table">
+      <thead><tr><th>Orden</th><th>Ejercicio</th><th>Series × Reps / Tiempo</th><th>Descanso</th><th>Notas</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td><span class="cat fi">Dedos</span> Calentamiento progresivo</td><td>3 × 10s jugs · 2 × 10s 25mm · 1 × 10s 20mm</td><td>45s</td><td>Obligatorio antes de max hangs. Nunca colgar en frío.</td></tr>
+        <tr><td>2</td><td><span class="cat fi">Dedos</span> Max Hang MAW — principal</td><td>Sem.11–12: 4×10s 20mm BW · Sem.13: 4×10s 18mm BW · Sem.14 (desc): 2×8s · Sem.15: 5×10s 18mm BW · Sem.16–17: 5×10s 18mm +2.5kg · Sem.18 (desc): 2×8s · Sem.19–21: 5×10s 18mm +5kg→pico</td><td>3–5 min</td><td>Terminar SIEMPRE 3s antes del fallo. Nunca al fallo. Registrar lastre exacto cada sesión. +2.5kg solo si en 2 sesiones seguidas el margen supera 3s con facilidad.</td></tr>
+        <tr><td>3</td><td><span class="cat pu">Tirón</span> Dominadas lastradas 5×5</td><td>5 × 5</td><td>3–4 min</td><td>~50% 1RM estimado. Progresar +2.5kg cuando completes todas las series 2 sesiones seguidas.</td></tr>
+        <tr><td>4</td><td><span class="cat co">Core</span> Hollow body hold</td><td>3 × 30s</td><td>40s</td><td>—</td></tr>
+        <tr><td>5</td><td><span class="cat co">Core</span> Front lever progresión</td><td>Sem.11–14: Straddle 4×8s · Sem.15–16: Straddle 4×10s · Sem.17: Straddle 4×11s · Sem.18 (desc): Adv.Tuck 3×10s · Sem.19: Full FL 4×5s · Sem.20: Full FL 4×6s · Sem.21: Full FL 4×7s</td><td>60s</td><td>Progresar al siguiente nivel solo cuando el actual se mantiene estable y limpio durante 2 semanas.</td></tr>
+        <tr><td>6</td><td><span class="cat co">Core</span> Toes-to-bar</td><td>3 × 8 → 10</td><td>60s</td><td>Escápulas activas. Bajar controlado.</td></tr>
+        <tr class="note-row"><td colspan="5">Lock-off isométrico (sem. 17+): 4×6s a 90° y 120° de flexión · 2 min desc. Antes del core.</td></tr>
+      </tbody>
+    </table>
+  </details>
+
+  <details class="day" open>
+    <summary>Garaje B — Jueves &nbsp;<span class="badge moss">DH mant. + Antag. + Core + Lock-offs</span>&nbsp;<span class="badge amber">70 min</span></summary>
+    <table class="ex-table">
+      <thead><tr><th>Orden</th><th>Ejercicio</th><th>Series × Reps / Tiempo</th><th>Descanso</th><th>Notas</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td><span class="cat fi">Dedos</span> Density Hang mantenimiento</td><td>3 × 25s · 18mm</td><td>50s</td><td>No max hangs en jueves. Carga de tendón sin intensidad.</td></tr>
+        <tr><td>2</td><td><span class="cat pu">Tirón</span> Lock-off isométrico</td><td>4 × 6s a 90° + 4 × 6s a 120°</td><td>2 min</td><td>Desde sem. 15. Subir a la barra con dominada, aguantar 6s en el ángulo. Bajar controlado.</td></tr>
+        <tr><td>3</td><td><span class="cat an">Antag.</span> Tyler Twist inverso</td><td>3 × 15</td><td>90s</td><td>Permanente en todas las fases.</td></tr>
+        <tr><td>4</td><td><span class="cat an">Antag.</span> Serie T/Y/L con goma</td><td>3 × 12 por posición</td><td>60s</td><td>T: brazos lados. Y: 135°. L: codo 90° rotación externa.</td></tr>
+        <tr><td>5</td><td><span class="cat an">Antag.</span> Rotación externa con goma</td><td>3 × 15</td><td>60s</td><td>Toalla bajo axila. Codo 90°.</td></tr>
+        <tr><td>6</td><td><span class="cat em">Empuje</span> Push-up estricto</td><td>3 × 15</td><td>60s</td><td>Antagonista de tirón. Desde fase 2.</td></tr>
+        <tr><td>7</td><td><span class="cat co">Core</span> L-sit en paralelas</td><td>3 × 20s</td><td>60s</td><td>—</td></tr>
+      </tbody>
+    </table>
+  </details>
+
+  <details class="day">
+    <summary>Viernes, Lunes, Miércoles, Sábado &nbsp;<span class="badge slate">Igual que Fase 1</span></summary>
+    <div style="padding:14px 16px;font-family:Arial,sans-serif;font-size:.82rem;color:var(--muted);line-height:1.65;">
+      Viernes (jugs + core ligero), Lunes (piscina), Miércoles (piernas + empuje), Sábado (movilidad + visualización): misma estructura que Fase 1. El miércoles añade fondos + push-ups pero no los dos el mismo día: alterna fondos en paralelas una semana y push-ups la siguiente.
+    </div>
+  </details>
+
+  <h3 style="font-family:Arial,sans-serif;font-size:.9rem;font-weight:700;margin:28px 0 12px;">Progresión de carga — Fase 2</h3>
+  <table class="tl-table">
+    <thead><tr><th>Sem.</th><th>Max Hang</th><th>Desc.</th><th>Dom. lastradas</th><th>Front lever</th></tr></thead>
+    <tbody>
+      <tr><td>11</td><td>4 × 10s · 20mm · BW</td><td>4 min</td><td>5 × 5 · +2.5kg</td><td>Straddle · 4 × 8s</td></tr>
+      <tr><td>12</td><td>4 × 10s · 20mm · BW</td><td>4 min</td><td>5 × 5 · +2.5kg → progresar</td><td>Straddle · 4 × 9s</td></tr>
+      <tr><td>13</td><td>4 × 10s · 18mm · BW</td><td>4 min</td><td>5 × 5 · progresar</td><td>Straddle · 4 × 10s</td></tr>
+      <tr class="dl"><td>14</td><td>2 × 8s · 20mm · BW</td><td>4 min</td><td>3 × 4 · −2.5kg</td><td>Adv.Tuck · 3 × 10s</td></tr>
+      <tr><td>15</td><td>5 × 10s · 18mm · BW</td><td>4 min</td><td>5 × 5 · progresar</td><td>Straddle · 4 × 10s</td></tr>
+      <tr><td>16</td><td>5 × 10s · 18mm · +2.5kg</td><td>4–5 min</td><td>5 × 5 · progresar</td><td>Straddle · 4 × 11s</td></tr>
+      <tr><td>17</td><td>5 × 10s · 18mm · +2.5kg</td><td>4–5 min</td><td>5 × 5 · progresar</td><td>Straddle · 4 × 12s</td></tr>
+      <tr class="dl"><td>18</td><td>2 × 8s · 20mm · BW</td><td>4 min</td><td>3 × 4 · −2.5kg</td><td>Adv.Tuck · 3 × 10s</td></tr>
+      <tr><td>19</td><td>5 × 10s · 18mm · +5kg</td><td>5 min</td><td>5 × 5 · progresar</td><td>Full FL inicio · 4 × 5s</td></tr>
+      <tr><td>20</td><td>5 × 10s · 18mm · +5kg</td><td>5 min</td><td>5 × 5 · progresar</td><td>Full FL · 4 × 6s</td></tr>
+      <tr><td>21</td><td>5 × 10s · 18mm · pico lastre</td><td>5 min</td><td>5 × 5 · pico</td><td>Full FL · 4 × 7s</td></tr>
+      <tr class="ts"><td>22</td><td>TEST: DH 18mm máx · 1RM dom. Brzycki</td><td>—</td><td>AMRAP BW</td><td>Full FL máx tiempo</td></tr>
+    </tbody>
+  </table>
+
+  <div class="alert ok">
+    <b>Criterio para pasar a Fase 3</b>
+    ≥16 dominadas BW limpias + 1RM estimado &gt;+10kg + DH 18mm &gt;22s + codo asintomático.
+  </div>
+</section>
+
+<!-- FASE 3 -->
+<section class="sec" id="fase3">
+  <p class="s-tag">Semanas 23–30</p>
+  <h2 class="s-title">Fase 3 — Fuerza máxima</h2>
+  <div class="s-rule"></div>
+  <p class="s-lead">Max hangs con lastre progresivo. Objetivo físico: maximizar la fuerza pico de dedos y el tirón máximo. Objetivo en roca: proyectar 7a y encadenarlo antes de pasar a Fase 4.</p>
+
+  <details class="day" open>
+    <summary>Garaje A — Martes &nbsp;<span class="badge">Max Hangs lastre + Dom. pico + Core</span>&nbsp;<span class="badge amber">80 min</span></summary>
+    <table class="ex-table">
+      <thead><tr><th>Orden</th><th>Ejercicio</th><th>Series × Tiempo / Reps</th><th>Descanso</th><th>Notas</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td><span class="cat fi">Dedos</span> Calentamiento progresivo</td><td>3 × 10s jugs → 2 × 10s 20mm → 1 × 8s 18mm</td><td>45s</td><td>Nunca saltar el calentamiento en esta fase. Tendones más cargados.</td></tr>
+        <tr><td>2</td><td><span class="cat fi">Dedos</span> Max Hang 18mm con lastre</td><td>5 × 8s</td><td>5 min</td><td>Terminar 3s antes del fallo. +2.5kg cada 2 semanas si completa. Registrar lastre exacto.</td></tr>
+        <tr><td>3</td><td><span class="cat pu">Tirón</span> Dominadas lastradas 5×5 pico</td><td>5 × 5</td><td>4 min</td><td>Progresar lastre cada 2 semanas. Forma estricta: no tirones de cadera.</td></tr>
+        <tr><td>4</td><td><span class="cat pu">Tirón</span> Lock-off isométrico</td><td>4 × 6s a 90° + 4 × 6s a 120°</td><td>2 min</td><td>Fuerza de posición específica para cruxes en roca.</td></tr>
+        <tr><td>5</td><td><span class="cat co">Core</span> Full front lever</td><td>Sem.23–24: 4×6s · Sem.25: 4×7s · Sem.26 (desc): Straddle 3×10s · Sem.27: 4×7s · Sem.28–29: 4×8s</td><td>90s</td><td>Si el full FL no es estable todavía, mantener Straddle 4×12s hasta que lo sea. No forzar la progresión.</td></tr>
+        <tr><td>6</td><td><span class="cat co">Core</span> Toes-to-bar</td><td>3 × 10</td><td>60s</td><td>—</td></tr>
+      </tbody>
+    </table>
+  </details>
+
+  <details class="day" open>
+    <summary>Garaje B — Jueves &nbsp;<span class="badge moss">DH mant. + Antag. + Lock-offs + Push</span>&nbsp;<span class="badge amber">70 min</span></summary>
+    <table class="ex-table">
+      <thead><tr><th>Orden</th><th>Ejercicio</th><th>Series × Tiempo / Reps</th><th>Descanso</th><th>Notas</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td><span class="cat fi">Dedos</span> Density Hang mantenimiento</td><td>3 × 25s · 18mm</td><td>50s</td><td>—</td></tr>
+        <tr><td>2</td><td><span class="cat pu">Tirón</span> Lock-off 90° + 120°</td><td>4 × 6s por ángulo</td><td>2 min</td><td>—</td></tr>
+        <tr><td>3</td><td><span class="cat an">Antag.</span> Tyler Twist inverso</td><td>3 × 15</td><td>90s</td><td>Permanente.</td></tr>
+        <tr><td>4</td><td><span class="cat an">Antag.</span> Serie T/Y/L con goma</td><td>3 × 12</td><td>60s</td><td>—</td></tr>
+        <tr><td>5</td><td><span class="cat an">Antag.</span> Rotación externa</td><td>3 × 15</td><td>60s</td><td>—</td></tr>
+        <tr><td>6</td><td><span class="cat em">Empuje</span> Fondos en paralelas</td><td>4 × 12</td><td>90s</td><td>—</td></tr>
+        <tr><td>7</td><td><span class="cat co">Core</span> L-sit + Hollow</td><td>3 × 22s + 3 × 30s</td><td>60s</td><td>—</td></tr>
+      </tbody>
+    </table>
+  </details>
+
+  <h3 style="font-family:Arial,sans-serif;font-size:.9rem;font-weight:700;margin:28px 0 12px;">Progresión — Fase 3</h3>
+  <table class="tl-table">
+    <thead><tr><th>Sem.</th><th>Max Hang 18mm</th><th>Lastre dom.</th><th>Core</th></tr></thead>
+    <tbody>
+      <tr><td>23–24</td><td>5 × 8s · lastre semana 21</td><td>5 × 5 · mantener pico</td><td>Full FL 4 × 6s</td></tr>
+      <tr><td>25</td><td>5 × 8s · +2.5kg</td><td>5 × 5 · +2.5kg</td><td>Full FL 4 × 7s</td></tr>
+      <tr class="dl"><td>26</td><td>2 × 8s · 20mm BW</td><td>3 × 4 · −2.5kg</td><td>Adv.Tuck · movilidad</td></tr>
+      <tr><td>27</td><td>5 × 8s · +2.5kg sobre sem. 25</td><td>5 × 5 · pico nuevo</td><td>Full FL 4 × 7s</td></tr>
+      <tr><td>28</td><td>5 × 8s · pico</td><td>5 × 5 · pico</td><td>Full FL 4 × 8s</td></tr>
+      <tr><td>29</td><td>5 × 8s · pico</td><td>5 × 5 · pico + AMRAP final</td><td>Full FL 4 × 8s</td></tr>
+      <tr class="ts"><td>30</td><td>TEST: 1RM dedos Lattice (7s 20mm)</td><td>1RM dom. Brzycki</td><td>Full FL máx</td></tr>
+    </tbody>
+  </table>
+
+  <div class="alert ok">
+    <b>Criterio para pasar a Fase 4</b>
+    Encadenar 7a en roca + 1RM dom. &gt;+15kg + DH 18mm &gt;25s con lastre.
+  </div>
+</section>
+
+<!-- FASE 4 -->
+<section class="sec" id="fase4">
+  <p class="s-tag">Semanas 31–38</p>
+  <h2 class="s-title">Fase 4 — Power-endurance y pico</h2>
+  <div class="s-rule"></div>
+  <p class="s-lead">Se sustituyen los max hangs por repeaters 7/3 (IntHangs Anderson). El objetivo cambia de fuerza máxima a resistencia específica. En roca: intentos a rojo de 7a+ y primeros intentos en 7b.</p>
+
+  <details class="day" open>
+    <summary>Garaje A — Martes &nbsp;<span class="badge">IntHangs + Dom. explosivo + Core din.</span>&nbsp;<span class="badge amber">75 min</span></summary>
+    <table class="ex-table">
+      <thead><tr><th>Orden</th><th>Ejercicio</th><th>Series × Protocolo</th><th>Descanso</th><th>Notas</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td><span class="cat fi">Dedos</span> Calentamiento progresivo</td><td>3 × 10s jugs → 2 × 10s 20mm</td><td>45s</td><td>—</td></tr>
+        <tr><td>2</td><td><span class="cat fi">Dedos</span> IntHangs 7/3 Repeaters</td><td>4–5 series × (7s colgado / 3s desc × 6 reps)</td><td>3–4 min entre series</td><td>Debe haber pump al final, no fallo. Filo 18mm → 20mm si 18mm es demasiado. Anderson Brothers.</td></tr>
+        <tr><td>3</td><td><span class="cat pu">Tirón</span> Dominadas BW explosivas</td><td>4–5 × 8</td><td>90s–2 min</td><td>Subida lo más rápida posible. Excéntrico controlado 2s. Power-endurance específica.</td></tr>
+        <tr><td>4</td><td><span class="cat co">Core</span> Full front lever</td><td>4 × 6–8s</td><td>90s</td><td>—</td></tr>
+        <tr><td>5</td><td><span class="cat co">Core</span> Toes-to-bar dinámico</td><td>3 × 10</td><td>60s</td><td>—</td></tr>
+        <tr><td>6</td><td><span class="cat co">Core</span> Hollow body</td><td>3 × 35s</td><td>40s</td><td>—</td></tr>
+      </tbody>
+    </table>
+  </details>
+
+  <details class="day" open>
+    <summary>Garaje B — Jueves &nbsp;<span class="badge moss">IntHangs mant. + Antag. + Empuje</span>&nbsp;<span class="badge amber">65 min</span></summary>
+    <table class="ex-table">
+      <thead><tr><th>Orden</th><th>Ejercicio</th><th>Series × Reps / Tiempo</th><th>Descanso</th><th>Notas</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td><span class="cat fi">Dedos</span> IntHangs mantenimiento</td><td>2 series × (7/3 × 6 reps) · 18mm</td><td>3 min</td><td>Solo 2 series. No acumular fatiga de dedos antes del domingo.</td></tr>
+        <tr><td>2</td><td><span class="cat an">Antag.</span> Tyler Twist + curl muñeca exc.</td><td>3 × 15 + 3 × 10</td><td>90s</td><td>Permanente.</td></tr>
+        <tr><td>3</td><td><span class="cat an">Antag.</span> Serie T/Y/L + Rot. externa</td><td>3 × 12 por posición</td><td>60s</td><td>—</td></tr>
+        <tr><td>4</td><td><span class="cat em">Empuje</span> Fondos en paralelas</td><td>4 × 12</td><td>90s</td><td>—</td></tr>
+        <tr><td>5</td><td><span class="cat co">Core</span> L-sit + Hollow</td><td>3 × 22s + 3 × 35s</td><td>60s</td><td>—</td></tr>
+      </tbody>
+    </table>
+  </details>
+
+  <h3 style="font-family:Arial,sans-serif;font-size:.9rem;font-weight:700;margin:28px 0 12px;">Progresión — Fase 4</h3>
+  <table class="tl-table">
+    <thead><tr><th>Sem.</th><th>IntHangs</th><th>Dom. explosivas</th><th>Roca</th></tr></thead>
+    <tbody>
+      <tr><td>31–32</td><td>4 series · 18mm · desc 4 min</td><td>4 × 8 · desc 2 min</td><td>Vol. técnico 7a + proyecto 7a+</td></tr>
+      <tr><td>33</td><td>5 series · 18mm · desc 3.5 min</td><td>4 × 8 · desc 90s</td><td>Intentos a rojo 7a+</td></tr>
+      <tr class="dl"><td>34</td><td>2 series mantenimiento</td><td>3 × 6</td><td>Vías fáciles</td></tr>
+      <tr><td>35</td><td>5 series · 18mm · desc 3.5 min</td><td>5 × 8 · desc 90s</td><td>Proyecto 7a+ a rojo</td></tr>
+      <tr><td>36–37</td><td>5 series · 18mm → 16mm · desc 3 min</td><td>5 × 8 · desc 90s</td><td>Máximos intentos 7a+ / inicio 7b</td></tr>
+      <tr class="ts"><td>38</td><td>2 series mant.</td><td>3 × 6</td><td>PICO: encadenar 7a+ · intentos 7b</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- PROTOCOLOS -->
+<section class="sec" id="protocolos">
+  <p class="s-tag">Referencia técnica</p>
+  <h2 class="s-title">Protocolos de dedos — Resumen</h2>
+  <div class="s-rule"></div>
+
+  <table class="tl-table">
+    <thead><tr><th>Protocolo</th><th>Fase</th><th>Duración/serie</th><th>Desc. entre series</th><th>Filo</th><th>Intensidad</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Density Hang</strong></td><td>F1 principal · F2–F4 mantenimiento</td><td>20–40s</td><td>Duración × 2</td><td>20mm → 18mm</td><td>RPE 5–7 · dolor máx 2/10</td></tr>
+      <tr><td><strong>Max Hang MAW (Eva López)</strong></td><td>F2–F3</td><td>8–10s · terminar 3s antes fallo</td><td>3–5 min</td><td>20mm → 18mm</td><td>Máxima · NUNCA al fallo</td></tr>
+      <tr><td><strong>IntHangs 7/3 (Anderson)</strong></td><td>F4</td><td>7s colgado / 3s desc × 6 reps</td><td>3–4 min entre series</td><td>18mm → 16mm</td><td>Pump sin fallo</td></tr>
+    </tbody>
+  </table>
+
+  <div class="alert danger">
+    <b>Nunca full crimp con historial activo de codo</b>
+    Open-hand o semi-cerrada siempre. El full crimp es el agarre con mayor riesgo para poleas y tendón medial. No se usa en entrenamiento de fingerboard hasta tener 7a encadenado y el codo asintomático meses.
+  </div>
+
+  <div class="alert info">
+    <b>Fórmula Brzycki para estimar 1RM dominadas</b>
+    1RM = (BW + lastre) ÷ (1.0278 − 0.0278 × reps completadas). Ejemplo: 70kg + 18kg en 8 reps = 1RM estimado 111kg → lastre máximo ≈ 41kg. Usar con reps entre 6 y 10 para mayor precisión.
+  </div>
+</section>
+
+<!-- LESIONES -->
+<section class="sec" id="lesiones">
+  <p class="s-tag">Control de carga</p>
+  <h2 class="s-title">Semáforo de dolor</h2>
+  <div class="s-rule"></div>
+
+  <div class="sem">
+    <div class="sc g">
+      <div class="sc-lvl">Verde · 0–2/10</div>
+      <div class="sc-txt">Continuar. Sensación de trabajo sin dolor.</div>
+    </div>
+    <div class="sc y">
+      <div class="sc-lvl">Amarillo · 3–5/10</div>
+      <div class="sc-txt">Reducir intensidad. Debe desaparecer en 24h. Si no: pasar a rojo la siguiente sesión.</div>
+    </div>
+    <div class="sc r">
+      <div class="sc-lvl">Rojo · 6–10/10</div>
+      <div class="sc-txt">Sesión terminada. Sin negociación. Descanso 48–72h mínimo.</div>
+    </div>
+  </div>
+
+  <div class="alert danger">
+    <b>Señales que cambian el plan inmediatamente</b>
+    Chasquido/pop en dedos → parar, no colgar hasta valoración. Dolor que irradia o hormiguea → posible compresión nerviosa, no tendinosa: fisioterapeuta. Dolor que no baja a línea base al día siguiente → reducir carga esa semana. Dolor que escala semana a semana con la misma carga → reducir volumen 20%.
+  </div>
+</section>
+
+<!-- NUTRICIÓN -->
+<section class="sec" id="nutricion">
+  <p class="s-tag">Recuperación</p>
+  <h2 class="s-title">Nutrición</h2>
+  <div class="s-rule"></div>
+
+  <table class="tl-table">
+    <thead><tr><th>Momento</th><th>Qué</th><th>Por qué</th></tr></thead>
+    <tbody>
+      <tr><td>30–60 min antes sesión de dedos</td><td>15g gelatina/colágeno + 50mg vitamina C</td><td>Shaw et al. (2017): +153% síntesis colágeno. Protege el tendón bajo carga.</td></tr>
+      <tr><td>Dentro de 30 min tras sesión</td><td>30–40g proteína + carbohidrato</td><td>Ventana de síntesis proteica.</td></tr>
+      <tr><td>Total diario</td><td>1.8–2.2 g proteína/kg · 70kg → 126–154g</td><td>No negociar. Es el único macro donde la mayoría falla.</td></tr>
+      <tr><td>Calorías</td><td>Mantenimiento o +200 kcal</td><td>Déficit calórico inhibe síntesis de colágeno.</td></tr>
+      <tr><td>Pre-roca domingo</td><td>60–90g carbohidrato fácil digestión</td><td>Glucógeno para 4–6h de sesión.</td></tr>
+      <tr><td>Hidratación verano (garaje)</td><td>Llegar ya hidratado. No hidratarse durante la sesión.</td><td>Fuerza cae con deshidratación del 2% del peso corporal.</td></tr>
+    </tbody>
+  </table>
+</section>
+
+</div>
+<footer>Plan personal — Luis · Almería · Julio 2026 · Fuentes: Consuegra (2023), López-Rivera &amp; González-Badillo (2019), Shaw et al. (2017), Tyler et al. (2014), Hörst (2016), Anderson Brothers, Lattice Training, StrengthClimbing, revisión narrativa PMC 2024. No sustituye valoración fisioterapéutica.</footer>
+</body>
+</html>

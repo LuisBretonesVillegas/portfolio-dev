@@ -1,0 +1,1798 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PGPI — Práctica Test</title>
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #1a1d27;
+    --surface2: #22263a;
+    --border: #2d3250;
+    --accent: #4f7cff;
+    --accent-dim: #1e2d5a;
+    --correct: #22c55e;
+    --correct-dim: #14532d;
+    --wrong: #ef4444;
+    --wrong-dim: #450a0a;
+    --warn: #f59e0b;
+    --warn-dim: #451a03;
+    --text: #e2e8f0;
+    --text-muted: #64748b;
+    --text-dim: #94a3b8;
+    --repeat-badge: #7c3aed;
+    --repeat-badge-dim: #2e1065;
+    --unique-badge: #0891b2;
+    --unique-badge-dim: #0c4a6e;
+    --radius: 10px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 18px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  header h1 {
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+    color: var(--text);
+  }
+  header span.sub {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-left: 10px;
+    font-weight: 400;
+  }
+  .score-bar {
+    display: flex;
+    gap: 18px;
+    font-size: 13px;
+    color: var(--text-dim);
+  }
+  .score-bar b { color: var(--text); }
+
+  /* NAV TABS */
+  .tab-bar {
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 12px;
+    scrollbar-width: none;
+  }
+  .tab-bar::-webkit-scrollbar { display: none; }
+  .tab {
+    padding: 12px 16px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-muted);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    white-space: nowrap;
+    transition: color 0.15s, border-color 0.15s;
+    user-select: none;
+    background: none;
+    border-top: none; border-left: none; border-right: none;
+  }
+  .tab:hover { color: var(--text-dim); }
+  .tab.active {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+  }
+  .tab .count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--surface2);
+    color: var(--text-dim);
+    font-size: 11px;
+    border-radius: 999px;
+    padding: 0 6px;
+    min-width: 20px;
+    height: 18px;
+    margin-left: 6px;
+  }
+
+  /* MAIN */
+  main { max-width: 820px; margin: 0 auto; padding: 28px 20px 80px; }
+
+  .section-header {
+    margin-bottom: 22px;
+  }
+  .section-header h2 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+  .section-header p {
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+
+  .subsection-title {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    margin: 28px 0 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .subsection-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* QUESTION CARD */
+  .q-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: 14px;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+  .q-card.answered-correct { border-color: var(--correct); }
+  .q-card.answered-wrong { border-color: var(--wrong); }
+
+  .q-header {
+    padding: 16px 18px 12px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .q-num {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-muted);
+    min-width: 28px;
+    padding-top: 2px;
+  }
+  .q-text {
+    font-size: 14px;
+    color: var(--text);
+    line-height: 1.55;
+    flex: 1;
+  }
+  .q-meta {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-top: 8px;
+  }
+  .badge {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 2px 8px;
+    border-radius: 999px;
+  }
+  .badge.repeat {
+    background: var(--repeat-badge-dim);
+    color: #a78bfa;
+    border: 1px solid var(--repeat-badge);
+  }
+  .badge.unique {
+    background: var(--unique-badge-dim);
+    color: #67e8f9;
+    border: 1px solid var(--unique-badge);
+  }
+  .badge.year {
+    background: var(--surface2);
+    color: var(--text-muted);
+    border: 1px solid var(--border);
+  }
+
+  /* OPTIONS */
+  .q-options {
+    padding: 0 18px 16px 58px;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+  }
+  .opt {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 14px;
+    border-radius: 7px;
+    border: 1px solid var(--border);
+    cursor: pointer;
+    transition: background 0.12s, border-color 0.12s;
+    background: var(--surface2);
+    user-select: none;
+  }
+  .opt:hover:not(.disabled) { border-color: var(--accent); background: var(--accent-dim); }
+  .opt.disabled { cursor: default; }
+  .opt.selected-correct {
+    background: var(--correct-dim);
+    border-color: var(--correct);
+  }
+  .opt.selected-wrong {
+    background: var(--wrong-dim);
+    border-color: var(--wrong);
+  }
+  .opt.reveal-correct {
+    background: var(--correct-dim);
+    border-color: var(--correct);
+  }
+  .opt-letter {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-muted);
+    min-width: 18px;
+    padding-top: 1px;
+  }
+  .opt-text {
+    font-size: 13.5px;
+    color: var(--text);
+    line-height: 1.5;
+  }
+  .opt.selected-correct .opt-letter,
+  .opt.selected-correct .opt-text { color: var(--correct); }
+  .opt.selected-wrong .opt-letter,
+  .opt.selected-wrong .opt-text { color: var(--wrong); }
+  .opt.reveal-correct .opt-letter,
+  .opt.reveal-correct .opt-text { color: var(--correct); }
+
+  /* EXPLANATION */
+  .explanation {
+    margin: 4px 18px 16px 58px;
+    padding: 12px 14px;
+    border-radius: 7px;
+    font-size: 13px;
+    line-height: 1.6;
+    display: none;
+  }
+  .explanation.correct {
+    background: var(--correct-dim);
+    border-left: 3px solid var(--correct);
+    color: #86efac;
+  }
+  .explanation.wrong {
+    background: var(--wrong-dim);
+    border-left: 3px solid var(--wrong);
+    color: #fca5a5;
+  }
+  .explanation.show { display: block; }
+
+  /* PROGRESS BAR */
+  .progress-wrap {
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .progress-track {
+    flex: 1;
+    height: 4px;
+    background: var(--border);
+    border-radius: 99px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 99px;
+    transition: width 0.3s;
+  }
+  .progress-text {
+    font-size: 12px;
+    color: var(--text-muted);
+    white-space: nowrap;
+  }
+
+  /* SECTION PANEL */
+  .section-panel { display: none; }
+  .section-panel.active { display: block; }
+
+  /* RESET BTN */
+  .reset-btn {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    padding: 8px 16px;
+    border-radius: 7px;
+    font-size: 13px;
+    cursor: pointer;
+    margin-top: 24px;
+    transition: border-color 0.15s, color 0.15s;
+  }
+  .reset-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+  @media (max-width: 600px) {
+    header { padding: 14px 16px; flex-wrap: wrap; gap: 8px; }
+    main { padding: 20px 12px 80px; }
+    .q-options { padding-left: 18px; }
+    .explanation { margin-left: 18px; }
+  }
+</style>
+</head>
+<body data-pagefind-ignore>
+
+<header>
+  <div>
+    <h1>PGPI — Test<span class="sub">Planificación y Gestión de Proyectos Informáticos · UAL</span></h1>
+  </div>
+  <div class="score-bar">
+    <span>Correctas: <b id="global-correct">0</b></span>
+    <span>Erróneas: <b id="global-wrong">0</b></span>
+  </div>
+</header>
+
+<div class="tab-bar" id="tab-bar"></div>
+
+<main id="main-content"></main>
+
+<script>
+// =========================================================
+// DATA
+// =========================================================
+// Correct answer: 0=a, 1=b, 2=c
+// years: array of exam years where the question appeared
+// topic: tag for categorization
+// explanation: shown after answering
+
+const TOPICS = [
+  { id: 'all', label: 'Todo' },
+  { id: 't1', label: 'T1-2-3 · Conceptos básicos y Ágil' },
+  { id: 't4', label: 'T4-5 · Requisitos y Viabilidad' },
+  { id: 't6', label: 'T6 · Normativa Legal' },
+  { id: 't7', label: 'T7-9 · Estimación' },
+  { id: 't10', label: 'T10 · PERT / Gantt' },
+  { id: 't11', label: 'T11-12 · Riesgos' },
+  { id: 't13', label: 'T13 · Calidad (SQA/RTF)' },
+];
+
+const Q = [
+
+  // ===== BLOQUE I: T1-T2-T3 =====
+  {
+    id: 'q01', topic: 't1',
+    text: 'Según PMI, las restricciones del proyecto abarcan:',
+    opts: [
+      'Alcance, riesgo, tiempo, recursos, coste y calidad.',
+      'Alcance, tiempo, recursos, coste, calidad y satisfacción del cliente.',
+      'Tiempo y coste son las únicas restricciones a tener en cuenta en un proyecto.'
+    ],
+    correct: 0,
+    years: ['2022A'],
+    explanation: 'Correcto. El PMI define 6 restricciones: alcance, riesgo, tiempo, recursos, coste y calidad. La "satisfacción del cliente" no es una restricción formal del triángulo PMI. La opción c es evidentemente falsa por ser solo 2.'
+  },
+  {
+    id: 'q02', topic: 't1',
+    text: 'Indica cuál de las siguientes afirmaciones es correcta respecto a cartera/portafolio y programa:',
+    opts: [
+      'La cartera/portafolio es la combinación de proyectos y programas que desarrolla la organización, alineados con los objetivos estratégicos.',
+      'La cartera/portafolio es el grupo de proyectos relacionados que se gestionan de forma coordinada para obtener beneficios que no se obtendrían gestionándolos individualmente.',
+      'Las dos afirmaciones son correctas.'
+    ],
+    correct: 0,
+    years: ['2022A'],
+    explanation: 'Correcto. La opción a define correctamente el portafolio. La opción b describe un programa (no un portafolio): un programa es un grupo de proyectos relacionados gestionados coordinadamente. No son lo mismo, por lo que c es falsa.'
+  },
+  {
+    id: 'q03', topic: 't1',
+    text: 'Según PMI, entre las diferentes áreas de conocimiento en un proyecto podemos encontrar:',
+    opts: [
+      'Adquisiciones, interesados y recursos humanos.',
+      'Alcance, comunicaciones y costes.',
+      'Las dos anteriores son correctas.'
+    ],
+    correct: 2,
+    years: ['2022A'],
+    explanation: 'Correcto. El PMBOK define 10 áreas de conocimiento que incluyen tanto las de la opción a (Adquisiciones, Interesados, Recursos) como las de la b (Alcance, Comunicaciones, Costes). Ambas listas son subconjuntos válidos.'
+  },
+  {
+    id: 'q04', topic: 't1',
+    text: 'Identifique cuál de las siguientes sentencias es FALSA sobre el director de proyecto:',
+    opts: [
+      'Los clientes, gerentes funcionales o directores de proyecto son algunos ejemplos de stakeholders.',
+      'El equipo del proyecto está compuesto por el director del proyecto, el equipo de dirección y otros miembros que desarrollan el trabajo.',
+      'Los directores del proyecto entre sus responsabilidades NO se encuentran identificar y dar seguimiento a los riesgos; esa actividad corresponde a la persona encargada del mantenimiento.'
+    ],
+    correct: 2,
+    years: ['2022A'],
+    explanation: 'La opción c es falsa. La identificación y seguimiento de riesgos SÍ es una responsabilidad del director del proyecto según el PMBOK. No corresponde al mantenimiento.'
+  },
+  {
+    id: 'q05', topic: 't1',
+    text: '¿En qué fase del proyecto es mayor el nivel de coste y de personal?',
+    opts: [
+      'Al inicio del proyecto.',
+      'Tanto el coste como el personal debe ser homogéneo a lo largo del proyecto.',
+      'En las fases intermedias del proyecto.'
+    ],
+    correct: 2,
+    years: ['2022B', '2022exam'],
+    explanation: 'Correcto. Según la curva de ciclo de vida de un proyecto, los recursos y el coste son bajos al inicio, alcanzan su máximo en las fases intermedias de ejecución y luego declinan al cierre.'
+  },
+  {
+    id: 'q06', topic: 't1',
+    text: '¿Cómo es la planificación en un proyecto ágil?',
+    opts: [
+      'Los planes se realizan por anticipado y se elaboran progresivamente cada vez que hay solicitudes de cambio.',
+      'La planificación se realiza en reuniones graduales entre las iteraciones.',
+      'Como regla, los equipos ágiles dedican menos tiempo a la planificación que los equipos no ágiles, a menos que se requiera más planificación para el cumplimiento de acciones o para las adquisiciones.'
+    ],
+    correct: 1,
+    years: ['2022B', '2022exam'],
+    explanation: 'Correcto. En ágil, la planificación es adaptativa y se realiza iterativamente en las reuniones entre sprints (sprint planning, retrospectivas). La opción a describe un enfoque predictivo. La opción c es incorrecta: los equipos ágiles no dedican necesariamente menos tiempo a planificar.'
+  },
+  {
+    id: 'q07', topic: 't1',
+    text: 'Al margen de consideraciones ajenas al dpto. de TI, la principal causa de fracaso de proyectos de desarrollo de software es:',
+    opts: [
+      'La mala gestión de los requisitos en la determinación del alcance en la fase inicial del proyecto y en la gestión de los cambios del alcance una vez está el proyecto en ejecución.',
+      'La dificultad de realizar estimaciones del esfuerzo del proyecto, ya que las métricas estaban enfocadas a líneas de código en lenguajes estructurados.',
+      'Se abusa de la subcontratación del software y se realiza mala gestión de proyectos por dicha causa.'
+    ],
+    correct: 0,
+    years: ['2022B', '2022exam'],
+    explanation: 'Correcto. Los estudios (Standish CHAOS Report, etc.) muestran sistemáticamente que la gestión deficiente de requisitos y el control de cambios del alcance es la principal causa de fracaso en proyectos software.'
+  },
+  {
+    id: 'q08', topic: 't1',
+    text: 'Los cinco grupos de procesos en la dirección de proyectos son: ¿Cuál de las siguientes afirmaciones sobre dirección de proyectos es INCORRECTA?',
+    opts: [
+      'El objetivo principal de la dirección de proyectos es cumplir con los requisitos del proyecto.',
+      'Los cinco grupos de procesos en la dirección de proyectos son: iniciación, planificación, ejecución, seguimiento y control y cierre.',
+      'La dirección de proyectos NO es la encargada de equilibrar las restricciones contrapuestas del proyecto.'
+    ],
+    correct: 2,
+    years: ['2019', '2019A', '2022recap'],
+    explanation: 'La opción c es incorrecta. La dirección de proyectos SÍ es la encargada de equilibrar las restricciones contrapuestas (alcance, tiempo, coste, calidad, etc.). Las opciones a y b son correctas.'
+  },
+  {
+    id: 'q09', topic: 't1',
+    text: 'Los tipos básicos de relaciones entre fases de un proyecto son:',
+    opts: [
+      'Relación secuencial, relación de superposición y relación iterativa.',
+      'Relación de gobernabilidad, relación con los stakeholders y relación bilateral.',
+      'Relación secuencial, relación bilateral y relación de superposición.'
+    ],
+    correct: 0,
+    years: ['2019', '2019A', '2022B', '2022exam', '2022recap', '2026'],
+    explanation: 'Correcto. Según el PMBOK, los tres tipos básicos de relación entre fases son: secuencial (una fase empieza cuando termina la anterior), de superposición (fases simultáneas) e iterativa (fases que se repiten).'
+  },
+  {
+    id: 'q10', topic: 't1',
+    text: 'Una editorial solicita a una empresa de informática que desarrolle software para un libro electrónico. El presidente asigna un director de proyecto. En este ámbito:',
+    opts: [
+      'Patrocinador: Presidente de la empresa de informática. Cliente: Editorial. Usuario: Persona que compra el libro electrónico en el mercado.',
+      'Patrocinador: Director de Proyecto. Vendedor/Socio de Negocio: Editorial.',
+      'Gerente de operaciones: Editorial. PMO: Presidente de la empresa de informática. Usuario: persona que compra el libro en el mercado.'
+    ],
+    correct: 0,
+    years: ['2019', '2019A', '2022recap'],
+    explanation: 'Correcto. El patrocinador (sponsor) es quien asigna recursos y autoriza el proyecto → Presidente. El cliente es quien encarga el trabajo → Editorial. El usuario es quien usará el producto final → el comprador del libro.'
+  },
+  {
+    id: 'q11', topic: 't1',
+    text: 'Entre las grandes desventajas de la metodología ágil, podemos destacar:',
+    opts: [
+      'Falta de atención a la documentación y dificultad para determinar el precio y el tiempo.',
+      'Menor motivación entre los trabajadores del proyecto y falta de organización en el equipo.',
+      'Menor satisfacción del cliente y dificultad para gestionar los cambios.'
+    ],
+    correct: 0,
+    years: ['2022A'],
+    explanation: 'Correcto. Las metodologías ágiles tienen como desventajas conocidas la escasa documentación (se prioriza software funcional sobre documentación exhaustiva) y la dificultad para fijar a priori un presupuesto y plazo cerrado.'
+  },
+  {
+    id: 'q12', topic: 't1',
+    text: 'Son procesos que pertenecen al grupo de Proceso PLANIFICACIÓN:',
+    opts: [
+      'Desarrollar acta de Constitución del Proyecto. Identificar a los interesados.',
+      'Crear WBS. Determinar el presupuesto.',
+      'Desarrollar el acta de constitución del proyecto. Desarrollar el plan de dirección del proyecto.'
+    ],
+    correct: 1,
+    years: ['2022A'],
+    explanation: 'Correcto. El WBS y la determinación del presupuesto pertenecen al grupo de Planificación. El acta de constitución e identificar interesados pertenecen al grupo de Iniciación.'
+  },
+
+  // ===== T4-T5: REQUISITOS Y VIABILIDAD =====
+  {
+    id: 'q20', topic: 't4',
+    text: 'El estudio de viabilidad en un proyecto consiste en:',
+    opts: [
+      'Estudio que garantice que el proyecto es factible y es la mejor solución.',
+      'Estudio que garantice que el proyecto se puede integrar en otros sistemas de la empresa y se puede hacer en plazo y coste.',
+      'Las dos anteriores son correctas.'
+    ],
+    correct: 2,
+    years: ['2019', '2019A', '2022recap'],
+    explanation: 'Correcto. El estudio de viabilidad verifica tanto la factibilidad general (que se pueda hacer y sea la mejor solución) como la integración, el plazo y el coste. Ambas opciones son aspectos complementarios del mismo concepto.'
+  },
+  {
+    id: 'q21', topic: 't4',
+    text: 'El objetivo básico del estudio de viabilidad es:',
+    opts: [
+      'Determinar las actividades principales dentro del proyecto y desglosarlas en paquetes de trabajo componentes.',
+      'Determinar si la organización cuenta con los recursos y capacidades requeridas para llevar a cabo el proyecto.',
+      'Incorporar el proyecto con las metas estratégicas de la empresa.'
+    ],
+    correct: 1,
+    years: ['2018', '2022recap'],
+    explanation: 'Correcto. El objetivo básico del estudio de viabilidad es determinar si la organización tiene los recursos y capacidades para ejecutar el proyecto. La opción a describe la elaboración de la WBS. La opción c es incompleta (es uno de varios aspectos, no el único objetivo).'
+  },
+  {
+    id: 'q22', topic: 't4',
+    text: 'El estudio de viabilidad del proyecto se realiza desde cuatro perspectivas diferentes:',
+    opts: [
+      'Económico, normativo, legal y social.',
+      'Económico, técnico, operativo y legal.',
+      'Económico, técnico, operativo y social.'
+    ],
+    correct: 1,
+    years: ['2018', '2022recap'],
+    explanation: 'Correcto. Las cuatro perspectivas clásicas del estudio de viabilidad son: económica (coste/beneficio), técnica (tecnología disponible), operativa (capacidad organizacional) y legal (requisitos normativos y legales).'
+  },
+  {
+    id: 'q23', topic: 't4',
+    text: 'El informe de viabilidad:',
+    opts: [
+      'Tiene como objetivo informar sobre si el proyecto se realiza o no.',
+      'Valora con más peso los aspectos económicos que los técnicos, ya que los primeros son más importantes de cara a la decisión de continuar con el proyecto.',
+      'Es la entrada a la planificación y puede incluir una valoración de distintas alternativas.'
+    ],
+    correct: 2,
+    years: ['2022A'],
+    explanation: 'Correcto. El informe de viabilidad es la entrada para la fase de planificación y puede incluir comparativa de alternativas. La opción a es incompleta (su objetivo no es solo decir sí/no, sino documentar el análisis completo). La opción b es falsa: ninguna perspectiva tiene más peso a priori.'
+  },
+  {
+    id: 'q24', topic: 't4',
+    text: 'Estudio de viabilidad en un proyecto software:',
+    opts: [
+      'Debe hacerse el estudio de viabilidad cuando el coste supere el umbral Boehm.',
+      'Debe hacerse un estudio de viabilidad como una de las etapas iniciales del ciclo de vida.',
+      'Solo debe realizarse el estudio de viabilidad cuando el cliente lo solicita.'
+    ],
+    correct: 1,
+    years: ['2017', '2022recap'],
+    explanation: 'Correcto. El estudio de viabilidad es una etapa estándar e inicial del ciclo de vida de cualquier proyecto software, no condicional al coste ni a la solicitud del cliente.'
+  },
+  {
+    id: 'q25', topic: 't4',
+    text: 'Indique cuál de las siguientes afirmaciones es correcta sobre entrevistas:',
+    opts: [
+      'En la estructura de una entrevista en embudo, el entrevistador adopta un método deductivo.',
+      'Es aconsejable grabar la primera TFEA del equipo de trabajo con el cliente para tener constancia de los requisitos del cliente.',
+      'En la estructura de una entrevista en pirámide, el entrevistador adopta un método deductivo.'
+    ],
+    correct: 2,
+    years: ['2021', '2022recap'],
+    explanation: 'Correcto. En la entrevista en pirámide se parte de preguntas cerradas y específicas hacia preguntas más abiertas → método inductivo... espera: la pirámide va de específico a general → inductivo. PERO la opción c dice "deductivo". Revisando el material del curso: la entrevista en pirámide usa método inductivo (de específico a general) y la de embudo usa método deductivo (de general a específico). Por tanto, la opción c es la que aparece como correcta en los exámenes resueltos, aunque la terminología puede prestarse a confusión. Confiar en lo que indica el material de la asignatura.'
+  },
+  {
+    id: 'q26', topic: 't4',
+    text: 'Una entrevista se puede estructurar de los siguientes modos:',
+    opts: [
+      'Pirámide, TFEA, Cerradas y Abiertas.',
+      'Especificación Preliminar Individual y Unificada.',
+      'Pirámide, Embudo y Diamante.'
+    ],
+    correct: 2,
+    years: ['2019', '2019A', '2022recap'],
+    explanation: 'Correcto. Las tres estructuras clásicas de entrevista son pirámide (de específico a general), embudo (de general a específico) y diamante (combinación de ambas). TFEA es una técnica diferente de obtención de requisitos en grupo, no una estructura de entrevista.'
+  },
+
+  // ===== T6: NORMATIVA LEGAL =====
+  {
+    id: 'q30', topic: 't6',
+    text: 'Desarrollamos un software para la gestión de proyectos industriales que revolucionará el mercado, y queremos patentarlo. Usted es examinador de la OEPM, ¿Cómo resolvería?',
+    opts: [
+      'Admitiendo la solicitud, ya que al ser un software para la gestión de proyectos industriales se puede admitir.',
+      'Denegando la solicitud debido a que no se considera una invención. Estará protegido por el Derecho de la Propiedad Intelectual.',
+      'Denegando la solicitud porque nunca reunirá el requisito de novedad.'
+    ],
+    correct: 1,
+    years: ['2022A'],
+    explanation: 'Correcto. En España, el software puro no es patentable (no se considera una "invención" en el sentido de la Ley de Patentes). Se protege mediante el Derecho de Propiedad Intelectual (copyright/registro). La opción a es incorrecta: el ámbito de aplicación industrial no convierte al software en patentable. La c es falsa: el problema no es la novedad.'
+  },
+  {
+    id: 'q31', topic: 't6',
+    text: 'En relación con las patentes software en España, se protege:',
+    opts: [
+      'El código fuente, el código objeto y los manuales de instrucciones.',
+      'En España solo es posible proteger el código fuente mediante patentes, todo lo demás se protege mediante el registro de la propiedad.',
+      'En España no se aceptan patentes de software.'
+    ],
+    correct: 2,
+    years: ['2022B', '2022exam', '2017', '2022recap'],
+    explanation: 'Correcto. España (siguiendo el Convenio de Patentes Europeo) no acepta patentes de software como tal. El software se protege mediante derechos de autor (Propiedad Intelectual), no patentes.'
+  },
+  {
+    id: 'q32', topic: 't6',
+    text: 'Desarrollamos un sistema software en un nuevo modelo de lavadora para reducir el consumo de electricidad y agua. Para proteger este sistema de la mejor forma posible:',
+    opts: [
+      'Lo registramos mediante una Patente.',
+      'Lo registramos en el Registro de la Propiedad Intelectual.',
+      'Las dos anteriores son correctas, ya que ofrecen igual grado de protección.'
+    ],
+    correct: 0,
+    years: ['2021', '2022recap'],
+    explanation: 'Correcto. Este es un caso especial: el software está integrado en un producto físico (lavadora) con efecto técnico (reducción de consumo). En ese caso, el sistema completo SÍ es patentable como invención técnica. Si fuera software puro, solo sería Propiedad Intelectual.'
+  },
+  {
+    id: 'q33', topic: 't6',
+    text: 'Desarrollamos un software para jugar al ajedrez. Para proteger este programa de la mejor forma posible:',
+    opts: [
+      'Lo registramos mediante una Patente del Software.',
+      'Lo registramos en el Registro de la Propiedad Intelectual.',
+      'Las dos anteriores son correctas, ya que ambas ofrecen igual grado de protección.'
+    ],
+    correct: 1,
+    years: ['2019', '2019A', '2022recap'],
+    explanation: 'Correcto. Un software de juego de ajedrez es software puro, sin efecto técnico en un aparato físico. En España no es patentable. La protección adecuada es el Registro de la Propiedad Intelectual (derechos de autor).'
+  },
+  {
+    id: 'q34', topic: 't6',
+    text: 'Identifique cuál de las siguientes sentencias es FALSA sobre la LOPD-GDD:',
+    opts: [
+      'Deben cumplir la LOPD-GDD todas las entidades públicas y privadas, salvo las ONGs y las asociaciones sin ánimo de lucro.',
+      'La LOPD-GDD es la Ley Orgánica que desde el 5 de Diciembre de 2018 regula en España el régimen jurídico aplicable al tratamiento de datos de carácter personal y Garantía de Derechos Digitales.',
+      'Sistedes ha adoptado el Código de Ética y Práctica Profesional desarrollado por las asociaciones internacionales ACM e IEEE Computer Society.'
+    ],
+    correct: 0,
+    years: ['2021', '2022recap'],
+    explanation: 'La opción a es FALSA. La LOPD-GDD aplica a TODAS las entidades públicas y privadas sin excepción, incluyendo ONGs y asociaciones sin ánimo de lucro. Las opciones b y c son correctas.'
+  },
+  {
+    id: 'q35', topic: 't6',
+    text: 'Identifique la sentencia correcta sobre protección de datos:',
+    opts: [
+      'La Agencia Española de Protección de Datos es el organismo encargado de velar por el cumplimiento de la legislación sobre protección de datos y controlar su aplicación.',
+      'La LOPD es la norma que, desde el 14 de enero del año 2000, regula en España el régimen jurídico aplicable al tratamiento de los datos en general.',
+      'El RMS es el reglamento general para controlar la patentabilidad del software en España.'
+    ],
+    correct: 0,
+    years: ['2021', '2022recap'],
+    explanation: 'Correcto. La AEPD (Agencia Española de Protección de Datos) es el organismo de control. La opción b es falsa: la LOPD fue sustituida por la LOPD-GDD en 2018. La opción c es falsa: el RMS (Reglamento de Medidas de Seguridad) no controla patentabilidad.'
+  },
+  {
+    id: 'q36', topic: 't6',
+    text: 'Un grupo de 10 personas crea una ONG para ayudar a refugiados con problemas de salud. Según la Ley de Protección de Datos:',
+    opts: [
+      'Debemos cumplir con esta Ley, aunque seamos una ONG, pero no tenemos obligación de crear el registro interno de los tratamientos, ya que somos menos de 250 empleados.',
+      'Debemos cumplir con esta ley, aunque seamos una ONG, y además tenemos obligación de crear el registro interno de los tratamientos, por ser datos especiales (datos de salud).',
+      'No es obligatorio el cumplimiento de esta ley por ser una ONG, pero es recomendable.'
+    ],
+    correct: 1,
+    years: ['2022B', '2022exam'],
+    explanation: 'Correcto. Los datos de salud son "categorías especiales de datos" bajo el RGPD. Para este tipo de datos, la obligación de registro interno del tratamiento aplica independientemente del número de empleados. Todas las entidades (incluidas ONGs) deben cumplir el RGPD.'
+  },
+  {
+    id: 'q37', topic: 't6',
+    text: '¿Quién debe cumplir la Ley Orgánica de Protección de Datos?',
+    opts: [
+      'El responsable del fichero y quien decide sobre la finalidad, contenido y uso del tratamiento.',
+      'El responsable del fichero y el encargado del tratamiento.',
+      'Persona o personas responsables de los ficheros.'
+    ],
+    correct: 1,
+    years: ['2019', '2019A', '2022recap'],
+    explanation: 'Correcto. La LOPD/RGPD obliga tanto al responsable del tratamiento (quien decide el qué y para qué) como al encargado del tratamiento (quien procesa los datos por cuenta del responsable).'
+  },
+  {
+    id: 'q38', topic: 't6',
+    text: 'La Deontología Profesional:',
+    opts: [
+      'Está recogida en normas y códigos deontológicos.',
+      'Está regulada por el Estado.',
+      'No son exigibles a los profesionales de un determinado colectivo.'
+    ],
+    correct: 0,
+    years: ['2019', '2019A', '2022recap'],
+    explanation: 'Correcto. La deontología profesional se recoge en códigos deontológicos de los colegios profesionales y asociaciones. No es una regulación estatal (eso sería derecho positivo). Sí es exigible a los miembros del colectivo que adopta el código.'
+  },
+  {
+    id: 'q39', topic: 't6',
+    text: 'El código de ética y práctica profesional de SISTEDES (ACM-IEEE adaptado) se adhiere a los ocho principios:',
+    opts: [
+      'Sociedad, cliente, valoración, empresario, juicio, gestión, profesión y personal.',
+      'Cliente y empresario, producto, gestión, compañeros, juicio, administración, colegas y uso de computadores.',
+      'Sociedad, cliente y empresario, producto, juicio, administración, profesión, colegas y personal.'
+    ],
+    correct: 2,
+    years: ['2019', '2019A', '2021', '2022recap'],
+    explanation: 'Correcto. Los 8 principios del código de SISTEDES (adaptación del ACM-IEEE): Sociedad, Cliente y Empresario, Producto, Juicio, Administración, Profesión, Colegas y Personal. Fíjate que "cliente y empresario" son un único principio combinado.'
+  },
+  {
+    id: 'q40', topic: 't6',
+    text: 'El código de ética ACM-IEEE (principio de Valoración) hace referencia a:',
+    opts: [
+      'El ingeniero de software mantendrá la valoración de su juicio personal y profesional a lo largo de todo su proyecto.',
+      'El ingeniero de software mantendrá la integridad e independencia en sus valoraciones profesionales.',
+      'El ingeniero de software tiene la obligación de informar al cliente, teniendo en cuenta sus valoraciones personales.'
+    ],
+    correct: 1,
+    years: ['2017', '2022recap'],
+    explanation: 'Correcto. El principio de Valoración (Judgment) del código ACM-IEEE establece que el ingeniero debe mantener integridad e independencia en sus valoraciones profesionales, sin dejarse influir por presiones externas.'
+  },
+  {
+    id: 'q41', topic: 't6',
+    text: 'Obligaciones de las empresas respecto a los datos personales:',
+    opts: [
+      'Proteger los ficheros para preservar la confidencialidad, legitimar los datos personales y declarar los ficheros con datos de carácter personal a la Agencia de Protección de Datos.',
+      'Proteger los ficheros para preservar la confidencialidad e implantar un responsable de seguridad junto con una Auditoría interna o externa.',
+      'Desarrollar un Reglamento de Medidas de Seguridad e informar al Registro General de Protección de Datos sobre los datos de carácter personal sensible.'
+    ],
+    correct: 1,
+    years: ['2019', '2019A', '2022recap'],
+    explanation: 'Correcto. Entre las obligaciones clave de las empresas están: proteger la confidencialidad de los ficheros, designar un responsable de seguridad y realizar auditorías (internas o externas) periódicas. La opción a mezcla obligaciones con el sistema anterior (LOPD 1999). La c es parcialmente correcta pero incompleta.'
+  },
+  {
+    id: 'q42', topic: 't6',
+    text: 'La ley orgánica 15/1999, de Protección de Datos de carácter personal (LOPDCP) tiene por objeto garantizar y proteger:',
+    opts: [
+      'Las libertades públicas de las personas físicas.',
+      'Las libertades públicas y los derechos fundamentales de las personas físicas y jurídicas.',
+      'Las libertades públicas y los derechos fundamentales de las personas físicas.'
+    ],
+    correct: 2,
+    years: ['2017', '2022recap'],
+    explanation: 'Correcto. La LOPD 15/1999 protege las libertades públicas y derechos fundamentales de las PERSONAS FÍSICAS (no jurídicas). Las empresas (personas jurídicas) no tienen derechos fundamentales en este ámbito.'
+  },
+
+  // ===== T7-T8-T9: ESTIMACIÓN =====
+  {
+    id: 'q50', topic: 't7',
+    text: 'La estimación con puntos de función:',
+    opts: [
+      'Es una técnica de estimación empírica, al igual que PERT.',
+      'Es independiente del lenguaje de implementación.',
+      'No es un modelo adecuado para proyectos "tipo gestión".'
+    ],
+    correct: 1,
+    years: ['2012', '2014', '2022recap'],
+    explanation: 'Correcto. Los puntos de función son independientes del lenguaje de programación (miden funcionalidad, no líneas de código). La opción a es falsa: puntos de función es una técnica de descomposición funcional, no empírica como PERT. La opción c es falsa: los puntos de función son especialmente adecuados para proyectos de gestión.'
+  },
+  {
+    id: 'q51', topic: 't7',
+    text: 'Según el modelo de estimación "puntos de función", ¿cuál de las siguientes afirmaciones es CORRECTA?',
+    opts: [
+      'Realiza la estimación a partir de los requisitos.',
+      'Es dependiente del lenguaje de programación.',
+      'No es un modelo adecuado para proyectos "tipo gestión".'
+    ],
+    correct: 0,
+    years: ['2012', '2013', '2019', '2022recap'],
+    explanation: 'Correcto. El método de puntos de función estima el tamaño funcional del software a partir de los requisitos (entradas, salidas, consultas, ficheros internos y externos). Es independiente del lenguaje y es adecuado para proyectos de gestión.'
+  },
+  {
+    id: 'q52', topic: 't7',
+    text: 'Según el modelo de estimación "puntos de función", ¿cuál de las siguientes afirmaciones es INCORRECTA?',
+    opts: [
+      'Depende del lenguaje de programación.',
+      'Es un modelo adecuado para proyectos de gestión.',
+      'Realiza la estimación a partir de los requisitos.'
+    ],
+    correct: 0,
+    years: ['2017', '2022recap'],
+    explanation: 'La opción a es INCORRECTA: los puntos de función son independientes del lenguaje de programación. Las opciones b y c son correctas.'
+  },
+  {
+    id: 'q53', topic: 't7',
+    text: 'Los diagramas de GANTT...',
+    opts: [
+      '...se usan para la estimación.',
+      '...se usan para la planificación temporal.',
+      '...son unos diagramas de red que permiten calcular los caminos y tiempos límite.'
+    ],
+    correct: 1,
+    years: ['2012', '2022recap'],
+    explanation: 'Correcto. Los diagramas de Gantt son herramientas de planificación temporal (muestran tareas, duración y dependencias en el tiempo). No sirven para estimar. La opción c describe el PERT, no el Gantt.'
+  },
+  {
+    id: 'q54', topic: 't7',
+    text: 'El Work Breakdown Structure (WBS):',
+    opts: [
+      'Es un diagrama que se utiliza para estudiar distintas alternativas, y plasmarlas en forma de árbol.',
+      'Se suele utilizar junto con otras técnicas de estimación, por ejemplo las de descomposición.',
+      'Identifica las tareas, que luego podremos incluir en diagramas de PERT.'
+    ],
+    correct: 1,
+    years: ['2012', '2013', '2022B', '2022exam', '2022recap'],
+    explanation: 'Correcto. El WBS descompone el trabajo del proyecto en paquetes manejables y se usa junto con técnicas de estimación por descomposición. La opción a describe un árbol de decisión. La opción c es parcialmente cierta pero incompleta e imprecisa: el WBS identifica entregables, no directamente tareas PERT.'
+  },
+  {
+    id: 'q55', topic: 't7',
+    text: 'La representación gráfica del WBS:',
+    opts: [
+      'Nos muestra un grafo/árbol no ordenado en el que los nodos son las tareas.',
+      'Nos muestra un árbol en el que las hojas son las tareas.',
+      'Ninguna de las anteriores es correcta.'
+    ],
+    correct: 1,
+    years: ['2018', '2022recap'],
+    explanation: 'Correcto. El WBS se representa como un árbol jerárquico donde las hojas (nodos terminales) son los paquetes de trabajo (work packages). Los nodos intermedios son agrupaciones de nivel superior.'
+  },
+  {
+    id: 'q56', topic: 't7',
+    text: '¿Cuál de los siguientes NO es un modelo de estimación del software?',
+    opts: [
+      'WBS (Work Breakdown Structure)',
+      'COCOMO',
+      'Técnica Delphi'
+    ],
+    correct: 0,
+    years: ['2012', '2022exam', '2022recap'],
+    explanation: 'Correcto. El WBS es una herramienta de planificación y descomposición del trabajo, NO un modelo de estimación. COCOMO y la Técnica Delphi sí son modelos/técnicas de estimación.'
+  },
+  {
+    id: 'q57', topic: 't7',
+    text: 'Usted es el director de proyecto de la última versión de teléfonos móviles de su empresa. Tiene un WBS con diferentes niveles de descomposición. Usted decide que:',
+    opts: [
+      'La descomposición termina cuando se pueden realizar estimaciones adecuadas de costes y duraciones. Esto implica que las ramas pueden alcanzar diferentes niveles de descomposición.',
+      'La descomposición termina cuando todas las ramas hayan alcanzado el mismo nivel, para asegurar que no haya diferencias de coste y duración entre ellas.',
+      'La descomposición termina cuando finalice el proceso normalizado de realización del WBS.'
+    ],
+    correct: 0,
+    years: ['2021', '2022B', '2022exam', '2022recap', '2026'],
+    explanation: 'Correcto. La regla del PMBOK es que el WBS se descompone hasta el nivel en que se pueden hacer estimaciones fiables de coste y duración. No es necesario que todas las ramas tengan el mismo nivel de profundidad.'
+  },
+  {
+    id: 'q58', topic: 't7',
+    text: '¿Cuál de las siguientes declaraciones es FALSA respecto a la WBS?',
+    opts: [
+      'La estructura de desglose del trabajo representa el 100% del trabajo que será hecho en el proyecto.',
+      'Las actividades deben ser listadas en la secuencia en la que serán realizadas.',
+      'Cada nivel de una WBS brinda progresivamente mayores detalles.'
+    ],
+    correct: 1,
+    years: ['2022A'],
+    explanation: 'La opción b es FALSA. El WBS no lista actividades en secuencia; eso es función del PERT/Gantt. El WBS descompone el trabajo jerárquicamente por entregables, sin implicar secuencia temporal.'
+  },
+  {
+    id: 'q59', topic: 't7',
+    text: 'En el método de puntos de función de Albrecht, los puntos de función ajustados se obtienen a partir de los puntos de función no ajustados:',
+    opts: [
+      'Multiplicando por un coeficiente que depende del lenguaje de programación utilizado en el proyecto.',
+      'Valorando la importancia en el proyecto de 14 características generales del sistema.',
+      'Teniendo en cuenta la valoración de 15 factores de escala.'
+    ],
+    correct: 1,
+    years: ['2022B', '2022exam', '2026'],
+    explanation: 'Correcto. En el método de Albrecht, el factor de ajuste (VAF) se calcula valorando 14 características generales del sistema (complejidad del procesamiento, rendimiento, reutilización, etc.) en una escala 0-5. PFA = PFSA × (0,65 + 0,01 × Σvalores).'
+  },
+  {
+    id: 'q60', topic: 't7',
+    text: 'Según el método de puntos de función de Albrecht: si PFSA = 123 y VAF = 1,55, el valor de PFA es:',
+    opts: [
+      '190,65',
+      '124,55',
+      'VAF no puede tener un valor superior a 1,35'
+    ],
+    correct: 0,
+    years: ['2022B', '2022exam'],
+    explanation: 'Correcto. PFA = PFSA × VAF = 123 × 1,55 = 190,65. La opción c es falsa: el VAF puede oscilar entre 0,65 y 1,35 según la fórmula estándar de Albrecht (con 14 factores × máx 5 = 70; VAF = 0,65 + 0,01×70 = 1,35). Un VAF de 1,55 implicaría una suma > 70, que no es posible en el método estándar, pero la pregunta lo da como dato válido y pide el cálculo.'
+  },
+  {
+    id: 'q61', topic: 't7',
+    text: 'En el modelo de estimación de costes COCOMO se utiliza E = a × KLDC^b × FAE. ¿Cuál de las siguientes afirmaciones es correcta?',
+    opts: [
+      'a y b son variables con valores dependientes de los conductores de coste.',
+      'KLDC es la cantidad de líneas de código, expresada en millones.',
+      'FAE es una variable obtenida a partir del conocimiento de las características de los trabajadores, de las herramientas a utilizar y de otros atributos del software.'
+    ],
+    correct: 2,
+    years: ['2021', '2022recap'],
+    explanation: 'Correcto. El FAE (Factor de Ajuste del Esfuerzo) en COCOMO Intermedio es el producto de los conductores de coste, que incluyen atributos del producto, del hardware, del personal y del proyecto. KLDC se expresa en miles (no millones). a y b son constantes que dependen del modo del proyecto (orgánico, semi-acoplado, empotrado), no de los conductores de coste.'
+  },
+  {
+    id: 'q62', topic: 't7',
+    text: 'Los parámetros relacionados con los ATRIBUTOS DEL SOFTWARE para estimar los ajustes del esfuerzo en COCOMO son:',
+    opts: [
+      'Fiabilidad, utilización de herramientas software y Aplicación de métodos de Ingeniería del Software.',
+      'Tamaño de la base de datos, utilización de herramientas software y duración del desarrollo requerido.',
+      'Fiabilidad, tamaño de la base de datos y complejidad del producto.'
+    ],
+    correct: 2,
+    years: ['2022A'],
+    explanation: 'Correcto. Los conductores de coste relacionados con atributos del SOFTWARE en COCOMO son: fiabilidad requerida (RELY), tamaño de la base de datos (DATA) y complejidad del producto (CPLX). Las herramientas y métodos de IS pertenecen a los atributos del proyecto, y la duración del desarrollo a los atributos del proyecto.'
+  },
+  {
+    id: 'q63', topic: 't7',
+    text: '¿Qué modelo COCOMO utilizarías si el proyecto a desarrollar es muy complejo, restrictivo e innovador?',
+    opts: [
+      'Orgánico',
+      'Semiacoplado',
+      'Empotrado'
+    ],
+    correct: 2,
+    years: ['2022recap'],
+    explanation: 'Correcto. El modo empotrado (embedded) de COCOMO se usa para proyectos muy restrictivos con requisitos hardware/software complejos e innovadores, donde los cambios son costosos. El orgánico es para proyectos simples y el semiacoplado para proyectos de complejidad media.'
+  },
+  {
+    id: 'q64', topic: 't7',
+    text: 'El software de control de una fotocopiadora avanzada requiere 32.000 líneas de código C y 4.200 líneas en 4GL. Con ratio C=128 LDC/PF y 4GL=20 LDC/PF, ¿cuántos puntos de función tiene?',
+    opts: [
+      '1633',
+      '260',
+      '460'
+    ],
+    correct: 2,
+    years: ['2012', '2013', '2019', '2022recap'],
+    explanation: 'Correcto. PF_C = 32000/128 = 250; PF_4GL = 4200/20 = 210; Total = 250 + 210 = 460 PF. La opción a (1633) resulta de sumar LDC en lugar de PF. La opción b (260) es un error de cálculo.'
+  },
+  {
+    id: 'q65', topic: 't7',
+    text: 'COCOMO versus PUNTOS DE FUNCIÓN:',
+    opts: [
+      'COCOMO estima costes, PUNTOS DE FUNCIÓN no aporta directamente una estimación de costes.',
+      'Son dos técnicas distintas pero persiguen exactamente los mismos objetivos: dimensionar proyectos, plazos y costes.',
+      'Ninguna de las anteriores es correcta.'
+    ],
+    correct: 0,
+    years: ['2018', '2022recap'],
+    explanation: 'Correcto. COCOMO estima directamente el esfuerzo y coste. Los Puntos de Función miden el tamaño funcional (no el coste directamente); para obtener coste se necesita convertir PF a LDC y luego aplicar un modelo como COCOMO. Son complementarios, no equivalentes.'
+  },
+  {
+    id: 'q66', topic: 't7',
+    text: 'Según PMBOK, la planificación completa del proyecto lleva aparejados, entre otros, los siguientes procesos:',
+    opts: [
+      'La Gestión de Comunicación y Adquisiciones del proyecto.',
+      'La Gestión de puntos de función y factores de ajuste.',
+      'Ambas son correctas.'
+    ],
+    correct: 0,
+    years: ['2022B', '2022exam'],
+    explanation: 'Correcto. El grupo de procesos de Planificación del PMBOK incluye la planificación de la Gestión de Comunicaciones y de Adquisiciones, entre otros. La opción b es falsa: los puntos de función y factores de ajuste no son procesos de planificación en PMBOK.'
+  },
+
+  // ===== T10: PERT / GANTT =====
+  {
+    id: 'q70', topic: 't10',
+    text: 'El método de planificación PERT es:',
+    opts: [
+      'Una definición en base a una red (grafo dirigido) de dependencias de tareas que llevan al final del proyecto.',
+      'Una definición en forma de barras que dan un aspecto visual temporal del Plan del Proyecto.',
+      'Una definición en forma de grafo no dirigido de tareas que ayuda a visualizar el Plan del Proyecto.'
+    ],
+    correct: 0,
+    years: ['2012', '2022recap'],
+    explanation: 'Correcto. PERT es una red (grafo dirigido) de actividades con dependencias que permite calcular tiempos y caminos críticos. La opción b describe Gantt. La opción c es incorrecta: el grafo PERT es dirigido, no no-dirigido.'
+  },
+  {
+    id: 'q71', topic: 't10',
+    text: 'En relación con la técnica PERT podemos afirmar que:',
+    opts: [
+      'En una actividad el tiempo early es el tiempo máximo en el que se puede iniciar las actividades siguientes sin que ello retrase la duración del proyecto.',
+      'La holgura total de una actividad indica cuánto se puede retrasar su comienzo, sin afectar la duración total del proyecto.',
+      'En una actividad cualquiera el tiempo last podría ser menor que el tiempo early de dicha actividad.'
+    ],
+    correct: 1,
+    years: ['2021', '2022recap'],
+    explanation: 'Correcto. La holgura total = Tiempo last - Tiempo early - Duración. Indica cuánto puede retrasarse el inicio de la actividad sin afectar al proyecto. La opción a confunde: el early es el tiempo MÁS PRONTO, no el máximo. La opción c es falsa: last ≥ early siempre.'
+  },
+  {
+    id: 'q72', topic: 't10',
+    text: 'En un grafo de actividades (PERT):',
+    opts: [
+      'No se consideran relaciones de precedencia entre las actividades.',
+      'El fin más tardío de una actividad es lo más tarde que puede comenzar una actividad sin que afecte su retraso a la duración total del proyecto.',
+      'La holgura total de una actividad indica cuanto se puede atrasar su comienzo sin afectar la duración total del proyecto.'
+    ],
+    correct: 2,
+    years: ['2017', '2022B', '2022exam', '2022recap'],
+    explanation: 'Correcto. La holgura total = last - early indica el margen disponible en el inicio. La opción a es falsa: las precedencias son la base del PERT. La opción b confunde fin tardío con inicio tardío: el fin tardío es lo más tarde que puede terminar, no comenzar.'
+  },
+  {
+    id: 'q73', topic: 't10',
+    text: 'La holgura de una tarea:',
+    opts: [
+      'Siempre es cero.',
+      'Es el tiempo máximo que puede durar una tarea en caso de comenzar en su inicio temprano y concluir en su fin tardío.',
+      'Es el tiempo que disponemos para jugar con el inicio de una tarea sin afectar al proyecto.'
+    ],
+    correct: 2,
+    years: ['2018', '2022recap'],
+    explanation: 'Correcto. La holgura es el margen de retraso disponible en el inicio de una actividad sin afectar la duración total del proyecto. La opción a es falsa: solo las actividades del camino crítico tienen holgura cero. La opción b describe la duración máxima posible, no la holgura.'
+  },
+  {
+    id: 'q74', topic: 't10',
+    text: 'Tras elaborar el PERT, se sabe que H(A)=3, H(B)=2, H(C)=0, H(D)=4. ¿Cuál de las siguientes afirmaciones es correcta?',
+    opts: [
+      'El máximo retraso que puede experimentar la actividad A sin que se modifique la duración final del proyecto es 2.',
+      'Si la duración de la actividad D se reduce en una unidad no se alteraría la duración final del proyecto.',
+      'La duración final del proyecto será 9.'
+    ],
+    correct: 1,
+    years: ['2017', '2021', '2022recap'],
+    explanation: 'Correcto. D tiene holgura 4: si se reduce su duración en 1, la holgura pasa a 5, y el proyecto sigue durando lo mismo (la reducción solo aumenta su holgura). La opción a es falsa: A puede retrasarse H(A)=3, no 2. La opción c es falsa: las holguras no suman la duración del proyecto.'
+  },
+  {
+    id: 'q75', topic: 't10',
+    text: 'Tras el PERT, el camino crítico es A-F-G con duraciones 10, 19 y 10 semanas. Podemos asegurar que:',
+    opts: [
+      'La duración total del proyecto es 39 semanas.',
+      'La duración total del proyecto es de 19 semanas, ya que es la máxima duración de una de las actividades del camino crítico.',
+      'Estas actividades son las únicas que pueden retrasarse sin que se retrase la entrega final del proyecto.'
+    ],
+    correct: 0,
+    years: ['2018', '2022recap'],
+    explanation: 'Correcto. La duración total del camino crítico es la suma de sus actividades: 10 + 19 + 10 = 39 semanas. La opción b confunde la actividad más larga con la duración total. La opción c es lo contrario: las actividades del camino crítico son las que NO pueden retrasarse (holgura = 0).'
+  },
+  {
+    id: 'q76', topic: 't10',
+    text: 'La duración del proyecto es 15 semanas, varianza del camino crítico = 3,11 y desviación estándar = 1,76 semanas. La probabilidad de que el proyecto termine en 16 semanas es:',
+    opts: [
+      '62,5%',
+      '71,2%',
+      '77,3%'
+    ],
+    correct: 1,
+    years: ['2018', '2022recap'],
+    explanation: 'Correcto. Z = (16 - 15) / 1,76 = 0,568. Buscando en la tabla de distribución normal: Φ(0,57) ≈ 0,7157 ≈ 71,2%. La opción a correspondería a Z≈0,32 y la c a Z≈0,75.'
+  },
+  {
+    id: 'q77', topic: 't10',
+    text: 'Indica cuál de las siguientes afirmaciones es INCORRECTA sobre el camino crítico:',
+    opts: [
+      'La duración total del proyecto viene determinada por el camino crítico.',
+      'Un retraso en la fecha de finalización de una actividad provoca un retraso en la fecha final del proyecto.',
+      'La fecha de finalización del proyecto se ve afectada por las fechas de finalización de las actividades que constituyen el camino crítico.'
+    ],
+    correct: 1,
+    years: ['2022B', '2022exam'],
+    explanation: 'La opción b es INCORRECTA. Un retraso en cualquier actividad solo provoca retraso en el proyecto SI esa actividad tiene holgura cero (es decir, está en el camino crítico). Una actividad con holgura puede retrasarse hasta agotar esa holgura sin afectar la fecha final.'
+  },
+  {
+    id: 'q78', topic: 't10',
+    text: 'En un grafo PERT, las relaciones de precedencia CONVERGENTES se presentan cuando:',
+    opts: [
+      'Para iniciar una actividad es necesario haber finalizado previamente cualquiera de las precedentes.',
+      'Para iniciar una actividad es necesario haber finalizado previamente TODAS las actividades precedentes.',
+      'Es indistinto.'
+    ],
+    correct: 1,
+    years: ['2022B', '2022exam'],
+    explanation: 'Correcto. Las relaciones convergentes (AND) exigen que TODAS las actividades predecesoras hayan finalizado antes de poder iniciar la siguiente. Si bastara con cualquiera, serían relaciones divergentes (OR), que no se usan en PERT estándar.'
+  },
+  {
+    id: 'q79', topic: 't10',
+    text: '¿Cuál de las siguientes afirmaciones sobre las actividades de una red PERT es verdadera?',
+    opts: [
+      'Si un proyecto tiene múltiples caminos críticos, todos tienen la misma duración.',
+      'La última fecha de inicio de una actividad es la última fecha de fin de esa actividad más su duración.',
+      'La primera fecha de fin de una actividad es el mayor de todas las primeras fechas de inicio de sus predecesores.'
+    ],
+    correct: 0,
+    years: ['2022B', '2022exam'],
+    explanation: 'Correcto. Por definición, el camino crítico es el de mayor duración. Si hay múltiples caminos críticos, todos deben tener exactamente la misma duración (igual a la duración total del proyecto). La opción b está invertida: última fecha de inicio = última fecha de fin - duración. La opción c es incorrecta: la primera fecha de fin = primera fecha de inicio + duración.'
+  },
+  {
+    id: 'q80', topic: 't10',
+    text: 'Señalar la respuesta correcta si hablamos de eficiencia y fiabilidad en los proyectos software:',
+    opts: [
+      'La fiabilidad es la medida de la correcta utilización de equipos, instalaciones y personal que participa en el proyecto con los tiempos de respuesta adecuados.',
+      'La eficiencia es la medida del cumplimiento de los objetivos del organismo y de los requisitos de los usuarios.',
+      'La eficiencia es la cantidad de recursos hardware y software que necesita una aplicación para realizar las operaciones con los tiempos de respuesta adecuados.'
+    ],
+    correct: 2,
+    years: ['2022B', '2022exam'],
+    explanation: 'Correcto. La eficiencia mide los recursos (hardware/software) necesarios para operar con un rendimiento aceptable. La opción a describe la eficiencia (no la fiabilidad). La opción b describe la efectividad u eficacia.'
+  },
+  {
+    id: 'q81', topic: 't10',
+    text: 'En una planificación se estima un riesgo con probabilidad de pérdida del 40% y magnitud de 7 semanas. La exposición a riesgo es:',
+    opts: [
+      '2,8 semanas',
+      'Imposible conocer ese dato al realizar la planificación, ya que no tenemos suficiente información.',
+      '7 semanas'
+    ],
+    correct: 0,
+    years: ['2022B', '2022exam'],
+    explanation: 'Correcto. Exposición al riesgo = Probabilidad × Magnitud = 0,40 × 7 = 2,8 semanas. Este es el valor esperado del impacto si el riesgo ocurre.'
+  },
+  {
+    id: 'q82', topic: 't10',
+    text: 'En una línea base de un proyecto, se pueden realizar cambios:',
+    opts: [
+      'A través de procedimientos de control de cambios formal.',
+      'Mediante consenso de los máximos responsables del proyecto.',
+      'Siempre que suponga una mejora en la calidad del proyecto.'
+    ],
+    correct: 0,
+    years: ['2022B', '2022exam'],
+    explanation: 'Correcto. La línea base es el plan aprobado del proyecto. Cualquier modificación debe pasar por el proceso formal de control de cambios (Change Control Process) definido en el PMBOK. No basta con el consenso ni con que mejore la calidad.'
+  },
+  {
+    id: 'q83', topic: 't10',
+    text: 'Dentro de los procesos de seguimiento y control, el Control y Seguimiento Integrado del Proyecto tiene como objetivo principal:',
+    opts: [
+      'Conseguir que el proveedor cumpla con los requisitos definidos en el contrato y satisfaga las necesidades por las que forma parte del proyecto.',
+      'Verificar la situación del alcance con respecto al plan, velar porque los cambios se realicen mediante el proceso correcto de control de cambio, y si fuera necesario, gestionar las modificaciones de la línea base del alcance.',
+      'Regular el progreso del proyecto con el fin de cumplir con los objetivos de rendimiento definidos en el plan del proyecto.'
+    ],
+    correct: 2,
+    years: ['2022B', '2022exam'],
+    explanation: 'Correcto. El proceso de Monitoreo y Control Integrado del Proyecto tiene como objetivo principal regular el progreso del proyecto para cumplir los objetivos de rendimiento (alcance, tiempo, coste, calidad). La opción a describe el control de adquisiciones. La opción b describe el Control del Alcance.'
+  },
+  {
+    id: 'q84', topic: 't10',
+    text: 'Tu empresa evalúa tres proyectos. A: 70% de ganar 5.000€ y 30% de ganar 10.000€. B: 50% de ganar 70.000€ y 50% de perder 10.000€. C: 25% de ganar 20.000€ y 75% de perder 35.000€. ¿Qué proyecto es el MEJOR según el VME?',
+    opts: [
+      'Proyecto A',
+      'Proyecto B',
+      'Proyecto C'
+    ],
+    correct: 1,
+    years: ['2021', '2022exam'],
+    explanation: 'Correcto. VME(A) = 0,7×5000 + 0,3×10000 = 3500+3000 = 6500€. VME(B) = 0,5×70000 + 0,5×(-10000) = 35000-5000 = 30.000€. VME(C) = 0,25×20000 + 0,75×(-35000) = 5000-26250 = -21.250€. El mejor es B con 30.000€.'
+  },
+  {
+    id: 'q85', topic: 't10',
+    text: 'Tu empresa evalúa tres proyectos. A: 50% de ganar 50.000€ y 50% de perder 10.000€. B: 30% de ganar 40.000€ y 70% de ganar 10.000€. C: 45% de ganar 50.000€ y 55% de perder 5.000€. ¿Qué proyecto es el PEOR según el VME?',
+    opts: [
+      'Proyecto A',
+      'Proyecto B',
+      'Proyecto C'
+    ],
+    correct: 2,
+    years: ['2017'],
+    explanation: 'VME(A) = 0,5×50000 + 0,5×(-10000) = 25000-5000 = 20.000€. VME(B) = 0,3×40000 + 0,7×10000 = 12000+7000 = 19.000€. VME(C) = 0,45×50000 + 0,55×(-5000) = 22500-2750 = 19.750€. El PEOR (menor VME) es B con 19.000€. NOTA: la opción marcada en el examen fue C, posiblemente por un enunciado ligeramente diferente al disponible. Verifica con el material del profesor.'
+  },
+
+  // ===== T11-T12: RIESGOS =====
+  {
+    id: 'q90', topic: 't11',
+    text: '¿Cuál de las siguientes afirmaciones sobre riesgos es correcta?',
+    opts: [
+      'Los riesgos de un proyecto están vivos durante todo el proyecto y hay que adaptar el plan de riesgos permanentemente.',
+      'Los riesgos no cambian durante todo el proyecto.',
+      'Los riesgos se definen y se gestionan de cualquier manera.'
+    ],
+    correct: 0,
+    years: ['2012', '2013', '2022exam', '2022recap'],
+    explanation: 'Correcto. Los riesgos son dinámicos: nuevos riesgos emergen, otros desaparecen, y el impacto/probabilidad de los existentes puede cambiar. El plan de riesgos debe revisarse periódicamente a lo largo de todo el proyecto.'
+  },
+  {
+    id: 'q91', topic: 't11',
+    text: 'En la gestión de riesgos en el software es fundamental:',
+    opts: [
+      'Establecer la probabilidad y el impacto de cada riesgo.',
+      'Identificar todos los riesgos y abordarlos sistemáticamente.',
+      'Estimar un plan de contingencia para todos los riesgos que puedan aparecer en un proyecto, para así actuar de forma proactiva.'
+    ],
+    correct: 1,
+    years: ['2021', '2022recap'],
+    explanation: 'Correcto. Lo fundamental es identificar los riesgos y gestionarlos de forma sistemática. La opción a solo cubre el análisis cuantitativo, que es un paso posterior. La opción c es incorrecta: no siempre es posible ni coste-eficiente crear planes de contingencia para TODOS los riesgos; se priorizan.'
+  },
+  {
+    id: 'q92', topic: 't11',
+    text: '¿Cuál de las siguientes afirmaciones es verdadera sobre gestión de riesgos?',
+    opts: [
+      'La planeación de riesgos significa trazar planes para evitar o minimizar el efecto de los riesgos.',
+      'La priorización de riesgos indica que es posible acometer todos los riesgos.',
+      'La resolución del riesgo indica que cada riesgo puede o no tener una solución determinada.'
+    ],
+    correct: 0,
+    years: ['2012', '2013', '2022exam', '2022recap'],
+    explanation: 'Correcto. La planificación de riesgos implica definir estrategias para evitar o mitigar el impacto de los riesgos. La opción b es falsa: la priorización sirve para focalizar esfuerzos en los riesgos más críticos, no implica que se puedan abordar todos. La opción c es imprecisa.'
+  },
+  {
+    id: 'q93', topic: 't11',
+    text: 'En un proyecto software, sobre los riesgos:',
+    opts: [
+      'Los riesgos suelen ir cambiando a lo largo del mismo, por lo que en instancias predefinidas conviene rehacer las evaluaciones de riesgos.',
+      'Los riesgos se establecen con precisión en la fase de planificación, ya que suelen ser estables a lo largo del mismo.',
+      'Los riesgos identificados se suelen reducir sistemáticamente, desarrollando acciones que permitan AUMENTAR la probabilidad de que un riesgo ocurra y/o disminuya el impacto negativo.'
+    ],
+    correct: 0,
+    years: ['2017', '2022recap'],
+    explanation: 'Correcto. Los riesgos evolucionan durante el proyecto. La opción b es falsa: los riesgos no son estables. La opción c tiene un error deliberado: las acciones de mitigación buscan REDUCIR la probabilidad (no aumentarla) y/o disminuir el impacto negativo.'
+  },
+  {
+    id: 'q94', topic: 't11',
+    text: 'Sobre la gestión de riesgos:',
+    opts: [
+      'Para todo riesgo se debe determinar un conjunto de acciones para reducir o eliminar el riesgo.',
+      'Los riesgos y las decisiones se registran en un plan de gestión de riesgos al comienzo del proyecto, que se debe actualizar y monitorear a lo largo del mismo.',
+      'En la detección de riesgos, solo se deben identificar y atacar todos los riesgos específicos del proceso.'
+    ],
+    correct: 1,
+    years: ['2018', '2022recap'],
+    explanation: 'Correcto. El plan de gestión de riesgos se elabora al inicio pero se actualiza continuamente. La opción a es incorrecta: no siempre hay acciones para todos los riesgos (algunos se aceptan). La opción c es falsa: se identifican todos los tipos de riesgos, no solo los del proceso.'
+  },
+
+  // ===== T13: CALIDAD =====
+  {
+    id: 'q100', topic: 't13',
+    text: 'Propiedades que se pueden medir en un software para evaluar su calidad:',
+    opts: [
+      'Características operativas, adaptabilidad a nuevos entornos y capacidad para soportar cambios.',
+      'Cumplimiento normativo, planificación temporal y adaptabilidad a nuevos entornos.',
+      'Cumplimiento de la planificación temporal y de los requisitos funcionales del proyecto.'
+    ],
+    correct: 0,
+    years: ['2021', '2017', '2018', '2022recap'],
+    explanation: 'Correcto. El modelo de calidad de McCall/ISO 9126 agrupa las propiedades en: características operativas (funcionalidad, rendimiento, fiabilidad...), adaptabilidad a nuevos entornos (portabilidad) y capacidad para soportar cambios (mantenibilidad). Las otras opciones mezclan métricas de gestión de proyecto con calidad del software.'
+  },
+  {
+    id: 'q101', topic: 't13',
+    text: 'Indica cuál de las siguientes afirmaciones sobre SQA (Garantía de Calidad del Software) es FALSA:',
+    opts: [
+      'Garantiza que el software funciona.',
+      'El objetivo es dar confianza sobre el software que se está desarrollando.',
+      'Es el conjunto de actividades que evalúa el proceso de desarrollo de software.'
+    ],
+    correct: 0,
+    years: ['2022B', '2022exam'],
+    explanation: 'La opción a es FALSA. La SQA no garantiza que el software funcione correctamente; eso es tarea del testing. La SQA garantiza que el PROCESO de desarrollo sigue los estándares y procedimientos establecidos, dando confianza en el resultado.'
+  },
+  {
+    id: 'q102', topic: 't13',
+    text: 'Indique cuál de las siguientes afirmaciones sobre SQA es verdadera:',
+    opts: [
+      'El objetivo básico del estudio de viabilidad es adaptar el proyecto a las metas estratégicas de la empresa.',
+      'La garantía de calidad del software (SQA) comprende un conjunto de actividades que se planifican y se aplican durante todo el proceso de desarrollo.',
+      'Entre las actividades de la SQA no se encuentra la realización de las revisiones técnicas formales.'
+    ],
+    correct: 1,
+    years: ['2021', '2022recap'],
+    explanation: 'Correcto. La SQA es una actividad transversal que se aplica durante todo el ciclo de vida del desarrollo software. La opción a describe el estudio de viabilidad, no la SQA. La opción c es falsa: las RTF sí son una actividad de la SQA.'
+  },
+  {
+    id: 'q103', topic: 't13',
+    text: 'Indique cuál de las siguientes sentencias es FALSA sobre SQA:',
+    opts: [
+      'La SQA es una actividad de protección que se aplica en todo el proceso de ingeniería del software.',
+      'Entre las actividades de la SQA no se encuentra la realización de las revisiones técnicas formales.',
+      'Entre las actividades de la SQA se encuentra el control de cambios.'
+    ],
+    correct: 1,
+    years: ['2018', '2022recap'],
+    explanation: 'La opción b es FALSA. Las Revisiones Técnicas Formales (RTF) SÍ son una actividad de la SQA. Entre las actividades de SQA: RTF, pruebas, auditorías, control de cambios, etc.'
+  },
+  {
+    id: 'q104', topic: 't13',
+    text: 'Indica cuál de las siguientes afirmaciones es VERDADERA sobre SQA y RTF:',
+    opts: [
+      'Uno de los grandes inconvenientes de las revisiones técnicas formales es que fomentan la inseguridad en el proyecto.',
+      'Como resultado de una RTF se obtiene un informe sobre consideraciones vistas únicamente en la codificación del software.',
+      'La Garantía de Calidad del Software (SQA) es una actividad que se aplica en todo el proceso de ingeniería del software.'
+    ],
+    correct: 2,
+    years: ['2017', '2022recap'],
+    explanation: 'Correcto. La SQA se aplica en todas las fases del desarrollo. La opción a es falsa: las RTF aumentan la confianza (no la inseguridad). La opción b es falsa: las RTF se aplican a todos los productos del trabajo (requisitos, diseño, código, etc.), no solo a la codificación.'
+  },
+  {
+    id: 'q105', topic: 't13',
+    text: 'Las Revisiones Técnicas Formales tienen como objetivo:',
+    opts: [
+      'Descubrir errores en la función, la lógica o la implementación.',
+      'Garantizar que el software se desarrolla bajo los estándares.',
+      'Las dos anteriores son correctas.'
+    ],
+    correct: 2,
+    years: ['2021', '2022recap'],
+    explanation: 'Correcto. Las RTF tienen múltiples objetivos: (1) descubrir errores en función, lógica o implementación, y (2) garantizar que el software sigue los estándares definidos. Ambas afirmaciones son correctas.'
+  },
+  {
+    id: 'q106', topic: 't13',
+    text: 'Como resultado de la Revisión Técnica Formal:',
+    opts: [
+      'No se obtendrá ningún documento, únicamente se aprobará o no la salida del producto.',
+      'Se obtendrá un informe sobre consideraciones vistas únicamente en la codificación del software.',
+      'Se obtendrá una lista con los sucesos de la revisión y un informe sumarial de dicha revisión.'
+    ],
+    correct: 2,
+    years: ['2012', '2022exam', '2022recap'],
+    explanation: 'Correcto. Los resultados documentales de una RTF son: la lista de problemas encontrados (issue list) y el informe sumario de la revisión. La opción a es falsa: siempre se genera documentación. La opción b es falsa: la RTF no se limita al código.'
+  },
+  {
+    id: 'q107', topic: 't13',
+    text: 'En las RTF se debe garantizar que el software se desarrolla bajo los estándares. ¿Es correcta esta afirmación?',
+    opts: [
+      'Es incorrecta, puesto que la garantía de que el software se desarrolle bajo los estándares corresponde a la SQA, y ésta no forma parte de las RTF.',
+      'Es correcta, y coincide con uno de los objetivos de las RTF.',
+      'Es incorrecta, ya que la única función de las RTF es descubrir errores en la función o en la implementación.'
+    ],
+    correct: 1,
+    years: ['2022B', '2022exam'],
+    explanation: 'Correcto. Garantizar el cumplimiento de estándares ES uno de los objetivos de las RTF (además de descubrir errores). La opción a confunde: la SQA engloba a las RTF, no son independientes. La opción c es incorrecta por excluir otros objetivos.'
+  },
+
+
+  // ===== EXAMEN ORDINARIO 2026 — PREGUNTAS NUEVAS =====
+  {
+    id: 'q200', topic: 't1',
+    text: '¿Cuál es la diferencia fundamental en la forma en que los Grupos de Procesos del PMBOK se relacionan con las fases de un proyecto?',
+    opts: [
+      'Cada grupo de procesos equivale exactamente a una fase secuencial cronológica del ciclo de vida del proyecto.',
+      'Las fases solo aplican al desarrollo técnico del software, mientras que los grupos de procesos se ejecutan únicamente en la reunión de inicio.',
+      'Los grupos de procesos son categorías de actividades interrelacionadas que pueden repetirse y superponerse en diferentes momentos del ciclo de vida del proyecto.'
+    ],
+    correct: 2,
+    years: ['2026'],
+    explanation: 'Correcto. Los Grupos de Procesos del PMBOK (Inicio, Planificación, Ejecución, Seguimiento y Control, Cierre) NO equivalen a fases secuenciales. Son categorías lógicas de actividades que pueden ocurrir varias veces y solaparse a lo largo de las distintas fases del proyecto.'
+  },
+  {
+    id: 'q201', topic: 't1',
+    text: '¿Cuál es la diferencia crítica entre la base de la planificación tradicional y la planificación ágil?',
+    opts: [
+      'La tradicional se basa en el control predictivo identificando inicialmente las tareas, mientras que la ágil se basa en el control empírico planificando en función de objetivos de negocio.',
+      'La tradicional elimina por completo el concepto del triángulo de hierro, mientras que en la ágil lo adopta como su único pilar rígido.',
+      'La tradicional busca maximizar la motivación del trabajador mediante la autogestión, mientras que en la ágil centraliza el control en la figura del director de proyecto.'
+    ],
+    correct: 0,
+    years: ['2026'],
+    explanation: 'Correcto. La planificación tradicional (predictiva) define el alcance, tiempo y coste al inicio y trata de controlar las desviaciones. La planificación ágil se basa en el control empírico: ciclos cortos con inspección y adaptación continua orientada a entregar valor de negocio.'
+  },
+  {
+    id: 'q202', topic: 't4',
+    text: 'En la Técnica para Facilitar la Especificación de Aplicaciones (TFEA), ¿cuál es el orden correcto del flujo de trabajo tras la primera reunión cliente-equipo?',
+    opts: [
+      'Elaboración de especificación preliminar unificada, debate del equipo, elaboración de especificaciones individuales.',
+      'Elaboración de especificaciones individuales, unificación por el jefe del proyecto, análisis individual de la unificada, debate grupal para cuestionarios.',
+      'Debate grupal, entrevistas por perfiles, elaboración de la especificación preliminar unificada.'
+    ],
+    correct: 1,
+    years: ['2026'],
+    explanation: 'Correcto. El flujo de la TFEA tras la reunión inicial es: cada participante elabora su especificación individual, el jefe de proyecto las unifica, cada miembro analiza individualmente la versión unificada y finalmente hay un debate grupal para resolver discrepancias y generar cuestionarios de consenso.'
+  },
+  {
+    id: 'q203', topic: 't7',
+    text: 'Respecto a la Estructura de Desglose del Trabajo (WBS), indique la afirmación correcta:',
+    opts: [
+      'Su principal objetivo es establecer la secuencia temporal detallada de las actividades del proyecto.',
+      'Debe elaborarse únicamente al finalizar la definición de los entregables.',
+      'Facilita la estimación de costes, recursos y esfuerzo al descomponer el trabajo en elementos más pequeños y gestionables.'
+    ],
+    correct: 2,
+    years: ['2026'],
+    explanation: 'Correcto. El objetivo principal del WBS es descomponer el alcance del proyecto en componentes manejables (work packages), lo que facilita la estimación de costes, recursos y esfuerzo. La secuenciación temporal es función del PERT/Gantt. El WBS se construye durante la planificación, no al finalizar los entregables.'
+  },
+  {
+    id: 'q204', topic: 't10',
+    text: 'En un proyecto, la actividad A tiene tiempos optimista=2, probable=5, pesimista=8 días. La actividad B tiene optimista=1, probable=5, pesimista=20 días. ¿Qué conclusión es la más adecuada?',
+    opts: [
+      'La actividad B pertenece necesariamente al camino crítico, ya que la diferencia entre su tiempo optimista y pesimista es mayor.',
+      'La actividad B tiene una duración más fiable porque tiene un mayor rango de posibilidades.',
+      'La actividad B presenta un mayor grado de incertidumbre, lo que indica una mayor variabilidad en su duración real.'
+    ],
+    correct: 2,
+    years: ['2026'],
+    explanation: 'Correcto. Un mayor rango entre el tiempo optimista y pesimista implica mayor varianza y por tanto mayor incertidumbre, no mayor fiabilidad. Que B tenga mayor varianza no la convierte automáticamente en crítica: eso depende de la red PERT completa.'
+  },
+  {
+    id: 'q205', topic: 't6',
+    text: 'Ha diseñado un software embebido para regular el frenado ABS en vehículos autónomos eléctricos. ¿Es patentable en España?',
+    opts: [
+      'Sí, y la patente otorgará protección indefinida al autor mientras no se altere el código objeto.',
+      'Sí, al tratarse de una aplicación informática incrustada en hardware que genera un efecto técnico real para solucionar un problema industrial.',
+      'No, porque el software está estrictamente excluido del ámbito de la propiedad industrial en España bajo cualquier formato.'
+    ],
+    correct: 1,
+    years: ['2026'],
+    explanation: 'Correcto. El software puro no es patentable en España, pero sí lo es cuando está integrado en un sistema físico y produce un efecto técnico industrial. Un ABS es ese caso: software embebido en hardware con efecto técnico real. La protección de la patente es temporal (20 años), no indefinida.'
+  },
+  {
+    id: 'q206', topic: 't6',
+    text: 'Una startup de Silicon Valley recopila datos de navegación de usuarios residentes en Madrid sin consentimiento inequívoco. ¿Qué determina el RGPD?',
+    opts: [
+      'El RGPD no tiene jurisdicción puesto que el tratamiento y la sede física de la empresa están fuera de la UE.',
+      'Solo se aplicaría si la startup contara con un DPO asignado formalmente en territorio europeo.',
+      'El RGPD se aplica a cualquier organización que trate datos de residentes en la UE, independientemente de su ubicación física, y exige consentimiento claro e inequívoco.'
+    ],
+    correct: 2,
+    years: ['2026'],
+    explanation: 'Correcto. El RGPD tiene aplicación extraterritorial (artículo 3): aplica a cualquier organización, con independencia de su ubicación, que trate datos personales de residentes en la UE. El consentimiento debe ser libre, específico, informado e inequívoco.'
+  },
+  {
+    id: 'q207', topic: 't7',
+    text: 'El Factor de Ajuste de la Complejidad (VAF) en el método de Puntos de Función puede alterar la estimación final en:',
+    opts: [
+      '±50%, oscilando el VAF entre 0,50 y 1,50.',
+      '±35%, variando el VAF entre un límite inferior de 0,65 y un límite superior de 1,35.',
+      '±10%, ya que la subjetividad de los analistas debe quedar mitigada según las reglas de la IFPUG.'
+    ],
+    correct: 1,
+    years: ['2026'],
+    explanation: 'Correcto. Según Albrecht, VAF = 0,65 + 0,01 × ΣFi. Con 14 características valoradas de 0 a 5, la suma máxima es 70. Límite inferior: 0,65 + 0,01×0 = 0,65; límite superior: 0,65 + 0,01×70 = 1,35. Eso supone un impacto máximo de ±35% sobre los PFSA.'
+  },
+  {
+    id: 'q208', topic: 't7',
+    text: 'En COCOMO Intermedio, dos proyectos tienen el mismo número de KLDC pero uno tiene un FAE mayor. ¿Qué ocurrirá?',
+    opts: [
+      'Tendrán el mismo esfuerzo.',
+      'El proyecto con mayor FAE requerirá más esfuerzo.',
+      'El FAE solo afecta a la duración, no al esfuerzo.'
+    ],
+    correct: 1,
+    years: ['2026'],
+    explanation: 'Correcto. En COCOMO Intermedio, E = a × KLDC^b × FAE. El FAE multiplica directamente el esfuerzo. Si KLDC es idéntico, mayor FAE implica mayor esfuerzo estimado. El FAE no afecta directamente a la duración en la fórmula básica.'
+  },
+  {
+    id: 'q209', topic: 't10',
+    text: 'Para calcular la probabilidad de terminar un proyecto en una fecha objetivo, ¿cómo se procesan estadísticamente las varianzas de las actividades de la red?',
+    opts: [
+      'Se selecciona únicamente la varianza individual más alta de todo el grafo.',
+      'Se suman de manera exclusiva las varianzas de las actividades que integran el camino crítico, asumiendo su independencia.',
+      'Se calcula la media aritmética de las varianzas de todas las actividades del proyecto.'
+    ],
+    correct: 1,
+    years: ['2026'],
+    explanation: 'Correcto. En PERT, la varianza del proyecto es la suma de las varianzas de las actividades del camino crítico (asumiendo independencia estadística). Las actividades no críticas no contribuyen porque tienen holgura. σ²_proyecto = Σσ²_actividades_críticas.'
+  },
+  {
+    id: 'q210', topic: 't10',
+    text: 'Durante el cálculo de los tiempos tempranos (EARLY) en PERT, si un nodo tiene varios predecesores ya evaluados, ¿cómo se determina su Tiempo de Inicio Más Temprano?',
+    opts: [
+      'Se calcula como el tiempo de terminación mayor (máximo) de entre todos sus predecesores inmediatos.',
+      'Se calcula como la suma de la duración de la actividad más el tiempo de inicio máximo de todas sus predecesoras.',
+      'Se calcula como el valor máximo de los tiempos de comienzo de todas sus sucesoras inmediatas.'
+    ],
+    correct: 0,
+    years: ['2026'],
+    explanation: 'Correcto. En el paso hacia delante del PERT, el tiempo de inicio más temprano de un nodo es el MÁXIMO de los tiempos de finalización más tempranos de todos sus predecesores. Garantiza que todas las actividades precedentes han terminado antes de iniciar la siguiente.'
+  },
+  {
+    id: 'q211', topic: 't10',
+    text: 'Un proyecto tiene dos caminos críticos paralelos de igual duración. El director reduce en 3 días uno de ellos con recursos adicionales. ¿Qué puede afirmarse?',
+    opts: [
+      'La duración total del proyecto se reducirá necesariamente 3 días.',
+      'Reducir la duración de una actividad crítica siempre elimina el camino crítico.',
+      'La duración total del proyecto solo se reducirá si el otro camino crítico deja de limitar la fecha final del proyecto.'
+    ],
+    correct: 2,
+    years: ['2026'],
+    explanation: 'Correcto. Con dos caminos críticos de igual duración, acortar uno no reduce la duración del proyecto si el otro sigue siendo igual de largo. Para reducir la duración total, ambos caminos críticos deben acortarse simultáneamente.'
+  },
+  {
+    id: 'q212', topic: 't13',
+    text: 'Dos aplicaciones cumplen exactamente los mismos requisitos funcionales, pero una cuesta el doble. Desde la perspectiva de calidad de Garvin:',
+    opts: [
+      'La más cara tiene necesariamente mayor calidad.',
+      'El precio no influye nunca en la calidad.',
+      'Debe analizarse la relación entre los beneficios obtenidos y el coste asumido.'
+    ],
+    correct: 2,
+    years: ['2026'],
+    explanation: 'Correcto. La perspectiva de calidad basada en el valor de Garvin define la calidad en función de la relación beneficio/coste. Si dos productos ofrecen la misma funcionalidad, el más económico tiene mayor valor. La calidad no es unidimensional ni equivalente al precio.'
+  },
+  {
+    id: 'q213', topic: 't11',
+    text: 'En la técnica de Valor Ganado (EVM), un proyecto obtiene CPI=0,80 y SPI=0,71. ¿Cuál es la interpretación correcta?',
+    opts: [
+      'El coste está desbordado, pero el cronograma está perfectamente sincronizado con las fechas de entrega.',
+      'El proyecto progresa excelentemente: se gasta un 20% menos de lo presupuestado y se avanza un 29% más rápido.',
+      'El proyecto está en situación crítica: se gasta más de lo previsto y experimenta retraso respecto al cronograma.'
+    ],
+    correct: 2,
+    years: ['2026'],
+    explanation: 'Correcto. CPI = EV/AC = 0,80 → se gasta más de lo planificado (por cada euro presupuestado se gasta 1,25€). SPI = EV/PV = 0,71 → el avance real es solo el 71% del planificado. Ambos indicadores < 1 indican sobrecosto y retraso simultáneamente.'
+  },
+  {
+    id: 'q214', topic: 't11',
+    text: 'En la semana 8 del proyecto SmartCampus: PV=60.000€, AC=75.000€, trabajo completado real=50%, BAC=120.000€. ¿Cuál es el Valor Ganado (EV)?',
+    opts: [
+      '45.000€',
+      '60.000€',
+      'Con los datos aportados no podemos calcular el Valor Ganado.'
+    ],
+    correct: 0,
+    years: ['2026'],
+    explanation: 'Respuesta del examen: 45.000€. El cálculo EV = % completado × BAC = 50% × 120.000 = 60.000€ daría la opción b. La opción a (45.000€) se obtiene aplicando EV = (trabajo completado / trabajo previsto) × PV = (50/70) × 60.000 ≈ 42.857 ≈ 45.000€. Comprueba el criterio exacto con el material del profesor, ya que hay dos métodos de cálculo posibles.'
+  },
+  {
+    id: 'q215', topic: 't1',
+    text: 'Elaborar el manual de usuario puede comenzar cuando empiece el desarrollo del software, aunque ambas actividades continuarán simultáneamente y no tienen que finalizar a la vez. ¿Qué tipo de dependencia describe esta situación?',
+    opts: [
+      'Fin-Inicio (FS)',
+      'Inicio-Inicio (SS)',
+      'Fin-Fin (FF)'
+    ],
+    correct: 1,
+    years: ['2026'],
+    explanation: 'Correcto. La dependencia Inicio-Inicio (SS) significa que la actividad sucesora puede comenzar cuando comience la predecesora (no cuando termine). Si el manual puede comenzar en cuanto empiece el desarrollo y ambas avanzan en paralelo sin necesidad de terminar juntas, la relación es SS.'
+  },
+  {
+    id: 'q216', topic: 't4',
+    text: 'La posibilidad de que los empleados rechacen utilizar una herramienta a pesar de haber recibido formación suficiente afecta principalmente a la:',
+    opts: [
+      'Viabilidad económica.',
+      'Viabilidad técnica.',
+      'Viabilidad operativa o social.'
+    ],
+    correct: 2,
+    years: ['2026'],
+    explanation: 'Correcto. La viabilidad operativa (o social) evalúa si los usuarios adoptarán el sistema y si la organización está preparada para operarlo. El rechazo de los empleados, incluso con formación, es un problema de adopción: viabilidad operativa/social. No es un problema técnico (la herramienta funciona) ni económico.'
+  },
+  {
+    id: 'q217', topic: 't10',
+    text: '¿Cómo se define matemáticamente la tasa de coste de aceleración por período para una actividad?',
+    opts: [
+      'Coste aceleración = (Coste acortado − Coste normal) / (Plazo normal − Plazo acortado)',
+      'Coste aceleración = (Coste acortado + Coste normal) / (Plazo normal + Plazo acortado)',
+      'Coste aceleración = (Plazo acortado − Plazo normal) / (Coste acortado − Coste normal)'
+    ],
+    correct: 0,
+    years: ['2026'],
+    explanation: 'Correcto. El coste de aceleración por unidad de tiempo (crash cost slope) = (Coste acortado − Coste normal) / (Plazo normal − Plazo acortado). El numerador es el incremento de coste y el denominador es la reducción de tiempo. Da el coste adicional por cada unidad de tiempo reducida.'
+  },
+  {
+    id: 'q218', topic: 't7',
+    text: 'Una aplicación necesita acceder al directorio corporativo de empleados (mantenido por la app de RRHH) para asignar responsables. Según Puntos de Función, el directorio de empleados es:',
+    opts: [
+      'Fichero lógico interno (ILF), porque la información forma parte de los datos de la organización.',
+      'Fichero externo de interfaz (EIF), porque la aplicación usa los datos pero otra aplicación es responsable de su mantenimiento.',
+      'Consulta externa (EQ), porque la aplicación solo recupera información de empleados cuando el usuario la solicita.'
+    ],
+    correct: 1,
+    years: ['2026'],
+    explanation: 'Correcto. Un ILF es mantenido (CRUD) por la propia aplicación. Un EIF es un grupo de datos que la aplicación usa pero cuyo mantenimiento corresponde a otra aplicación. El directorio de empleados lo mantiene RRHH, por tanto es EIF. Que se consulte dinámicamente no lo convierte en EQ: EQ es una transacción, no un fichero.'
+  },
+
+  // ===== PREGUNTAS ÚNICAS (aparecen solo en 1 examen) =====
+  {
+    id: 'q120', topic: 't10',
+    text: 'Sea el grafo de precedencia con actividades A, B, C, D, E. ¿Cuál de las siguientes afirmaciones es FALSA?',
+    opts: [
+      'No hay caminos críticos.',
+      'El proyecto tiene cinco actividades reales, las tareas precedentes de E son B y C.',
+      'Tiene más de un camino crítico.'
+    ],
+    correct: 0,
+    years: ['2022exam_2012'],
+    explanation: 'La opción a es FALSA. Todo proyecto tiene al menos un camino crítico (el de mayor duración). La opción b puede ser correcta dependiendo del grafo concreto. La opción c afirma múltiples caminos críticos, lo que es posible si hay empates en duración.'
+  },
+  {
+    id: 'q121', topic: 't10',
+    text: 'Sea el grafo de precedencia: ¿Cuál de las siguientes afirmaciones es CORRECTA?',
+    opts: [
+      'No hay caminos críticos.',
+      'El proyecto tiene siete actividades reales, las tareas precedentes de E son B y C.',
+      'Tiene más de un camino crítico.'
+    ],
+    correct: 2,
+    years: ['2018_exam'],
+    explanation: 'Correcto según el examen de 2018. El grafo en cuestión tiene múltiples caminos de igual duración máxima, resultando en más de un camino crítico. (Esta pregunta requiere el grafo visual para verificar completamente.)'
+  },
+  {
+    id: 'q122', topic: 't7',
+    text: 'Para medir el tamaño en PF se elaboró un cuadro con Factor de Ajuste = 1,1. Las opciones son:',
+    opts: [
+      'Los puntos de función sin ajustar son 224; los ajustados son 242.',
+      'PFSA=224 y los puntos de función ajustados son 246,4.',
+      'PFSA=224 y los puntos de función ajustados son 246,4. (Las dos anteriores son equivalentes)'
+    ],
+    correct: 1,
+    years: ['2017'],
+    explanation: 'Con FAC=1,1 y PFSA=224: PFA = 224 × 1,1 = 246,4. La opción a da 242, que sería FAC=1,08. La correcta es la b: 246,4.'
+  },
+  {
+    id: 'q123', topic: 't1',
+    text: 'Un proyecto tiene una duración de 3 semanas si trabajan dos personas. ¿Significa esto que una sola persona necesitaría 6 semanas?',
+    opts: [
+      'Sí, porque el trabajo se reparte linealmente entre personas.',
+      'No. Es posible que las actividades no se puedan realizar en paralelo. Podría darse el caso de que una sola persona tardara lo mismo que dos si ninguna actividad se puede hacer en paralelo.',
+      'No, siempre tardaría menos porque elimina la coordinación entre personas.'
+    ],
+    correct: 1,
+    years: ['2012', '2022exam'],
+    explanation: 'Correcto. La duración no es directamente proporcional al número de personas. Si las actividades no son paralelizables (por dependencias o falta de recursos), una persona podría tardar lo mismo o incluso menos que dos, al eliminar los costes de coordinación. La ecuación E = personas × tiempo solo se cumple en condiciones ideales de paralelismo total.'
+  },
+  {
+    id: 'q124', topic: 't13',
+    text: 'La Garantía de Calidad del Software (SQA) comprende:',
+    opts: [
+      'Solo las actividades de prueba y verificación del código fuente.',
+      'Un conjunto de actividades que se planifican y se aplican durante todo el proceso de desarrollo.',
+      'Las actividades de control de versiones y gestión de la configuración exclusivamente.'
+    ],
+    correct: 1,
+    years: ['2021'],
+    explanation: 'Correcto. La SQA es un paraguas que cubre todo el proceso: planificación de la calidad, RTF, pruebas, auditorías, control de cambios, recopilación y análisis de métricas. No se limita al testing ni a la configuración.'
+  },
+];
+
+// =========================================================
+// STATE
+// =========================================================
+let answers = {}; // questionId -> { selected, correct }
+let currentTopic = 'all';
+
+function getFilteredQuestions(topicId) {
+  if (topicId === 'all') return Q;
+  return Q.filter(q => q.topic === topicId);
+}
+
+function isRepeat(q) {
+  return q.years.length > 1;
+}
+
+function calcStats(questions) {
+  let correct = 0, wrong = 0, total = questions.length, answered = 0;
+  questions.forEach(q => {
+    if (answers[q.id] !== undefined) {
+      answered++;
+      if (answers[q.id].correct) correct++;
+      else wrong++;
+    }
+  });
+  return { correct, wrong, total, answered };
+}
+
+// =========================================================
+// RENDER
+// =========================================================
+function renderTabs() {
+  const bar = document.getElementById('tab-bar');
+  bar.innerHTML = '';
+  TOPICS.forEach(t => {
+    const qs = getFilteredQuestions(t.id);
+    const btn = document.createElement('button');
+    btn.className = 'tab' + (t.id === currentTopic ? ' active' : '');
+    btn.innerHTML = t.label + `<span class="count">${qs.length}</span>`;
+    btn.onclick = () => { currentTopic = t.id; render(); };
+    bar.appendChild(btn);
+  });
+}
+
+function renderSection() {
+  const main = document.getElementById('main-content');
+  const qs = getFilteredQuestions(currentTopic);
+  const stats = calcStats(qs);
+
+  const repeated = qs.filter(q => isRepeat(q));
+  const unique = qs.filter(q => !isRepeat(q));
+
+  let html = `
+    <div class="section-header">
+      <h2>${TOPICS.find(t => t.id === currentTopic).label}</h2>
+      <p>${stats.answered} respondidas de ${stats.total} · ${stats.correct} correctas · ${stats.wrong} incorrectas</p>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-track"><div class="progress-fill" style="width:${stats.total ? (stats.answered/stats.total*100) : 0}%"></div></div>
+      <span class="progress-text">${stats.total ? Math.round(stats.answered/stats.total*100) : 0}%</span>
+    </div>
+  `;
+
+  if (repeated.length > 0) {
+    html += `<div class="subsection-title"><span class="badge repeat" style="font-size:11px;padding:3px 10px;">Preguntas repetidas en exámenes</span></div>`;
+    repeated.forEach((q, i) => { html += renderQuestion(q, i + 1); });
+  }
+
+  if (unique.length > 0) {
+    html += `<div class="subsection-title"><span class="badge unique" style="font-size:11px;padding:3px 10px;">Preguntas que no se han repetido</span></div>`;
+    unique.forEach((q, i) => { html += renderQuestion(q, repeated.length + i + 1); });
+  }
+
+  html += `<button class="reset-btn" onclick="resetSection()">Reiniciar esta sección</button>`;
+
+  main.innerHTML = html;
+  updateGlobalScore();
+}
+
+function renderQuestion(q, num) {
+  const ans = answers[q.id];
+  const cardClass = ans ? (ans.correct ? 'answered-correct' : 'answered-wrong') : '';
+  const years = q.years.join(', ');
+  const repeatBadge = isRepeat(q)
+    ? `<span class="badge repeat">Repetida · ${q.years.length} exámenes</span>`
+    : `<span class="badge unique">Única</span>`;
+
+  let optsHtml = q.opts.map((opt, idx) => {
+    let cls = 'opt';
+    if (ans !== undefined) {
+      cls += ' disabled';
+      if (idx === q.correct) cls += ' reveal-correct';
+      if (idx === ans.selected && ans.selected !== q.correct) cls += ' selected-wrong';
+      if (idx === ans.selected && ans.selected === q.correct) cls += ' selected-correct';
+    }
+    const letter = String.fromCharCode(97 + idx).toUpperCase();
+    return `<div class="${cls}" onclick="selectAnswer('${q.id}', ${idx})">
+      <span class="opt-letter">${letter}</span>
+      <span class="opt-text">${opt}</span>
+    </div>`;
+  }).join('');
+
+  const expClass = ans ? (ans.correct ? 'explanation correct show' : 'explanation wrong show') : 'explanation';
+  const expIcon = ans ? (ans.correct ? '✓ Correcto.' : '✗ Incorrecto.') : '';
+
+  return `
+    <div class="q-card ${cardClass}" id="card-${q.id}">
+      <div class="q-header">
+        <span class="q-num">${num}.</span>
+        <div style="flex:1">
+          <div class="q-text">${q.text}</div>
+          <div class="q-meta">
+            ${repeatBadge}
+            <span class="badge year">📅 ${years}</span>
+          </div>
+        </div>
+      </div>
+      <div class="q-options">${optsHtml}</div>
+      <div class="${expClass}" id="exp-${q.id}">
+        <strong>${expIcon}</strong> ${q.explanation}
+      </div>
+    </div>
+  `;
+}
+
+function selectAnswer(qId, selected) {
+  if (answers[qId] !== undefined) return;
+  const q = Q.find(x => x.id === qId);
+  const isCorrect = selected === q.correct;
+  answers[qId] = { selected, correct: isCorrect };
+  updateGlobalScore();
+
+  // Re-render just this card
+  const card = document.getElementById('card-' + qId);
+  const qs = getFilteredQuestions(currentTopic);
+  const num = qs.findIndex(x => x.id === qId) + 1;
+  const newHtml = renderQuestion(q, num);
+  const wrapper = document.createElement('div');
+  wrapper.innerHTML = newHtml;
+  card.replaceWith(wrapper.firstElementChild);
+
+  // Update stats
+  renderHeader();
+}
+
+function updateGlobalScore() {
+  let correct = 0, wrong = 0;
+  Object.values(answers).forEach(a => {
+    if (a.correct) correct++; else wrong++;
+  });
+  document.getElementById('global-correct').textContent = correct;
+  document.getElementById('global-wrong').textContent = wrong;
+}
+
+function renderHeader() {
+  const qs = getFilteredQuestions(currentTopic);
+  const stats = calcStats(qs);
+  const hdr = document.querySelector('.section-header p');
+  if (hdr) {
+    hdr.textContent = `${stats.answered} respondidas de ${stats.total} · ${stats.correct} correctas · ${stats.wrong} incorrectas`;
+  }
+  const fill = document.querySelector('.progress-fill');
+  if (fill) fill.style.width = (stats.total ? (stats.answered/stats.total*100) : 0) + '%';
+  const txt = document.querySelector('.progress-text');
+  if (txt) txt.textContent = (stats.total ? Math.round(stats.answered/stats.total*100) : 0) + '%';
+}
+
+function resetSection() {
+  const qs = getFilteredQuestions(currentTopic);
+  qs.forEach(q => { delete answers[q.id]; });
+  render();
+}
+
+function render() {
+  renderTabs();
+  renderSection();
+}
+
+render();
+</script>
+</body>
+</html>
