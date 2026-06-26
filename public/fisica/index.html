@@ -8,128 +8,150 @@
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
 <style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,900&family=Spline+Sans+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700;800&display=swap');
   :root{
-    --bg:#0d1117; --panel:#131a24; --panel2:#0f151d; --line:#243042;
-    --ink:#e7edf5; --dim:#8a99ad; --faint:#5d6a7d;
-    --amber:#ffb454; --cyan:#46c7d6; --green:#5ad29a; --violet:#9d8cff; --red:#ff6b6b;
-    --mono:'JetBrains Mono','SF Mono',ui-monospace,Consolas,monospace;
-    --sans:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;
+    --ink:#152922;
+    --paper:#f2eee2;
+    --paper-2:#e9e2d0;
+    --paper-3:#efe9da;
+    --line:#cdc3aa;
+    --muted:#5d685f;
+    --faint:#8a917f;
+    /* acentos: verde + violeta como Discreta, con apoyos cálidos */
+    --green:#1d7a4f;  --green-bg:#e0efe3;
+    --violet:#5a4fb3; --violet-bg:#ece9f3;
+    --amber:#b3812a;
+    --cyan:#1f6f78;
+    --pink:#a8497a;
+    --blue:#2c4a6e;
+    --red:#b03a2c;    --red-bg:#f3e1dc;
+    --mono:'Spline Sans Mono',ui-monospace,monospace;
+    --sans:'Inter',system-ui,sans-serif;
+    --serif:'Fraunces',serif;
   }
   *{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth}
-  body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.6;
-    background-image:radial-gradient(circle at 1px 1px,#1a2230 1px,transparent 0);background-size:34px 34px;}
+  body{background:var(--paper);color:var(--ink);font-family:var(--sans);line-height:1.55;-webkit-font-smoothing:antialiased}
   a{color:inherit;text-decoration:none}
   .wrap{max-width:1080px;margin:0 auto;padding:0 22px}
 
   /* HERO */
-  header{border-bottom:1px solid var(--line);padding:60px 0 42px;position:relative;overflow:hidden}
+  header{border-bottom:2px solid var(--ink);padding:54px 0 38px;position:relative;overflow:hidden}
   header .wrap{position:relative;z-index:2}
-  .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.32em;text-transform:uppercase;color:var(--cyan);margin-bottom:18px}
-  h1{font-size:clamp(34px,6vw,62px);font-weight:800;letter-spacing:-.02em;line-height:1.02}
-  h1 .em{color:var(--amber)}
-  .lede{color:var(--dim);max-width:620px;margin-top:18px;font-size:17px}
-  .maxwell{position:absolute;top:0;right:0;height:100%;width:46%;opacity:.20;pointer-events:none}
-  .hero-meta{display:flex;gap:26px;flex-wrap:wrap;margin-top:30px;font-family:var(--mono);font-size:13px;color:var(--faint)}
-  .hero-meta b{color:var(--green);font-weight:600}
+  .eyebrow{font-family:var(--mono);font-size:.74rem;letter-spacing:.22em;text-transform:uppercase;color:var(--green);font-weight:600;margin-bottom:18px}
+  h1{font-family:var(--serif);font-size:clamp(2.1rem,6vw,3.9rem);font-weight:900;letter-spacing:-.018em;line-height:1.0}
+  h1 .em{font-style:italic;color:var(--amber);font-weight:600}
+  .lede{color:#2a3730;max-width:62ch;margin-top:16px;font-size:1.05rem}
+  .maxwell{position:absolute;top:0;right:-10px;height:100%;width:42%;opacity:.32;pointer-events:none}
+  @media(max-width:780px){.maxwell{display:none}}
+  .hero-meta{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+  .hero-meta .pill{font-family:var(--mono);font-size:.73rem;font-weight:600;padding:6px 11px;border-radius:30px;border:1.5px solid var(--line);color:var(--muted)}
+  .hero-meta .pill b{color:var(--green);font-weight:600}
 
   /* NAV */
-  nav{position:sticky;top:0;z-index:30;background:rgba(13,17,23,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
-  nav .wrap{display:flex;gap:4px;overflow-x:auto;padding:0}
-  nav a{font-family:var(--mono);font-size:12.5px;padding:14px 15px;color:var(--dim);white-space:nowrap;border-bottom:2px solid transparent;transition:.15s}
+  nav{position:sticky;top:0;z-index:30;background:rgba(242,238,226,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:2px;overflow-x:auto}
+  nav a{font-family:var(--mono);font-size:.78rem;font-weight:600;padding:13px 13px;color:var(--muted);white-space:nowrap;border-bottom:2px solid transparent;transition:.15s}
   nav a:hover{color:var(--ink)}
   nav a.active{color:var(--amber);border-color:var(--amber)}
 
-  section{padding:54px 0;border-bottom:1px solid var(--line)}
-  .sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:8px}
-  .sec-num{font-family:var(--mono);font-size:13px;color:var(--faint)}
-  h2{font-size:clamp(24px,4vw,34px);font-weight:800;letter-spacing:-.01em}
-  .sub{color:var(--dim);margin-bottom:30px;max-width:680px}
+  section{padding:48px 0;border-bottom:1px solid var(--line)}
+  .sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:6px}
+  .sec-num{font-family:var(--mono);font-size:.8rem;color:var(--faint);font-weight:600}
+  h2{font-family:var(--serif);font-size:clamp(1.6rem,4vw,2.3rem);font-weight:900;letter-spacing:-.01em}
+  .sub{color:var(--muted);margin-bottom:28px;max-width:74ch;font-size:.97rem}
+  .sub b{color:var(--ink)}
 
-  /* TIMELINE */
-  .week{display:grid;grid-template-columns:120px 1fr;gap:0;border:1px solid var(--line);border-radius:12px;margin-bottom:14px;overflow:hidden;background:var(--panel)}
-  .week .when{background:var(--panel2);padding:18px 16px;border-right:1px solid var(--line)}
-  .week .wk{font-family:var(--mono);font-size:11px;color:var(--cyan);letter-spacing:.1em}
-  .week .date{font-size:15px;font-weight:700;margin-top:4px}
-  .week .body{padding:18px 20px}
-  .week .topic{font-weight:700;font-size:16px;color:var(--amber)}
-  .week .focus{color:var(--dim);font-size:14px;margin-top:6px}
+  /* TIMELINE / WEEK */
+  .week{display:grid;grid-template-columns:120px 1fr;gap:0;border:1.5px solid var(--ink);border-radius:6px;margin-bottom:13px;overflow:hidden;background:var(--paper)}
+  .week .when{background:var(--paper-2);padding:18px 16px;border-right:1px solid var(--line)}
+  .week .wk{font-family:var(--mono);font-size:.66rem;color:var(--cyan);letter-spacing:.08em;font-weight:600}
+  .week .date{font-family:var(--serif);font-size:1.15rem;font-weight:900;margin-top:4px}
+  .week .body{padding:16px 20px}
+  .week .topic{font-family:var(--serif);font-weight:600;font-size:1.08rem;color:var(--amber)}
+  .week .focus{color:var(--muted);font-size:.9rem;margin-top:6px}
+  .week .focus b{color:var(--ink);font-weight:600}
   .week .tags{margin-top:12px;display:flex;gap:7px;flex-wrap:wrap}
-  .pill{font-family:var(--mono);font-size:11px;padding:4px 9px;border-radius:20px;border:1px solid var(--line);color:var(--dim)}
-  .pill.rel{border-color:#33506b;color:var(--cyan)}
-  .pill.ex{border-color:#5a4a2a;color:var(--amber)}
-  .week.rest .when{opacity:.55}
-  .week.rest .topic{color:var(--faint)}
+  .pill{font-family:var(--mono);font-size:.68rem;padding:4px 9px;border-radius:20px;border:1.5px solid var(--line);color:var(--muted);font-weight:500}
+  .pill.rel{border-color:#9cc7b1;color:var(--green);background:var(--green-bg)}
+  .pill.ex{border-color:#d9c290;color:var(--amber);background:#f3ead6}
 
-  .note{border-left:3px solid var(--violet);background:rgba(157,140,255,.07);padding:14px 18px;border-radius:0 8px 8px 0;margin:22px 0;font-size:14px;color:var(--dim)}
+  .note{border-left:3px solid var(--violet);background:var(--violet-bg);padding:14px 18px;border-radius:0 8px 8px 0;margin:20px 0;font-size:.9rem;color:#3a3550}
   .note b{color:var(--violet)}
-  .warn{border-left-color:var(--red);background:rgba(255,107,107,.07)}
-  .warn b{color:var(--red)}
+  .note.warn{border-left-color:var(--red);background:var(--red-bg);color:#5a342e}
+  .note.warn b{color:var(--red)}
 
-  /* CHEAT */
-  .topic-card{border:1px solid var(--line);border-radius:14px;margin-bottom:18px;background:var(--panel);overflow:hidden}
-  .topic-card>summary{list-style:none;cursor:pointer;padding:20px 24px;display:flex;align-items:center;gap:16px;user-select:none}
+  /* CARDS (método) */
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:13px}
+  .mcard{border:1.5px solid var(--ink);border-radius:6px;padding:22px 22px;background:var(--paper)}
+  .mcard .k{font-family:var(--mono);font-size:.72rem;font-weight:600;margin-bottom:8px;letter-spacing:.03em}
+  .mcard p{color:var(--muted);font-size:.9rem}
+
+  /* CHEAT (details) */
+  .topic-card{border:1.5px solid var(--ink);border-radius:6px;margin-bottom:13px;background:var(--paper);overflow:hidden}
+  .topic-card>summary{list-style:none;cursor:pointer;padding:17px 22px;display:flex;align-items:center;gap:15px;user-select:none;background:var(--paper-2)}
   .topic-card>summary::-webkit-details-marker{display:none}
-  .tnum{font-family:var(--mono);font-size:13px;font-weight:700;color:var(--bg);background:var(--amber);width:30px;height:30px;border-radius:8px;display:grid;place-items:center;flex-shrink:0}
-  .tnum.c2{background:var(--cyan)}.tnum.c3{background:var(--green)}.tnum.c4{background:var(--violet)}.tnum.c5{background:#ff8fab}.tnum.c6{background:#7fd1ff}
-  .ttitle{font-weight:700;font-size:18px;flex:1}
-  .tmeta{font-family:var(--mono);font-size:11px;color:var(--faint)}
+  .tnum{font-family:var(--mono);font-size:.8rem;font-weight:700;color:#fff;background:var(--amber);width:30px;height:30px;border-radius:7px;display:grid;place-items:center;flex-shrink:0}
+  .tnum.c2{background:var(--cyan)}.tnum.c3{background:var(--green)}.tnum.c4{background:var(--violet)}.tnum.c5{background:var(--pink)}.tnum.c6{background:var(--blue)}
+  .ttitle{font-family:var(--serif);font-weight:600;font-size:1.12rem;flex:1}
+  .tmeta{font-family:var(--mono);font-size:.66rem;color:var(--faint)}
   .chev{color:var(--faint);transition:.2s;font-family:var(--mono)}
   .topic-card[open] .chev{transform:rotate(90deg)}
-  .tbody{padding:6px 24px 26px;border-top:1px solid var(--line)}
-  .frow{display:flex;justify-content:space-between;align-items:center;gap:18px;padding:13px 0;border-bottom:1px dashed var(--line)}
+  .tbody{padding:6px 22px 24px;border-top:1px solid var(--line)}
+  .frow{display:flex;justify-content:space-between;align-items:center;gap:18px;padding:12px 0;border-bottom:1px dashed var(--line)}
   .frow:last-child{border-bottom:none}
-  .flabel{color:var(--dim);font-size:14px;max-width:46%}
-  .fmath{font-size:15px;text-align:right;overflow-x:auto}
-  .grp{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--cyan);margin:22px 0 6px;padding-top:8px}
+  .flabel{color:var(--muted);font-size:.9rem;max-width:46%}
+  .fmath{font-size:.98rem;text-align:right;overflow-x:auto}
+  .grp{font-family:var(--mono);font-size:.68rem;letter-spacing:.13em;text-transform:uppercase;color:var(--cyan);font-weight:600;margin:20px 0 6px;padding-top:8px}
   .grp:first-child{margin-top:8px}
 
-  /* EXERCISES */
-  .extable{width:100%;border-collapse:collapse;border:1px solid var(--line);border-radius:12px;overflow:hidden;font-size:14px}
-  .extable th{background:var(--panel2);text-align:left;padding:13px 16px;font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--cyan);border-bottom:1px solid var(--line)}
-  .extable td{padding:13px 16px;border-bottom:1px solid var(--line);vertical-align:top}
+  /* TABLES */
+  .extable{width:100%;border-collapse:collapse;border:1.5px solid var(--ink);border-radius:6px;overflow:hidden;font-size:.88rem}
+  .extable th{background:var(--paper-2);text-align:left;padding:12px 15px;font-family:var(--mono);font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;color:var(--cyan);border-bottom:1px solid var(--line);font-weight:600}
+  .extable td{padding:12px 15px;border-bottom:1px solid var(--line);vertical-align:top}
   .extable tr:last-child td{border-bottom:none}
-  .extable td:first-child{font-family:var(--mono);color:var(--amber);font-weight:700;white-space:nowrap}
+  .extable tr:nth-child(even){background:var(--paper-3)}
+  .extable td:first-child{font-family:var(--mono);color:var(--amber);font-weight:600;white-space:nowrap}
   .core{color:var(--green);font-family:var(--mono);font-weight:600}
 
-  /* ANALYSIS */
-  .bars{display:flex;flex-direction:column;gap:14px;margin:8px 0 4px}
+  /* ANALYSIS BARS */
+  .bars{display:flex;flex-direction:column;gap:13px;margin:8px 0 4px}
   .bar-row{display:grid;grid-template-columns:130px 1fr 64px;align-items:center;gap:14px}
-  .bar-lab{font-weight:700;font-size:14px}
-  .bar-lab small{display:block;font-weight:400;color:var(--faint);font-family:var(--mono);font-size:11px}
-  .bar-track{height:26px;background:var(--panel2);border-radius:6px;overflow:hidden;border:1px solid var(--line)}
-  .bar-fill{height:100%;border-radius:5px 0 0 5px;display:flex;align-items:center;padding-left:10px;font-family:var(--mono);font-size:11px;color:#0d1117;font-weight:700;min-width:30px;transition:width .8s ease}
-  .bar-val{font-family:var(--mono);font-size:14px;font-weight:700;text-align:right}
-  .tier{display:inline-block;font-family:var(--mono);font-size:10px;padding:2px 7px;border-radius:4px;margin-left:8px;vertical-align:middle}
-  .tier.alta{background:rgba(90,210,154,.16);color:var(--green)}
-  .tier.media{background:rgba(255,180,84,.16);color:var(--amber)}
-  .tier.baja{background:rgba(255,107,107,.16);color:var(--red)}
+  .bar-lab{font-weight:600;font-size:.88rem}
+  .bar-lab small{display:block;font-weight:400;color:var(--faint);font-family:var(--mono);font-size:.68rem}
+  .bar-track{height:24px;background:var(--paper-2);border-radius:6px;overflow:hidden;border:1px solid var(--line)}
+  .bar-fill{height:100%;border-radius:5px 0 0 5px;display:flex;align-items:center;padding-left:10px;font-family:var(--mono);font-size:.66rem;color:#fff;font-weight:600;min-width:30px;transition:width .8s ease}
+  .bar-val{font-family:var(--mono);font-size:.86rem;font-weight:700;text-align:right}
+  .tier{display:inline-block;font-family:var(--mono);font-size:.6rem;padding:2px 7px;border-radius:4px;margin-left:8px;vertical-align:middle;font-weight:600}
+  .tier.alta{background:var(--green-bg);color:var(--green)}
+  .tier.media{background:#f3ead6;color:var(--amber)}
+  .tier.baja{background:var(--red-bg);color:var(--red)}
   .splitcols{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:8px}
   @media(max-width:680px){.splitcols{grid-template-columns:1fr}.bar-row{grid-template-columns:96px 1fr 50px;gap:9px}}
 
-  footer{padding:40px 0 70px;color:var(--faint);font-size:13px}
-  footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px}
-  code{font-family:var(--mono);background:var(--panel2);padding:2px 6px;border-radius:5px;font-size:.88em;color:var(--amber)}
+  footer{padding:36px 0 56px;color:var(--muted);font-size:.78rem;font-family:var(--mono);border-top:1px solid var(--line)}
+  footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+  code{font-family:var(--mono);background:var(--paper-2);padding:2px 6px;border-radius:5px;font-size:.88em;color:var(--amber)}
   @media(max-width:640px){.week{grid-template-columns:1fr}.week .when{border-right:none;border-bottom:1px solid var(--line)}.frow{flex-direction:column;align-items:flex-start}.fmath{text-align:left}.flabel{max-width:100%}}
 </style>
 </head>
-<body data-pagefind-ignore>
+<body>
 
 <header>
   <svg class="maxwell" viewBox="0 0 400 600" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M0 300 Q50 150 100 300 T200 300 T300 300 T400 300" stroke="#ffb454" stroke-width="2"/>
-    <path d="M0 300 Q50 450 100 300 T200 300 T300 300 T400 300" stroke="#46c7d6" stroke-width="2"/>
-    <circle cx="100" cy="300" r="4" fill="#5ad29a"/><circle cx="200" cy="300" r="4" fill="#5ad29a"/><circle cx="300" cy="300" r="4" fill="#5ad29a"/>
+    <path d="M0 300 Q50 150 100 300 T200 300 T300 300 T400 300" stroke="#b3812a" stroke-width="2.5"/>
+    <path d="M0 300 Q50 450 100 300 T200 300 T300 300 T400 300" stroke="#1f6f78" stroke-width="2.5"/>
+    <circle cx="100" cy="300" r="4" fill="#1d7a4f"/><circle cx="200" cy="300" r="4" fill="#1d7a4f"/><circle cx="300" cy="300" r="4" fill="#1d7a4f"/>
   </svg>
   <div class="wrap">
     <div class="eyebrow">Física para Informática · Verano 2026</div>
     <h1>Del <span class="em">fotón</span> a la <span class="em">onda</span>,<br>en doce semanas.</h1>
     <p class="lede">Plan de estudio centrado en física, chuletario con todas las fórmulas de los seis temas y guía de qué ejercicios hacer en cada relación. Construido a partir de tu temario, relaciones y exámenes de convocatorias previas.</p>
     <div class="hero-meta">
-      <span>Temas <b>6</b></span>
-      <span>Relaciones <b>5</b></span>
-      <span>Exámenes analizados <b>6</b></span>
-      <span>Cierre <b>6 sep</b></span>
+      <span class="pill">Temas <b>6</b></span>
+      <span class="pill">Relaciones <b>5</b></span>
+      <span class="pill">Exámenes analizados <b>6</b></span>
+      <span class="pill">Cierre <b>6 sep</b></span>
     </div>
   </div>
 </header>
@@ -240,11 +262,11 @@
 <div class="wrap">
   <div class="sec-head"><span class="sec-num">03</span><h2>Método de estudio</h2></div>
   <p class="sub">Cómo atacar cada tema para que rinda en el examen, no solo para "verlo".</p>
-  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px">
-    <div class="topic-card" style="padding:22px 24px"><div style="font-family:var(--mono);color:var(--amber);font-size:13px;margin-bottom:8px">01 · TEORÍA ACTIVA</div><p style="color:var(--dim);font-size:14px">Lee el tema y reescribe cada fórmula clave de memoria en el chuletario. Si no puedes reproducir la deducción de $c=1/\sqrt{\mu_0\varepsilon_0}$ o de $\tau=RC$, vuelve a esa diapositiva.</p></div>
-    <div class="topic-card" style="padding:22px 24px"><div style="font-family:var(--mono);color:var(--cyan);font-size:13px;margin-bottom:8px">02 · RELACIÓN CON RESULTADO TAPADO</div><p style="color:var(--dim);font-size:14px">Tus relaciones traen solo resultados. Resuelve el ejercicio entero antes de mirar el número. Si no coincide, localiza el paso, no la respuesta.</p></div>
-    <div class="topic-card" style="padding:22px 24px"><div style="font-family:var(--mono);color:var(--green);font-size:13px;margin-bottom:8px">03 · EXAMEN CRONOMETRADO</div><p style="color:var(--dim);font-size:14px">Tras cada bloque de 2 temas, haz un examen real corregido (tienes 6). Mismo tiempo que en el aula. Mide, no leas.</p></div>
-    <div class="topic-card" style="padding:22px 24px"><div style="font-family:var(--mono);color:var(--violet);font-size:13px;margin-bottom:8px">04 · ERRORES → OBSIDIAN</div><p style="color:var(--dim);font-size:14px">Cada fallo recurrente va a la sección "Trampas frecuentes" del .md del tema. Repásalas el día antes del examen.</p></div>
+  <div class="cards">
+    <div class="mcard"><div class="k" style="color:var(--amber)">01 · TEORÍA ACTIVA</div><p>Lee el tema y reescribe cada fórmula clave de memoria en el chuletario. Si no puedes reproducir la deducción de $c=1/\sqrt{\mu_0\varepsilon_0}$ o de $\tau=RC$, vuelve a esa diapositiva.</p></div>
+    <div class="mcard"><div class="k" style="color:var(--cyan)">02 · RELACIÓN CON RESULTADO TAPADO</div><p>Tus relaciones traen solo resultados. Resuelve el ejercicio entero antes de mirar el número. Si no coincide, localiza el paso, no la respuesta.</p></div>
+    <div class="mcard"><div class="k" style="color:var(--green)">03 · EXAMEN CRONOMETRADO</div><p>Tras cada bloque de 2 temas, haz un examen real corregido (tienes 6). Mismo tiempo que en el aula. Mide, no leas.</p></div>
+    <div class="mcard"><div class="k" style="color:var(--violet)">04 · ERRORES → OBSIDIAN</div><p>Cada fallo recurrente va a la sección "Trampas frecuentes" del .md del tema. Repásalas el día antes del examen.</p></div>
   </div>
 </div>
 </section>
@@ -414,7 +436,7 @@
   <div class="sec-head"><span class="sec-num">05</span><h2>Guía de ejercicios por relación</h2></div>
   <p class="sub">Cada relación se corresponde con un tema. En <span class="core">verde</span>, el núcleo imprescindible (los que más se parecen a lo que cae en examen). Descripciones verificadas con los enunciados completos de cada relación.</p>
 
-  <div class="grp" style="color:var(--amber);font-size:13px;margin-top:10px">Relación 1 · TEMA 1 · Fundamentos</div>
+  <div class="grp" style="color:var(--amber);font-size:.78rem;margin-top:10px">Relación 1 · TEMA 1 · Fundamentos</div>
   <table class="extable">
     <tr><th>Bloque</th><th>Ejercicios</th><th>Qué practicas</th></tr>
     <tr><td>Densidades de carga</td><td>1–4</td><td>Densidad superficial (1), volumétrica (2), carga de un cilindro (3) y de una esfera con $\rho(r)$ no homogénea por integración (4).</td></tr>
@@ -426,7 +448,7 @@
     <tr><td>Vectores avanzados</td><td>19, 20</td><td>Ángulo entre vectores con incógnita (19), derivada de un vector paramétrico (20).</td></tr>
   </table>
 
-  <div class="grp" style="color:var(--cyan);font-size:13px;margin-top:26px">Relación 2 · TEMA 2 · Campo eléctrico</div>
+  <div class="grp" style="color:var(--cyan);font-size:.78rem;margin-top:26px">Relación 2 · TEMA 2 · Campo eléctrico</div>
   <table class="extable">
     <tr><th>Bloque</th><th>Ejercicios</th><th>Qué practicas</th></tr>
     <tr><td class="core">Coulomb y campo</td><td class="core">1, 2, 4, 5, 6, 7</td><td>Reparto de carga entre esferas conductoras en contacto (1), fuerza y aceleración (2), equilibrio de cargas (5), campo y fuerza por superposición (7). El 5 y el 7 caen mucho.</td></tr>
@@ -440,7 +462,7 @@
     <tr><td class="core">Energía y ruptura</td><td class="core">38, 40, 41</td><td>Densidad de energía (38), pérdida de energía al conectar condensadores (40), energía de cargar una esfera por dos métodos (41).</td></tr>
   </table>
 
-  <div class="grp" style="color:var(--green);font-size:13px;margin-top:26px">Relación 3 · TEMA 3 · Corriente continua</div>
+  <div class="grp" style="color:var(--green);font-size:.78rem;margin-top:26px">Relación 3 · TEMA 3 · Corriente continua</div>
   <table class="extable">
     <tr><th>Bloque</th><th>Ejercicios</th><th>Qué practicas</th></tr>
     <tr><td>Corriente y densidad</td><td>1, 2, 3, 4, 5</td><td>$I$ desde $\vec J$ (1), $I$ y $J(t)$ desde $q(t)$ (2), carga por integración gráfica (3) y analítica (4), tiempo de deriva de un electrón (5).</td></tr>
@@ -452,7 +474,7 @@
     <tr><td class="core">Transitorios RC</td><td class="core">48, 50, 51</td><td>Intensidades inicial/final y carga (48), fuga de un dieléctrico real (50), RC con $\tau$ e instantes (51).</td></tr>
   </table>
 
-  <div class="grp" style="color:var(--violet);font-size:13px;margin-top:26px">Relación 4 · TEMA 4 · Campo magnético</div>
+  <div class="grp" style="color:var(--violet);font-size:.78rem;margin-top:26px">Relación 4 · TEMA 4 · Campo magnético</div>
   <table class="extable">
     <tr><th>Bloque</th><th>Ejercicios</th><th>Qué practicas</th></tr>
     <tr><td class="core">Lorentz, ciclotrón, Hall</td><td class="core">1, 3, 4, 6, 8</td><td>Fuerza magnética sobre protón (1), espectrómetro U-235/U-238 (3), rango de velocidades por radio (4), efecto Hall para medir B terrestre (6), flujo sanguíneo (8).</td></tr>
@@ -462,7 +484,7 @@
     <tr><td>Avanzados / materia</td><td>11, 12, 13, 24, 26, 27, 28</td><td>Elemento de corriente (11), optimización del anillo (12), corriente terrestre (13), átomo de Bohr (24), núcleo terrestre (26), hierro (27), desimantación (28).</td></tr>
   </table>
 
-  <div class="grp" style="color:#ff8fab;font-size:13px;margin-top:26px">Relación 5 · TEMA 5 · Inducción EM</div>
+  <div class="grp" style="color:var(--pink);font-size:.78rem;margin-top:26px">Relación 5 · TEMA 5 · Inducción EM</div>
   <table class="extable">
     <tr><th>Bloque</th><th>Ejercicios</th><th>Qué practicas</th></tr>
     <tr><td class="core">Faraday-Lenz</td><td class="core">1, 2, 6, 7</td><td>fem por $B(t)$ con derivada (1), fem por tramos de una gráfica (2), espira en campo no uniforme por dos métodos (6), velocidad de barra para $I$ dada (7).</td></tr>
@@ -501,27 +523,27 @@
   <div class="week"><div class="when"><div class="wk">SEMANA 2</div><div class="date">28 jun</div></div>
     <div class="body"><div class="topic" style="color:var(--amber)">TEMA 1 · Relación 1, primera parte</div>
       <div class="focus">Radiación, fotón y efecto fotoeléctrico. Los ejercicios 1–4 (densidades de carga) y el 7 y 8 nunca han caído — saltar.</div>
-      <div class="tags"><span class="pill rel">Relación 1</span><span class="pill ex">hacer: 5,6,8,9,10,11,12</span><span class="pill" style="border-color:#2a5a3a;color:var(--green)">núcleo: 5,6,9,10,12</span><span class="pill" style="border-color:#5a2a2a;color:var(--red)">saltar: 1,2,3,4,7,8,11</span></div></div></div>
+      <div class="tags"><span class="pill rel">Relación 1</span><span class="pill ex">hacer: 5,6,8,9,10,11,12</span><span class="pill" style="border-color:#9cc7b1;color:var(--green);background:var(--green-bg)">núcleo: 5,6,9,10,12</span><span class="pill" style="border-color:#d9aaa0;color:var(--red);background:var(--red-bg)">saltar: 1,2,3,4,7,8,11</span></div></div></div>
 
   <div class="week"><div class="when"><div class="wk">SEMANA 3</div><div class="date">5 jul</div></div>
     <div class="body"><div class="topic" style="color:var(--amber)">TEMA 1 · CIERRE — Relación 1, resto</div>
       <div class="focus">Semiconductores (13-15). Los ejercicios de vectores (16–20) nunca han caído en examen — saltar todos. Rehaz fallos y examen del tema.</div>
-      <div class="tags"><span class="pill rel">Relación 1</span><span class="pill ex">hacer: 13,14,15</span><span class="pill" style="border-color:#2a5a3a;color:var(--green)">núcleo: 13,14,15</span><span class="pill" style="border-color:#5a2a2a;color:var(--red)">saltar: 11,16,17,18,19,20</span></div></div></div>
+      <div class="tags"><span class="pill rel">Relación 1</span><span class="pill ex">hacer: 13,14,15</span><span class="pill" style="border-color:#9cc7b1;color:var(--green);background:var(--green-bg)">núcleo: 13,14,15</span><span class="pill" style="border-color:#d9aaa0;color:var(--red);background:var(--red-bg)">saltar: 11,16,17,18,19,20</span></div></div></div>
 
   <div class="week"><div class="when"><div class="wk">SEMANA 4</div><div class="date">12 jul</div></div>
     <div class="body"><div class="topic" style="color:var(--cyan)">TEMA 2 · Relación 2 (1ª de 3)</div>
       <div class="focus">Coulomb, campo de distribuciones y Ley de Gauss. Solo saltar el 8 (dipolo del agua, nunca en examen).</div>
-      <div class="tags"><span class="pill rel">Relación 2</span><span class="pill ex">hacer: 1–7, 9–12</span><span class="pill" style="border-color:#2a5a3a;color:var(--green)">núcleo: 1,2,3,5,7,10,11,13</span><span class="pill" style="border-color:#5a2a2a;color:var(--red)">saltar: 8</span></div></div></div>
+      <div class="tags"><span class="pill rel">Relación 2</span><span class="pill ex">hacer: 1–7, 9–12</span><span class="pill" style="border-color:#9cc7b1;color:var(--green);background:var(--green-bg)">núcleo: 1,2,3,5,7,10,11,13</span><span class="pill" style="border-color:#d9aaa0;color:var(--red);background:var(--red-bg)">saltar: 8</span></div></div></div>
 
   <div class="week"><div class="when"><div class="wk">SEMANA 5</div><div class="date">19 jul</div></div>
     <div class="body"><div class="topic" style="color:var(--cyan)">TEMA 2 · Relación 2 (2ª de 3)</div>
       <div class="focus">Potencial, relación E↔V y movimiento de cargas. Saltar 19 (electrones en esfera), 21 (esfera a tierra) y 24 (trabajo 96kC): nunca han caído.</div>
-      <div class="tags"><span class="pill rel">Relación 2</span><span class="pill ex">hacer: 13–18, 20, 22, 23, 25</span><span class="pill" style="border-color:#2a5a3a;color:var(--green)">núcleo: 13,14,15,16,17,18,23,25</span><span class="pill" style="border-color:#5a2a2a;color:var(--red)">saltar: 19,21,24</span></div></div></div>
+      <div class="tags"><span class="pill rel">Relación 2</span><span class="pill ex">hacer: 13–18, 20, 22, 23, 25</span><span class="pill" style="border-color:#9cc7b1;color:var(--green);background:var(--green-bg)">núcleo: 13,14,15,16,17,18,23,25</span><span class="pill" style="border-color:#d9aaa0;color:var(--red);background:var(--red-bg)">saltar: 19,21,24</span></div></div></div>
 
   <div class="week"><div class="when"><div class="wk">SEMANA 6</div><div class="date">26 jul</div></div>
     <div class="body"><div class="topic" style="color:var(--cyan)">TEMA 2 · Relación 2 (3ª de 3)</div>
       <div class="focus">Condensadores, dieléctricos y energía. Saltar 26 (impresora de tinta), 35 (bujía), 37 (membrana), 39 (desfibrilador): contextos específicos que nunca han caído.</div>
-      <div class="tags"><span class="pill rel">Relación 2</span><span class="pill ex">hacer: 27–34, 36, 38, 40, 41</span><span class="pill" style="border-color:#2a5a3a;color:var(--green)">núcleo: 29,30,31,32,33,34,36,38,40,41</span><span class="pill" style="border-color:#5a2a2a;color:var(--red)">saltar: 26,35,37,39</span></div></div></div>
+      <div class="tags"><span class="pill rel">Relación 2</span><span class="pill ex">hacer: 27–34, 36, 38, 40, 41</span><span class="pill" style="border-color:#9cc7b1;color:var(--green);background:var(--green-bg)">núcleo: 29,30,31,32,33,34,36,38,40,41</span><span class="pill" style="border-color:#d9aaa0;color:var(--red);background:var(--red-bg)">saltar: 26,35,37,39</span></div></div></div>
 
   <div class="week"><div class="when"><div class="wk">SEMANA 7</div><div class="date">2 ago</div></div>
     <div class="body"><div class="topic" style="color:var(--cyan)">TEMA 2 · CIERRE — repaso Relación 2</div>
@@ -531,29 +553,29 @@
   <div class="week"><div class="when"><div class="wk">SEMANA 8</div><div class="date">9 ago</div></div>
     <div class="body"><div class="topic" style="color:var(--green)">TEMA 3 · Relación 3 (1ª de 4)</div>
       <div class="focus">Conductividad, Ohm y asociaciones. Los ej. 1–5 (corriente desde q(t), deriva) y 9 (comparar materiales) y 12–13 (potenciómetro, demostración) nunca han caído.</div>
-      <div class="tags"><span class="pill rel">Relación 3</span><span class="pill ex">hacer: 6,7,8,10,11,14,15</span><span class="pill" style="border-color:#2a5a3a;color:var(--green)">núcleo: 6,8,10,11,14</span><span class="pill" style="border-color:#5a2a2a;color:var(--red)">saltar: 1,2,3,4,5,9,12,13</span></div></div></div>
+      <div class="tags"><span class="pill rel">Relación 3</span><span class="pill ex">hacer: 6,7,8,10,11,14,15</span><span class="pill" style="border-color:#9cc7b1;color:var(--green);background:var(--green-bg)">núcleo: 6,8,10,11,14</span><span class="pill" style="border-color:#d9aaa0;color:var(--red);background:var(--red-bg)">saltar: 1,2,3,4,5,9,12,13</span></div></div></div>
 
   <div class="week"><div class="when"><div class="wk">SEMANA 9</div><div class="date">16 ago</div></div>
     <div class="body"><div class="topic" style="color:var(--green)">TEMA 3 · Relación 3 (2ª de 4)</div>
       <div class="focus">Joule, potencia, generadores y Kirchhoff. Saltar 19 (energía con I(t)), 21 (capacidad en kWh), 23 (demostración R que más disipa), 25 (horas de batería de coche): nunca han caído.</div>
-      <div class="tags"><span class="pill rel">Relación 3</span><span class="pill ex">hacer: 15,16,17,18,20,22,24,26,27</span><span class="pill" style="border-color:#2a5a3a;color:var(--green)">núcleo: 16,17,18,20,22,26,27</span><span class="pill" style="border-color:#5a2a2a;color:var(--red)">saltar: 19,21,23,25</span></div></div></div>
+      <div class="tags"><span class="pill rel">Relación 3</span><span class="pill ex">hacer: 15,16,17,18,20,22,24,26,27</span><span class="pill" style="border-color:#9cc7b1;color:var(--green);background:var(--green-bg)">núcleo: 16,17,18,20,22,26,27</span><span class="pill" style="border-color:#d9aaa0;color:var(--red);background:var(--red-bg)">saltar: 19,21,23,25</span></div></div></div>
 
   <div class="week"><div class="when"><div class="wk">SEMANA 10</div><div class="date">23 ago</div></div>
     <div class="body"><div class="topic" style="color:var(--green)">TEMA 3 · Relación 3 (3ª de 4)</div>
       <div class="focus">Kirchhoff, Thévenin/Norton y primer diodo. Saltar 30 (Wheatstone), 31 (amperímetro mal colocado) y 40 (unión PN zona de transición): nunca han caído.</div>
-      <div class="tags"><span class="pill rel">Relación 3</span><span class="pill ex">hacer: 28,29,32,33,34,35,36,37,38,39,41,42</span><span class="pill" style="border-color:#2a5a3a;color:var(--green)">núcleo: 29,34,36,37,38,39,41,42</span><span class="pill" style="border-color:#5a2a2a;color:var(--red)">saltar: 30,31,40</span></div></div></div>
+      <div class="tags"><span class="pill rel">Relación 3</span><span class="pill ex">hacer: 28,29,32,33,34,35,36,37,38,39,41,42</span><span class="pill" style="border-color:#9cc7b1;color:var(--green);background:var(--green-bg)">núcleo: 29,34,36,37,38,39,41,42</span><span class="pill" style="border-color:#d9aaa0;color:var(--red);background:var(--red-bg)">saltar: 30,31,40</span></div></div></div>
 
   <div class="week"><div class="when"><div class="wk">SEMANA 11</div><div class="date">30 ago</div></div>
     <div class="body"><div class="topic" style="color:var(--green)">TEMA 3 · Relación 3 (4ª de 4)</div>
       <div class="focus">Diodos completos y transitorios RC. Solo saltar el 50 (condensador con fuga dieléctrica real): nunca ha caído.</div>
-      <div class="tags"><span class="pill rel">Relación 3</span><span class="pill ex">hacer: 41–49, 51</span><span class="pill" style="border-color:#2a5a3a;color:var(--green)">núcleo: 41,42,44,45,46,47,48,49,51</span><span class="pill" style="border-color:#5a2a2a;color:var(--red)">saltar: 50</span></div></div></div>
+      <div class="tags"><span class="pill rel">Relación 3</span><span class="pill ex">hacer: 41–49, 51</span><span class="pill" style="border-color:#9cc7b1;color:var(--green);background:var(--green-bg)">núcleo: 41,42,44,45,46,47,48,49,51</span><span class="pill" style="border-color:#d9aaa0;color:var(--red);background:var(--red-bg)">saltar: 50</span></div></div></div>
 
   <div class="week"><div class="when"><div class="wk">SEMANA 12</div><div class="date">6 sep</div></div>
     <div class="body"><div class="topic" style="color:var(--green)">TEMA 3 · CIERRE — repaso Relación 3</div>
       <div class="focus">Rehaz lo fallado de toda la Relación 3 y examen del tema. Cierre del verano.</div>
       <div class="tags"><span class="pill rel">Relación 3</span><span class="pill ex">repaso + examen</span></div></div></div>
 
-  <div class="note"><b>Cómo cuadra.</b> Cada relación se dosifica dentro de su bloque y termina con una semana de cierre (repaso + examen): Rel 1 → S2–S3; Rel 2 → S4–S7; Rel 3 → S8–S12. Las pills <span style="color:var(--red);font-family:var(--mono);font-size:12px">rojas</span> marcan los que puedes saltar (53 en total entre las 3 relaciones, cruzado con 17 exámenes). Las <span style="color:var(--green);font-family:var(--mono);font-size:12px">verdes</span> son el núcleo que sí cae. Si un tema se alarga, recorta primero los saltables.</div>
+  <div class="note"><b>Cómo cuadra.</b> Cada relación se dosifica dentro de su bloque y termina con una semana de cierre (repaso + examen): Rel 1 → S2–S3; Rel 2 → S4–S7; Rel 3 → S8–S12. Las pills <span style="color:var(--red);font-family:var(--mono);font-size:.75rem">rojas</span> marcan los que puedes saltar (53 en total entre las 3 relaciones, cruzado con 17 exámenes). Las <span style="color:var(--green);font-family:var(--mono);font-size:.75rem">verdes</span> son el núcleo que sí cae. Si un tema se alarga, recorta primero los saltables.</div>
 
   <div class="note warn"><b>Sin ejercicios de T4, T5 ni T6 este verano.</b> Las Relaciones 4 y 5 quedan para el cuatrimestre. El Tema 6 no tiene relación y no entra en tu examen. Toda tu munición de ejercicios de verano son las Relaciones 1, 2 y 3.</div>
 </div>
@@ -575,7 +597,7 @@
     <tr><td style="color:var(--amber)">Ordinaria 24-25</td><td>—</td><td>1,5</td><td>2,0</td><td>2,5</td><td>4,0</td><td><b>10,0</b></td></tr>
     <tr><td style="color:var(--amber)">Extraordin. 24-25</td><td>—</td><td>2,5</td><td>2,5</td><td>2,5</td><td>2,5</td><td><b>10,0</b></td></tr>
   </table>
-  <div class="note"><b>Lectura clave.</b> Hay dos formatos distintos, y mezclarlos engaña. Los <b style="color:var(--cyan)">parciales</b> (azul) solo evalúan T1–T3, así que T4 y T5 nunca pueden aparecer ahí. Los <b style="color:var(--amber)">finales</b> (ámbar) evalúan T2–T5. Por eso el peso de cada tema se interpreta dentro de su formato, no en una media única que castigaría artificialmente a T4 y T5.</div>
+  <div class="note"><b>Lectura clave.</b> Hay dos formatos distintos, y mezclarlos engaña. Los <b style="color:var(--cyan)">parciales</b> solo evalúan T1–T3, así que T4 y T5 nunca pueden aparecer ahí. Los <b style="color:var(--amber)">finales</b> evalúan T2–T5. Por eso el peso de cada tema se interpreta dentro de su formato, no en una media única que castigaría artificialmente a T4 y T5.</div>
 
   <div class="splitcols">
     <div>
@@ -589,7 +611,7 @@
     <div>
       <div class="grp" style="color:var(--amber)">Peso en el FINAL (T2–T5) · media de 2 exámenes</div>
       <div class="bars">
-        <div class="bar-row"><div class="bar-lab">TEMA 5<small>Inducción</small></div><div class="bar-track"><div class="bar-fill" style="width:32%;background:#ff8fab">32%</div></div><div class="bar-val" style="color:#ff8fab">3,25</div></div>
+        <div class="bar-row"><div class="bar-lab">TEMA 5<small>Inducción</small></div><div class="bar-track"><div class="bar-fill" style="width:32%;background:var(--pink)">32%</div></div><div class="bar-val" style="color:var(--pink)">3,25</div></div>
         <div class="bar-row"><div class="bar-lab">TEMA 4<small>Campo magnético</small></div><div class="bar-track"><div class="bar-fill" style="width:25%;background:var(--violet)">25%</div></div><div class="bar-val" style="color:var(--violet)">2,50</div></div>
         <div class="bar-row"><div class="bar-lab">TEMA 3<small>Corriente CC</small></div><div class="bar-track"><div class="bar-fill" style="width:22%;background:var(--green)">22%</div></div><div class="bar-val" style="color:var(--green)">2,25</div></div>
         <div class="bar-row"><div class="bar-lab">TEMA 2<small>Campo eléctrico</small></div><div class="bar-track"><div class="bar-fill" style="width:20%;background:var(--cyan)">20%</div></div><div class="bar-val" style="color:var(--cyan)">2,00</div></div>
@@ -601,7 +623,7 @@
   <p class="sub" style="margin-bottom:18px">Nota esperable de cada tema según el examen al que te presentes. La prioridad combina cuánto puntúa con lo difícil que es asegurar esos puntos.</p>
   <table class="extable">
     <tr><th>Tema</th><th>En el parcial</th><th>En el final</th><th>Prioridad</th></tr>
-    <tr><td>TEMA 5 · Inducción</td><td>no entra</td><td><b style="color:#ff8fab">≈ 3,3 / 10</b></td><td><span class="tier alta">MÁXIMA (final)</span> El tema con más peso del final.</td></tr>
+    <tr><td>TEMA 5 · Inducción</td><td>no entra</td><td><b style="color:var(--pink)">≈ 3,3 / 10</b></td><td><span class="tier alta">MÁXIMA (final)</span> El tema con más peso del final.</td></tr>
     <tr><td>TEMA 2 · Campo eléctrico</td><td><b style="color:var(--cyan)">≈ 4,3 / 10</b></td><td><b style="color:var(--cyan)">≈ 2,0 / 10</b></td><td><span class="tier alta">MÁXIMA</span> Cae siempre, en los dos formatos.</td></tr>
     <tr><td>TEMA 3 · Corriente continua</td><td><b style="color:var(--green)">≈ 4,0 / 10</b></td><td><b style="color:var(--green)">≈ 2,3 / 10</b></td><td><span class="tier alta">MÁXIMA</span> Diodos, Kirchhoff y Thévenin son recurrentes.</td></tr>
     <tr><td>TEMA 4 · Campo magnético</td><td>no entra</td><td><b style="color:var(--violet)">≈ 2,5 / 10</b></td><td><span class="tier alta">ALTA (final)</span> Cae un problema fijo de Biot-Savart/espiras, y pesa más de lo que parecía.</td></tr>
@@ -627,7 +649,6 @@ document.addEventListener("DOMContentLoaded",function(){
     {left:"$",right:"$",display:false}
   ],throwOnError:false});
 
-  // nav scrollspy
   const links=[...document.querySelectorAll('nav a')];
   const secs=links.map(a=>document.querySelector(a.getAttribute('href')));
   const obs=new IntersectionObserver((es)=>{
