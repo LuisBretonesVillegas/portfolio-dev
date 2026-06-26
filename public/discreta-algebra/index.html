@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plan 11 semanas · Discreta y Álgebra</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,900&family=Spline+Sans+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap');
+
+  :root{
+    --ink:#152922;
+    --paper:#f2eee2;
+    --paper-2:#e9e2d0;
+    --line:#cdc3aa;
+    --do:#1d7a4f;
+    --do-bg:#e0efe3;
+    --cut:#b03a2c;
+    --cut-bg:#f3e1dc;
+    --maybe:#b3812a;
+    --maybe-bg:#f3ead6;
+    --disc:#1d7a4f;
+    --alg:#5a4fb3;
+    --muted:#5d685f;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:'Inter',sans-serif;line-height:1.55;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px;}
+
+  /* hero */
+  header.hero{border-bottom:2px solid var(--ink);padding:48px 0 30px;}
+  .eyebrow{font-family:'Spline Sans Mono',monospace;font-size:.74rem;letter-spacing:.2em;text-transform:uppercase;color:var(--disc);font-weight:600;margin-bottom:16px;}
+  h1{font-family:'Fraunces',serif;font-weight:900;font-size:clamp(2.1rem,5.4vw,3.6rem);line-height:1.0;margin:0 0 .35em;letter-spacing:-.015em;}
+  .lede{font-size:1.06rem;max-width:64ch;color:#2a3730;margin:0 0 22px;}
+  .key{display:flex;gap:10px;flex-wrap:wrap;}
+  .pill{font-family:'Spline Sans Mono',monospace;font-size:.73rem;font-weight:600;padding:6px 11px;border-radius:30px;border:1.5px solid;display:inline-flex;gap:7px;align-items:center;}
+  .pill.do{color:var(--do);border-color:var(--do);background:var(--do-bg);}
+  .pill.cut{color:var(--cut);border-color:var(--cut);background:var(--cut-bg);}
+  .pill.maybe{color:var(--maybe);border-color:var(--maybe);background:var(--maybe-bg);}
+
+  section{padding:38px 0 6px;}
+  .sec-kicker{font-family:'Spline Sans Mono',monospace;font-size:.76rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:5px;}
+  h2{font-family:'Fraunces',serif;font-weight:600;font-size:clamp(1.5rem,3.3vw,2.1rem);margin:0 0 4px;letter-spacing:-.01em;}
+  .h2-sub{color:var(--muted);font-size:.96rem;margin:0 0 22px;max-width:72ch;}
+
+  /* ===== PLAN 11 SEMANAS ===== */
+  .plan{border:1.5px solid var(--ink);border-radius:5px;overflow:hidden;}
+  .wk{display:grid;grid-template-columns:88px 1fr;border-bottom:1px solid var(--line);}
+  .wk:last-child{border-bottom:none;}
+  .wk:nth-child(even){background:#efe9da;}
+  .wk .num{
+    background:var(--ink);color:var(--paper);display:flex;flex-direction:column;align-items:center;justify-content:center;
+    padding:14px 6px;text-align:center;
+  }
+  .wk .num .n{font-family:'Fraunces',serif;font-size:1.7rem;font-weight:900;line-height:1;}
+  .wk .num .dl{font-family:'Spline Sans Mono',monospace;font-size:.62rem;letter-spacing:.04em;margin-top:5px;color:#8fe3b6;}
+  .wk .task{padding:13px 18px;display:flex;flex-direction:column;justify-content:center;gap:6px;}
+  .wk .badge{font-family:'Spline Sans Mono',monospace;font-size:.66rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:2px 8px;border-radius:3px;color:#fff;width:fit-content;}
+  .wk .badge.disc{background:var(--disc);}
+  .wk .badge.alg{background:var(--alg);}
+  .wk .badge.rep{background:#7a6f55;}
+  .wk .what{font-size:.97rem;font-weight:600;}
+  .wk .what small{display:block;font-weight:400;color:var(--muted);font-size:.85rem;margin-top:2px;}
+  .legend-row{display:flex;gap:16px;flex-wrap:wrap;margin:16px 0 0;font-size:.85rem;color:var(--muted);}
+  .legend-row span{display:inline-flex;align-items:center;gap:6px;}
+  .sw{width:11px;height:11px;border-radius:3px;display:inline-block;}
+  .sw.disc{background:var(--disc);}.sw.alg{background:var(--alg);}.sw.rep{background:#7a6f55;}
+
+  /* ===== PESO ===== */
+  .weights{display:grid;grid-template-columns:1fr 1fr;gap:26px;}
+  .wcol h3{font-family:'Fraunces',serif;font-size:1.2rem;margin:0 0 3px;font-weight:600;}
+  .wcol .tag{font-family:'Spline Sans Mono',monospace;font-size:.72rem;font-weight:600;padding:2px 8px;border-radius:3px;color:#fff;display:inline-block;margin-bottom:14px;}
+  .wcol.disc .tag{background:var(--disc);}
+  .wcol.alg .tag{background:var(--alg);}
+  .wbar{margin-bottom:13px;}
+  .wbar .top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px;gap:8px;}
+  .wbar .lab{font-weight:600;font-size:.92rem;}
+  .wbar .lab small{font-weight:400;color:var(--muted);display:block;font-size:.78rem;line-height:1.35;}
+  .wbar .pct{font-family:'Spline Sans Mono',monospace;font-size:.82rem;font-weight:600;white-space:nowrap;}
+  .track{height:9px;background:var(--paper-2);border-radius:6px;overflow:hidden;border:1px solid var(--line);}
+  .fill{height:100%;border-radius:6px;}
+  .disc .fill{background:var(--disc);}
+  .alg .fill{background:var(--alg);}
+
+  /* ===== RELACIONES (DETAILS) ===== */
+  .block-label{font-family:'Spline Sans Mono',monospace;font-size:.74rem;letter-spacing:.16em;text-transform:uppercase;font-weight:600;margin:28px 0 14px;padding-bottom:7px;border-bottom:1.5px solid var(--ink);}
+  .block-label.disc{color:var(--disc);}
+  .block-label.alg{color:var(--alg);}
+
+  details.tema{border:1.5px solid var(--ink);border-radius:4px;margin-bottom:12px;overflow:hidden;background:var(--paper);}
+  details.tema[open]{background:var(--paper);}
+  summary.tema-head{
+    list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:14px;
+    padding:14px 18px;background:var(--paper-2);user-select:none;
+  }
+  summary.tema-head::-webkit-details-marker{display:none;}
+  .th-left{display:flex;flex-direction:column;gap:1px;}
+  .th-left .t-id{font-family:'Spline Sans Mono',monospace;font-size:.7rem;letter-spacing:.1em;color:var(--cut);font-weight:600;text-transform:uppercase;}
+  .th-left h3{font-family:'Fraunces',serif;font-weight:600;font-size:1.18rem;margin:1px 0 0;}
+  .th-right{display:flex;align-items:center;gap:12px;flex-shrink:0;}
+  .th-right .rel{font-family:'Spline Sans Mono',monospace;font-size:.73rem;color:var(--muted);background:var(--paper);border:1px solid var(--line);border-radius:3px;padding:3px 8px;white-space:nowrap;}
+  .chev{width:18px;height:18px;border-right:2px solid var(--ink);border-bottom:2px solid var(--ink);transform:rotate(45deg);transition:transform .2s;margin-top:-4px;flex-shrink:0;}
+  details[open] .chev{transform:rotate(-135deg);margin-top:4px;}
+  .tema-body{padding:2px 18px 14px;border-top:1px solid var(--line);}
+  .row{display:flex;gap:13px;padding:12px 0;border-bottom:1px dashed var(--line);}
+  .row:last-child{border-bottom:none;}
+  .gut{flex:0 0 auto;width:27px;height:27px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.9rem;font-weight:700;margin-top:2px;}
+  .gut.do{background:var(--do-bg);color:var(--do);border:1.5px solid var(--do);}
+  .gut.cut{background:var(--cut-bg);color:var(--cut);border:1.5px solid var(--cut);}
+  .gut.maybe{background:var(--maybe-bg);color:var(--maybe);border:1.5px solid var(--maybe);}
+  .row .body{flex:1;}
+  .row .body .lab{font-family:'Spline Sans Mono',monospace;font-size:.65rem;letter-spacing:.09em;text-transform:uppercase;font-weight:600;}
+  .row.do .lab{color:var(--do);}.row.cut .lab{color:var(--cut);}.row.maybe .lab{color:var(--maybe);}
+  .row .body p{margin:3px 0 0;font-size:.94rem;color:#27332e;}
+  .row .body p b{font-weight:600;}
+  .exnums{font-family:'Spline Sans Mono',monospace;font-size:.8rem;font-weight:500;background:var(--paper-2);border:1px solid var(--line);border-radius:3px;padding:1px 6px;display:inline-block;margin-top:5px;}
+  .exnums.do{color:var(--do);border-color:#b6d8c2;background:#e8f3ec;}
+  .exnums.cut{color:var(--cut);border-color:#e2c3bc;background:#f6e9e5;}
+
+  .caveat{border:1.5px dashed var(--maybe);background:var(--maybe-bg);border-radius:4px;padding:17px 20px;margin-top:18px;}
+  .caveat .lab{font-family:'Spline Sans Mono',monospace;font-size:.7rem;letter-spacing:.13em;text-transform:uppercase;color:var(--maybe);font-weight:600;}
+  .caveat p{margin:6px 0 0;font-size:.95rem;}
+
+  footer{padding:34px 0 50px;color:var(--muted);font-size:.8rem;font-family:'Spline Sans Mono',monospace;border-top:1px solid var(--line);margin-top:30px;}
+
+  @media (max-width:620px){
+    .weights{grid-template-columns:1fr;gap:30px;}
+    .wk{grid-template-columns:70px 1fr;}
+    .wk .num .n{font-size:1.4rem;}
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow">Sprint verano 2026 · discreta + álgebra · ritmo manejable</div>
+    <h1>11 semanas,<br>una sesión a la semana.</h1>
+    <p class="lede">Un calendario que encaja con tu plan (una ficha de mates por semana, junto a Java, Python, AWS y portfolio). Carga primero discreta porque su parcial llega antes, deja álgebra para el tramo final, y dentro de cada relación solo tocas los ejercicios que de verdad caen.</p>
+    <div class="key">
+      <span class="pill do">● Hazlo · cae</span>
+      <span class="pill maybe">● A veces · 1 basta</span>
+      <span class="pill cut">● Sáltalo · no cae</span>
+    </div>
+  </div>
+</header>
+
+<!-- ===== PESO ===== -->
+<section>
+  <div class="wrap">
+    <div class="sec-kicker">Peso por tema</div>
+    <h2>Cuánto puntúa cada tema</h2>
+    <p class="h2-sub">Reparto aproximado por número de tema. Te dice dónde apretar: en discreta el tema 2 se lleva casi la mitad; en álgebra el tema 6 es el que más cae.</p>
+
+    <div class="weights">
+      <div class="wcol disc">
+        <h3>Matemática Discreta</h3>
+        <span class="tag">Temas 1–4</span>
+
+        <div class="wbar">
+          <div class="top"><span class="lab">T1 · Conjuntos y aplicaciones<small>¿es aplicación?, iny/sobre/biy, equivalencia y cociente</small></span><span class="pct">~10%</span></div>
+          <div class="track"><div class="fill" style="width:25%"></div></div>
+        </div>
+        <div class="wbar">
+          <div class="top"><span class="lab">T2 · Naturales y enteros<small>congruencias, T. Chino, diofánticas, mcd-Bézout, restos</small></span><span class="pct">~40%</span></div>
+          <div class="track"><div class="fill" style="width:100%"></div></div>
+        </div>
+        <div class="wbar">
+          <div class="top"><span class="lab">T3 · Retículos y Boole<small>D(n), Hasse, notables, ¿Boole?, formas normales</small></span><span class="pct">~25%</span></div>
+          <div class="track"><div class="fill" style="width:62%"></div></div>
+        </div>
+        <div class="wbar">
+          <div class="top"><span class="lab">T4 · Grafos<small>Euler/Hamilton, coloreado, subgrafo economía, ciclotómico</small></span><span class="pct">~25%</span></div>
+          <div class="track"><div class="fill" style="width:62%"></div></div>
+        </div>
+      </div>
+
+      <div class="wcol alg">
+        <h3>Álgebra Lineal</h3>
+        <span class="tag">Temas 5–8</span>
+
+        <div class="wbar">
+          <div class="top"><span class="lab">T5 · Matrices y sistemas<small>rango, determinantes, inversa, discusión con parámetro</small></span><span class="pct">~15%</span></div>
+          <div class="track"><div class="fill" style="width:43%"></div></div>
+        </div>
+        <div class="wbar">
+          <div class="top"><span class="lab">T6 · Espacios vectoriales<small>base, dim, paramétricas/cartesianas, U+W, U∩W, cambio base</small></span><span class="pct">~35%</span></div>
+          <div class="track"><div class="fill" style="width:100%"></div></div>
+        </div>
+        <div class="wbar">
+          <div class="top"><span class="lab">T7 · Aplicaciones lineales<small>matriz asociada, forma canónica, núcleo/imagen, iny/sobre/biy</small></span><span class="pct">~25%</span></div>
+          <div class="track"><div class="fill" style="width:71%"></div></div>
+        </div>
+        <div class="wbar">
+          <div class="top"><span class="lab">T8 · Diagonalización<small>polinomio característico, valores/vectores propios, Aⁿ</small></span><span class="pct">~25%</span></div>
+          <div class="track"><div class="fill" style="width:71%"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PLAN ===== -->
+<section>
+  <div class="wrap">
+    <div class="sec-kicker">El calendario</div>
+    <h2>Plan de 11 semanas</h2>
+    <p class="h2-sub">Desde el domingo 28 de junio. Una tarea de mates por semana: discreta del tirón (relaciones 1–6) y luego álgebra (relaciones 1–5), con una semana colchón de repaso antes de cerrar cada bloque.</p>
+
+    <div class="plan">
+      <div class="wk">
+        <div class="num"><span class="n">1</span><span class="dl">28 jun</span></div>
+        <div class="task"><span class="badge disc">Discreta · T1</span><span class="what">Rel 1 (conjuntos) + Rel 2 (aplicaciones)<small>Solo los "hazlo": cardinales/P(A) y iny·sobre·biy con inversa. Son cortos, van juntos.</small></span></div>
+      </div>
+      <div class="wk">
+        <div class="num"><span class="n">2</span><span class="dl">5 jul</span></div>
+        <div class="task"><span class="badge disc">Discreta · T1</span><span class="what">Rel 3 (relaciones binarias)<small>Equivalencia → conjunto cociente, y orden por divisibilidad con diagrama de Hasse.</small></span></div>
+      </div>
+      <div class="wk">
+        <div class="num"><span class="n">3</span><span class="dl">12 jul</span></div>
+        <div class="task"><span class="badge disc">Discreta · T2</span><span class="what">Rel 4 (naturales) — parte 1<small>Euclides, Bézout, diofánticas y congruencias simples. El tema que más puntúa: pártelo en dos.</small></span></div>
+      </div>
+      <div class="wk">
+        <div class="num"><span class="n">4</span><span class="dl">19 jul</span></div>
+        <div class="task"><span class="badge disc">Discreta · T2</span><span class="what">Rel 4 (naturales) — parte 2<small>Sistemas de congruencias, Teorema Chino y restos de potencias. Hazte varios variados.</small></span></div>
+      </div>
+      <div class="wk">
+        <div class="num"><span class="n">5</span><span class="dl">26 jul</span></div>
+        <div class="task"><span class="badge disc">Discreta · T3</span><span class="what">Rel 5 (retículos y Boole)<small>Hasse + notables, ¿distributivo?/¿complementado?, D(n) como álgebra de Boole e isomorfismo con P(A).</small></span></div>
+      </div>
+      <div class="wk">
+        <div class="num"><span class="n">6</span><span class="dl">2 ago</span></div>
+        <div class="task"><span class="badge disc">Discreta · T4</span><span class="what">Rel 6 (grafos)<small>Euler y Hamilton, subgrafo economía + número ciclotómico, y una pasada por coloreado/bipartido.</small></span></div>
+      </div>
+      <div class="wk">
+        <div class="num"><span class="n">7</span><span class="dl">9 ago</span></div>
+        <div class="task"><span class="badge rep">Repaso · cierre discreta</span><span class="what">Simulacro de parcial de discreta<small>Coge parcial1_24 y parcial18 y hazlos cronometrados. Repasa solo lo que falle. Discreta queda cerrada.</small></span></div>
+      </div>
+      <div class="wk">
+        <div class="num"><span class="n">8</span><span class="dl">16 ago</span></div>
+        <div class="task"><span class="badge alg">Álgebra · T5</span><span class="what">Rel 1 (matrices) + Rel 2 (sistemas)<small>Inversa, rango y determinantes, y discusión de sistemas con parámetro (Rouché + Cramer).</small></span></div>
+      </div>
+      <div class="wk">
+        <div class="num"><span class="n">9</span><span class="dl">23 ago</span></div>
+        <div class="task"><span class="badge alg">Álgebra · T6</span><span class="what">Rel 3 (espacios vectoriales)<small>Base, dim, paramétricas↔cartesianas, U+W y U∩W, cambio de base. Apóyate en la hoja resuelta "Subespacios".</small></span></div>
+      </div>
+      <div class="wk">
+        <div class="num"><span class="n">10</span><span class="dl">30 ago</span></div>
+        <div class="task"><span class="badge alg">Álgebra · T7</span><span class="what">Rel 4 (aplicaciones lineales)<small>Matriz asociada, núcleo e imagen (base, dim, cartesianas) y clasificar iny·sobre·biy.</small></span></div>
+      </div>
+      <div class="wk">
+        <div class="num"><span class="n">11</span><span class="dl">6 sept</span></div>
+        <div class="task"><span class="badge alg">Álgebra · T8</span><span class="what">Rel 5 (diagonalización) + cierre<small>Polinomio característico, valores/vectores propios, P y forma diagonal. Remata con un examen final mezclado.</small></span></div>
+      </div>
+    </div>
+
+    <div class="legend-row">
+      <span><span class="sw disc"></span> Discreta (T1–4)</span>
+      <span><span class="sw alg"></span> Álgebra (T5–8)</span>
+      <span><span class="sw rep"></span> Repaso / simulacro</span>
+    </div>
+  </div>
+</section>
+
+<!-- ===== RECORTE ===== -->
+<section>
+  <div class="wrap">
+    <div class="sec-kicker">El recorte, ejercicio a ejercicio</div>
+    <h2>Qué hacer de cada relación</h2>
+    <p class="h2-sub">Toca un bloque para abrirlo. Números reales de cada hoja: verde lo conservas, rojo lo tachas. Los "hazlo" son moldes, no cuotas: 1–2 de cada hasta que salga solo.</p>
+
+    <div class="block-label disc">Bloque discreta · relaciones 1–6</div>
+
+    <!-- REL1 -->
+    <details class="tema">
+      <summary class="tema-head">
+        <div class="th-left"><span class="t-id">Relación 1 · Conjuntos</span><h3>Casi todo es de saltar</h3></div>
+        <div class="th-right"><span class="rel">19 ej.</span><span class="chev"></span></div>
+      </summary>
+      <div class="tema-body">
+        <div class="row do"><div class="gut do">✓</div><div class="body"><span class="lab">Hazlo</span><p>Cardinales con P(A) y producto cartesiano: el típico "|A×B| y |P(A)|, calcula |B|". Cae como pregunta corta.</p><span class="exnums do">8 · 9 · 10 · 11 · 15</span></div></div>
+        <div class="row maybe"><div class="gut maybe">~</div><div class="body"><span class="lab">Uno y listo</span><p>Cadena de bits de un subconjunto (representación y operaciones).</p><span class="exnums">19</span></div></div>
+        <div class="row cut"><div class="gut cut">✕</div><div class="body"><span class="lab">Sáltalo</span><p>Pertenencia/inclusión con llaves anidadas, describir por comprensión, y demostraciones de De Morgan o |A∪B|.</p><span class="exnums cut">1 · 2 · 3 · 4 · 5 · 6 · 7 · 12 · 13 · 14 · 16 · 17 · 18</span></div></div>
+      </div>
+    </details>
+
+    <!-- REL2 -->
+    <details class="tema">
+      <summary class="tema-head">
+        <div class="th-left"><span class="t-id">Relación 2 · Aplicaciones</span><h3>Solo iny / sobre / biy</h3></div>
+        <div class="th-right"><span class="rel">17 ej.</span><span class="chev"></span></div>
+      </summary>
+      <div class="tema-body">
+        <div class="row do"><div class="gut do">✓</div><div class="body"><span class="lab">Hazlo</span><p>Clasificar f como iny/sobre/biy y calcular la inversa, más composición f∘g y g∘f. Es justo lo que cae.</p><span class="exnums do">4 · 5 · 15 · 17</span></div></div>
+        <div class="row maybe"><div class="gut maybe">~</div><div class="body"><span class="lab">Uno y listo</span><p>"¿Es esta correspondencia una aplicación?" (dominio/imagen). Cayó en Ex_Ord26.</p><span class="exnums">1 · 2 · 3</span></div></div>
+        <div class="row cut"><div class="gut cut">✕</div><div class="body"><span class="lab">Sáltalo</span><p>Demostraciones abstractas de composición (si f,g iny ⟹ g∘f iny…) y los tipo test de contar aplicaciones.</p><span class="exnums cut">6 · 7 · 8 · 9 · 10 · 11 · 12 · 13 · 14 · 16</span></div></div>
+      </div>
+    </details>
+
+    <!-- REL3 -->
+    <details class="tema">
+      <summary class="tema-head">
+        <div class="th-left"><span class="t-id">Relación 3 · Relaciones binarias</span><h3>Equivalencia + Hasse</h3></div>
+        <div class="th-right"><span class="rel">20 ej.</span><span class="chev"></span></div>
+      </summary>
+      <div class="tema-body">
+        <div class="row do"><div class="gut do">✓</div><div class="body"><span class="lab">Hazlo</span><p>Probar relación de equivalencia y dar el <b>conjunto cociente</b> (sobre todo el de cadenas de bits, que cae literal).</p><span class="exnums do">3 · 8 · 9 · 13 · 14</span></div></div>
+        <div class="row do"><div class="gut do">✓</div><div class="body"><span class="lab">Hazlo</span><p>Orden por divisibilidad: dibujar Hasse y hallar elementos notables. Puente directo al tema 3.</p><span class="exnums do">11 · 18 · 19</span></div></div>
+        <div class="row cut"><div class="gut cut">✕</div><div class="body"><span class="lab">Sáltalo</span><p>Detectar propiedades de R sueltas, interpretaciones geométricas del cociente en R², y posets sin maximal/minimal.</p><span class="exnums cut">1 · 2 · 4 · 5 · 6 · 7 · 10 · 12 · 16 · 17 · 20</span></div></div>
+      </div>
+    </details>
+
+    <!-- REL4 -->
+    <details class="tema">
+      <summary class="tema-head">
+        <div class="th-left"><span class="t-id">Relación 4 · Naturales y enteros</span><h3>El oro: hazla casi entera</h3></div>
+        <div class="th-right"><span class="rel">24 ej.</span><span class="chev"></span></div>
+      </summary>
+      <div class="tema-body">
+        <div class="row do"><div class="gut do">✓</div><div class="body"><span class="lab">Hazlo · prioridad máxima</span><p>Euclides + Bézout, diofánticas, congruencias, sistemas de congruencias y Teorema Chino, y restos de potencias. El 40% del examen.</p><span class="exnums do">1 · 2 · 3 · 5 · 16 · 17 · 19 · 21 · 22 · 23 · 24</span></div></div>
+        <div class="row maybe"><div class="gut maybe">~</div><div class="body"><span class="lab">Uno y listo</span><p>Dígitos de control (DNI, IBAN, ISBN, EAN) y clases invertibles de Zn / inverso modular.</p><span class="exnums">8 · 9 · 10 · 14 · 15</span></div></div>
+        <div class="row cut"><div class="gut cut">✕</div><div class="body"><span class="lab">Sáltalo</span><p>Demostrar la regla del 9 y del 11, tablas de Z8 y las demostraciones tipo "m²≡…".</p><span class="exnums cut">4 · 6 · 7 · 11 · 12 · 13 · 18 · 20</span></div></div>
+      </div>
+    </details>
+
+    <!-- REL5 -->
+    <details class="tema">
+      <summary class="tema-head">
+        <div class="th-left"><span class="t-id">Relación 5 · Retículos y Boole</span><h3>Hasta el ej. 11, y para</h3></div>
+        <div class="th-right"><span class="rel">17 ej.</span><span class="chev"></span></div>
+      </summary>
+      <div class="tema-body">
+        <div class="row do"><div class="gut do">✓</div><div class="body"><span class="lab">Hazlo</span><p>Hasse + notables + ¿retículo?/¿distributivo?/¿complementado?, átomos e irreducibles, y D(n) como Boole con isomorfismo a P(A).</p><span class="exnums do">2 · 3 · 4 · 7 · 8 · 10 · 11</span></div></div>
+        <div class="row maybe"><div class="gut maybe">~</div><div class="body"><span class="lab">Uno y listo</span><p>Formas normales (disyuntiva/conjuntiva) y tabla de verdad de una función booleana.</p><span class="exnums">13 · 16 · 17</span></div></div>
+        <div class="row cut"><div class="gut cut">✕</div><div class="body"><span class="lab">Sáltalo</span><p>Demostrar equivalencias de igualdades booleanas (a∨b=b ⟺ …) e identidades a mano.</p><span class="exnums cut">1 · 5 · 6 · 9 · 12 · 14 · 15</span></div></div>
+      </div>
+    </details>
+
+    <!-- REL6 -->
+    <details class="tema">
+      <summary class="tema-head">
+        <div class="th-left"><span class="t-id">Relación 6 · Grafos</span><h3>Euler, Hamilton y economía</h3></div>
+        <div class="th-right"><span class="rel">20 ej.</span><span class="chev"></span></div>
+      </summary>
+      <div class="tema-body">
+        <div class="row do"><div class="gut do">✓</div><div class="body"><span class="lab">Hazlo</span><p>Euler y Hamilton sobre un grafo (incluido el "circuito eléctrico" y el dominó), y el <b>subgrafo economía + número ciclotómico</b>, que cae en los finales de 2026.</p><span class="exnums do">3 · 4 · 5 · 13 · 15 · 16 · 17</span></div></div>
+        <div class="row maybe"><div class="gut maybe">~</div><div class="body"><span class="lab">Uno y listo</span><p>Coloreado / bipartido (Kn 2-coloreable, biparticiones) y planaridad.</p><span class="exnums">6 · 18</span></div></div>
+        <div class="row cut"><div class="gut cut">✕</div><div class="body"><span class="lab">Sáltalo</span><p>Matriz de adyacencia y caminos de longitud n por potencias, isomorfismo, conteo por grados y emparejamientos/condición t.</p><span class="exnums cut">1 · 2 · 7 · 8 · 9 · 10 · 11 · 12 · 14 · 19 · 20</span></div></div>
+      </div>
+    </details>
+
+    <div class="block-label alg">Bloque álgebra · relaciones 1–5</div>
+
+    <!-- ALG R1 -->
+    <details class="tema">
+      <summary class="tema-head">
+        <div class="th-left"><span class="t-id">Álgebra R1 · Matrices y determinantes</span><h3>Solo lo operativo</h3></div>
+        <div class="th-right"><span class="rel">52 ej.</span><span class="chev"></span></div>
+      </summary>
+      <div class="tema-body">
+        <div class="row do"><div class="gut do">✓</div><div class="body"><span class="lab">Hazlo</span><p>Inversa por el método operativo, rango (con y sin parámetro) y determinantes por adjuntos y por reducción. Base de todo lo demás.</p><span class="exnums do">18 · 20 · 21 · 22 · 33 · 37 · 39 · 40 · 41</span></div></div>
+        <div class="row maybe"><div class="gut maybe">~</div><div class="body"><span class="lab">Uno y listo</span><p>Propiedades del determinante (cómo cambia al escalar/permutar filas) y producto de matrices.</p><span class="exnums">1 · 3 · 13 · 42 · 43</span></div></div>
+        <div class="row cut"><div class="gut cut">✕</div><div class="body"><span class="lab">Sáltalo</span><p>Idempotentes/nilpotentes, demostraciones de regularidad, Vandermonde y determinantes n×n simbólicos.</p><span class="exnums cut">8–12 · 17 · 19 · 23–31 · 34–36 · 44–52</span></div></div>
+      </div>
+    </details>
+
+    <!-- ALG R2 -->
+    <details class="tema">
+      <summary class="tema-head">
+        <div class="th-left"><span class="t-id">Álgebra R2 · Sistemas</span><h3>Discusión con parámetro</h3></div>
+        <div class="th-right"><span class="rel">13 ej.</span><span class="chev"></span></div>
+      </summary>
+      <div class="tema-body">
+        <div class="row do"><div class="gut do">✓</div><div class="body"><span class="lab">Hazlo</span><p>Discutir y resolver según un parámetro (Rouché-Frobenius + Cramer): lo que pide el examen. Hazte 3–4 variados.</p><span class="exnums do">4 · 5 · 6 · 8 · 13</span></div></div>
+        <div class="row maybe"><div class="gut maybe">~</div><div class="body"><span class="lab">Uno y listo</span><p>Gauss-Jordan y Cramer sin parámetro, para coger soltura.</p><span class="exnums">1 · 2</span></div></div>
+        <div class="row cut"><div class="gut cut">✕</div><div class="body"><span class="lab">Sáltalo</span><p>Sistemas con doble parámetro muy farragosos si ya dominas uno: mismo método estirado.</p><span class="exnums cut">3 · 7 · 9 · 10 · 11 · 12</span></div></div>
+      </div>
+    </details>
+
+    <!-- ALG R3 -->
+    <details class="tema">
+      <summary class="tema-head">
+        <div class="th-left"><span class="t-id">Álgebra R3 · Espacios vectoriales</span><h3>El bloque más pesado</h3></div>
+        <div class="th-right"><span class="rel">62 ej.</span><span class="chev"></span></div>
+      </summary>
+      <div class="tema-body">
+        <div class="row do"><div class="gut do">✓</div><div class="body"><span class="lab">Hazlo</span><p>Base y dimensión, paramétricas↔cartesianas, <b>U+W y U∩W</b>, coordenadas y cambio de base. El corazón del examen.</p><span class="exnums do">20 · 32 · 33 · 38 · 39 · 40 · 41 · 46 · 47 · 52 · 53 · 54 · 58 · 59 · 60</span></div></div>
+        <div class="row maybe"><div class="gut maybe">~</div><div class="body"><span class="lab">Uno y listo</span><p>Independencia / generadores / ¿es base?, y coordenadas en una base dada.</p><span class="exnums">16 · 18 · 23 · 24 · 29 · 30</span></div></div>
+        <div class="row cut"><div class="gut cut">✕</div><div class="body"><span class="lab">Sáltalo</span><p>"¿Es espacio vectorial con operaciones raras?", subespacios de matrices/polinomios y suma directa demostrativa.</p><span class="exnums cut">1–15 · 17 · 19 · 21 · 22 · 25–28 · 31 · 42 · 49 · 50 · 51</span></div></div>
+      </div>
+    </details>
+
+    <!-- ALG R4 -->
+    <details class="tema">
+      <summary class="tema-head">
+        <div class="th-left"><span class="t-id">Álgebra R4 · Aplicaciones lineales</span><h3>Matriz + núcleo + imagen</h3></div>
+        <div class="th-right"><span class="rel">8 ej.</span><span class="chev"></span></div>
+      </summary>
+      <div class="tema-body">
+        <div class="row do"><div class="gut do">✓</div><div class="body"><span class="lab">Hazlo</span><p>Matriz asociada respecto a las bases canónicas, núcleo e imagen (base, dim, cartesianas) y clasificar iny/sobre/biy.</p><span class="exnums do">3 · 4 · 5 · 6 · 8</span></div></div>
+        <div class="row cut"><div class="gut cut">✕</div><div class="body"><span class="lab">Sáltalo</span><p>Cambio de base múltiple entre bases no canónicas: mucho montaje, y el examen va casi siempre con la canónica.</p><span class="exnums cut">1 · 2 · 7</span></div></div>
+      </div>
+    </details>
+
+    <!-- ALG R5 -->
+    <details class="tema">
+      <summary class="tema-head">
+        <div class="th-left"><span class="t-id">Álgebra R5 · Diagonalización</span><h3>Propio, propio, diagonal</h3></div>
+        <div class="th-right"><span class="rel">19 ej.</span><span class="chev"></span></div>
+      </summary>
+      <div class="tema-body">
+        <div class="row do"><div class="gut do">✓</div><div class="body"><span class="lab">Hazlo</span><p>Polinomio característico, valores y vectores propios, ¿diagonalizable?, hallar P y la forma diagonal. Incluye un par con parámetro.</p><span class="exnums do">1 · 2 · 3 · 5 · 9 · 10 · 11</span></div></div>
+        <div class="row maybe"><div class="gut maybe">~</div><div class="body"><span class="lab">Uno y listo</span><p>Potencia Aⁿ vía diagonalización o recurrencia.</p><span class="exnums">4 · 13 · 15 · 16</span></div></div>
+        <div class="row cut"><div class="gut cut">✕</div><div class="body"><span class="lab">Sáltalo</span><p>Demostraciones sobre vectores propios, condiciones simbólicas de diagonalizabilidad y Gram-Schmidt / ortogonal (con asterisco).</p><span class="exnums cut">6 · 7 · 8 · 12 · 14 · 17 · 18 · 19</span></div></div>
+      </div>
+    </details>
+
+    <div class="caveat">
+      <span class="lab">Cómo usar esto</span>
+      <p>Las dos hojas resueltas que tienes (<b>Subespacios</b> y <b>Discusión de sistema</b>) son los moldes estrella de álgebra: estúdialas como plantilla en las semanas 8–9. Y si en algún punto vas justo de tiempo, lo único que no puedes saltarte es la <b>relación 4 de discreta</b> y la <b>relación 3 de álgebra</b>: entre las dos cubren casi la mitad de cada examen.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    fuentes · rel1–6 discreta · Relación_1–5 álgebra · Subespacios · Discucion_sistema · parcial1_24 · parcial18 · parcial2_19 · axacparc14 · Ex_Ord26 · Ex_Extrafinal · exafeb20/22 · exaene20 · exanov21 · Examen_febrero_2012
+  </div>
+</footer>
+
+</body>
+</html>
