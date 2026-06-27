@@ -205,7 +205,7 @@ const CHAPTERS = [
     }
   }
 
-  fetch(url)
+  fetch(url + '?t=' + Date.now())
     .then((r) => r.json())
     .then((data) => {
       const total = data.total || 29;
