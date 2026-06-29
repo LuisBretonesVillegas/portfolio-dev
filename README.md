@@ -1,49 +1,54 @@
-# Starlight Starter Kit: Basics
+# portfolio-dev
 
-[![Built with Starlight](https://astro.badg.es/v2/built-with-starlight/tiny.svg)](https://starlight.astro.build)
+Personal portfolio and developer log of **Luis Bretones**, a Computer Engineering student at UAL focused on networking and cloud infrastructure. It's where I document the projects I build and the things I learn along the way.
 
-```
-npm create astro@latest -- --template starlight
-```
+**Live site:** [luisbretones.dev](https://luisbretones.dev/)
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## Tech stack
 
-## 🚀 Project Structure
+- [Astro](https://astro.build/) as the framework
+- [Starlight](https://starlight.astro.build/) for the content layer and theming
+- Custom CSS layered on top of Starlight's design tokens
+- Deployed to GitHub Pages via GitHub Actions on every push to `main`
 
-Inside of your Astro + Starlight project, you'll see the following folders and files:
+## Project structure
 
 ```
 .
-├── public/
+├── public/              # Static assets and CNAME
 ├── src/
-│   ├── assets/
-│   ├── content/
-│   │   └── docs/
-│   └── content.config.ts
-├── astro.config.mjs
-├── package.json
-└── tsconfig.json
+│   ├── assets/          # Images
+│   ├── components/      # Component overrides and widgets
+│   ├── content/docs/    # All site content
+│   │   ├── projects/    # One page per project
+│   │   ├── blog/        # Dev log, auto-sorted by date
+│   │   ├── about.md
+│   │   └── index.mdx    # Home / hero
+│   └── styles/          # Custom CSS
+├── astro.config.mjs     # Astro + Starlight config (sidebar, theming, site URL)
+└── package.json
 ```
 
-Starlight looks for `.md` or `.mdx` files in the `src/content/docs/` directory. Each file is exposed as a route based on its file name.
+Content lives in `src/content/docs/` as `.md` and `.mdx` files. Each file becomes a route based on its name.
 
-Images can be added to `src/assets/` and embedded in Markdown with a relative link.
+## Local development
 
-Static assets, like favicons, can be placed in the `public/` directory.
+All commands run from the project root:
 
-## 🧞 Commands
+| Command           | Action                                          |
+| :---------------- | :---------------------------------------------- |
+| `npm install`     | Install dependencies                            |
+| `npm run dev`     | Start the local dev server at `localhost:4321`  |
+| `npm run build`   | Build the production site to `./dist/`          |
+| `npm run preview` | Preview the production build locally            |
 
-All commands are run from the root of the project, from a terminal:
+## Sections
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+- **Home:** what I do, plus skills and certifications in progress
+- **Projects:** write-ups of the things I've built
+- **Blog:** a running log of builds and things I learn, newest first
+- **About / Contact:** background and how to reach me
 
-## 👀 Want to learn more?
+## License
 
-Check out [Starlight’s docs](https://starlight.astro.build/), read [the Astro documentation](https://docs.astro.build), or jump into the [Astro Discord server](https://astro.build/chat).
+Content and code © Luis Bretones. Feel free to take inspiration from the structure.
