@@ -86,6 +86,7 @@ I build and learn along the way.]. Do not invent anything. Keep everything in En
 - [x] Remove from the sidebar any example or placeholder pages created by Starlight by default. Do not delete actual content pages.
 
 ## Lo que NO quiero que hagas
+- No uses este simbolo "— " bajo ningun concepto, ajusta la sintaxis
 - No cambies el idioma del contenido a español, todo en inglés.
 - No instales dependencias adicionales sin preguntarme.
 - No toques `package.json` ni `package-lock.json` salvo que yo lo pida.

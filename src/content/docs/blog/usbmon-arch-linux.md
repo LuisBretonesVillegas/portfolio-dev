@@ -5,7 +5,7 @@ description: Setting up Wireshark and usbmon to capture USB traffic on Arch Linu
 tags: [arch-linux, usb, wireshark]
 ---
 
-While working on the protocol analysis of a Corsair wireless audio dongle, I needed to capture raw USB traffic on Arch Linux using Wireshark, without running it as root. Here's the setup that worked.
+While I was poking at the protocol analysis of a Corsair wireless audio dongle, I needed to capture raw USB traffic on Arch Linux with Wireshark, and I really didn't want to run the whole thing as root just to do it. Here's the setup that ended up working.
 
 ## Load the usbmon kernel module
 
@@ -58,7 +58,7 @@ The bus number maps directly to the capture interface: Bus 002 uses `usbmon2`.
 
 ## Start capturing
 
-Open Wireshark as a normal user, pick `usbmon2` (or whichever bus your device is on), and start the capture.
+Open Wireshark as a normal user, pick `usbmon2` (or whichever bus your device landed on), and start the capture. That's it, no sudo in sight.
 
 ---
 
