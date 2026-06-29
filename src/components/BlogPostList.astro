@@ -1,0 +1,90 @@
+---
+// Auto-generated, date-sorted list of blog posts.
+// Reads the raw frontmatter of every post in src/content/docs/blog/ so the
+// ordering follows each post's `date:` field, no manual maintenance needed.
+const modules = import.meta.glob('../content/docs/blog/*.{md,mdx}', { eager: true });
+
+type Post = {
+  slug: string;
+  title: string;
+  description: string;
+  date: Date;
+};
+
+const posts: Post[] = Object.entries(modules)
+  .map(([path, mod]) => {
+    const fm = (mod as any).frontmatter ?? {};
+    const slug = path.split('/').pop()!.replace(/\.(md|mdx)$/, '');
+    return {
+      slug,
+      title: fm.title ?? slug,
+      description: fm.description ?? '',
+      date: fm.date ? new Date(fm.date) : new Date(0),
+    };
+  })
+  // Drop the blog index itself; only list actual posts.
+  .filter((p) => p.slug !== 'index')
+  // Most recent first.
+  .sort((a, b) => b.date.getTime() - a.date.getTime());
+
+function fmtDate(d: Date) {
+  if (isNaN(d.getTime()) || d.getTime() === 0) return '';
+  return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+}
+---
+
+<ul class="post-list">
+  {posts.map((post) => (
+    <li class="post-item">
+      <div class="post-head">
+        <a class="post-link" href={`/blog/${post.slug}/`}>{post.title}</a>
+        {fmtDate(post.date) && <span class="post-date">{fmtDate(post.date)}</span>}
+      </div>
+      {post.description && <p class="post-desc">{post.description}</p>}
+    </li>
+  ))}
+</ul>
+
+<style>
+  .post-list {
+    list-style: none;
+    margin: 1.5rem 0 0;
+    padding: 0;
+  }
+  .post-item {
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--sl-color-gray-5);
+  }
+  .post-item:first-child {
+    border-top: 1px solid var(--sl-color-gray-5);
+  }
+  .post-head {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+  .post-link {
+    font-weight: 600;
+    font-size: 1.05rem;
+    color: var(--sl-color-white);
+    text-decoration: none;
+  }
+  .post-link:hover {
+    color: var(--sl-color-accent-high);
+    text-decoration: underline;
+  }
+  .post-date {
+    margin-left: auto;
+    flex-shrink: 0;
+    font-size: 0.8rem;
+    color: var(--sl-color-gray-3);
+    font-variant-numeric: tabular-nums;
+  }
+  .post-desc {
+    margin: 0.4rem 0 0;
+    color: var(--sl-color-gray-2);
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+</style>
