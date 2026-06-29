@@ -33,6 +33,7 @@ function blogSidebarItems() {
 
 // https://astro.build/config
 export default defineConfig({
+	site: 'https://luisbretones.dev',
 	integrations: [
 		starlight({
 			title: 'Luis Bretones',
