@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>C en verano · Base para Sistemas Operativos · 2026</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,900&family=Spline+Sans+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700;800&display=swap');
+  :root{
+    --ink:#152922;
+    --paper:#f2eee2;
+    --paper-2:#e9e2d0;
+    --paper-3:#efe9da;
+    --line:#cdc3aa;
+    --muted:#5d685f;
+    --faint:#8a917f;
+    --green:#1d7a4f;  --green-bg:#e0efe3;
+    --violet:#5a4fb3; --violet-bg:#ece9f3;
+    --amber:#b3812a;
+    --cyan:#1f6f78;
+    --pink:#a8497a;
+    --blue:#2c4a6e;
+    --red:#b03a2c;    --red-bg:#f3e1dc;
+    --mono:'Spline Sans Mono',ui-monospace,monospace;
+    --sans:'Inter',system-ui,sans-serif;
+    --serif:'Fraunces',serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--paper);color:var(--ink);font-family:var(--sans);line-height:1.55;-webkit-font-smoothing:antialiased}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 22px}
+
+  header{border-bottom:2px solid var(--ink);padding:54px 0 38px;position:relative;overflow:hidden}
+  header .wrap{position:relative;z-index:2}
+  .eyebrow{font-family:var(--mono);font-size:.74rem;letter-spacing:.22em;text-transform:uppercase;color:var(--green);font-weight:600;margin-bottom:18px}
+  h1{font-family:var(--serif);font-size:clamp(2.1rem,6vw,3.9rem);font-weight:900;letter-spacing:-.018em;line-height:1.0}
+  h1 .em{font-style:italic;color:var(--amber);font-weight:600}
+  .lede{color:#2a3730;max-width:64ch;margin-top:16px;font-size:1.05rem}
+  .ptr{position:absolute;top:0;right:-10px;height:100%;width:40%;opacity:.28;pointer-events:none}
+  @media(max-width:780px){.ptr{display:none}}
+  .hero-meta{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+  .hero-meta .pill{font-family:var(--mono);font-size:.73rem;font-weight:600;padding:6px 11px;border-radius:30px;border:1.5px solid var(--line);color:var(--muted)}
+  .hero-meta .pill b{color:var(--green);font-weight:600}
+
+  nav{position:sticky;top:0;z-index:30;background:rgba(242,238,226,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:2px;overflow-x:auto}
+  nav a{font-family:var(--mono);font-size:.78rem;font-weight:600;padding:13px 13px;color:var(--muted);white-space:nowrap;border-bottom:2px solid transparent;transition:.15s}
+  nav a:hover{color:var(--ink)}
+  nav a.active{color:var(--amber);border-color:var(--amber)}
+
+  section{padding:48px 0;border-bottom:1px solid var(--line)}
+  .sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:6px}
+  .sec-num{font-family:var(--mono);font-size:.8rem;color:var(--faint);font-weight:600}
+  h2{font-family:var(--serif);font-size:clamp(1.6rem,4vw,2.3rem);font-weight:900;letter-spacing:-.01em}
+  .sub{color:var(--muted);margin-bottom:28px;max-width:74ch;font-size:.97rem}
+  .sub b{color:var(--ink)}
+
+  /* WEEK big cards */
+  .weeks{display:flex;flex-direction:column;gap:14px}
+  .wk{border:1.5px solid var(--ink);border-radius:8px;background:var(--paper);overflow:hidden}
+  .wk .head{display:flex;align-items:center;gap:16px;padding:16px 20px;background:var(--paper-2);border-bottom:1px solid var(--line)}
+  .wk .num{font-family:var(--mono);font-weight:700;color:#fff;background:var(--violet);width:34px;height:34px;border-radius:9px;display:grid;place-items:center;flex-shrink:0;font-size:.85rem}
+  .wk.phase-2 .num{background:var(--cyan)}.wk.phase-3 .num{background:var(--green)}
+  .wk .htitle{font-family:var(--serif);font-weight:600;font-size:1.18rem;flex:1;line-height:1.2}
+  .wk .htitle small{display:block;font-family:var(--mono);font-weight:400;color:var(--faint);font-size:.66rem;margin-top:3px;letter-spacing:.02em}
+  .wk .body{padding:16px 20px;display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  @media(max-width:640px){.wk .body{grid-template-columns:1fr}}
+  .wk .blk h4{font-family:var(--mono);font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;color:var(--cyan);font-weight:600;margin-bottom:7px}
+  .wk .blk p{font-size:.9rem;color:#28352e;line-height:1.5}
+  .wk .blk code{font-family:var(--mono);background:var(--paper-2);padding:1px 5px;border-radius:4px;font-size:.85em;color:var(--amber)}
+  .wk .proj{border-left:3px solid var(--green);background:var(--green-bg);padding:10px 14px;border-radius:0 7px 7px 0;font-size:.88rem;color:#1c3a2b;margin-top:3px}
+  .wk .proj b{color:var(--green)}
+  .kingtag{font-family:var(--mono);font-size:.66rem;font-weight:600;padding:4px 10px;border-radius:20px;border:1.5px solid #b0a5da;color:var(--violet);background:var(--violet-bg);white-space:nowrap}
+
+  .phase-band{font-family:var(--mono);font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;font-weight:600;margin:30px 0 14px;padding-bottom:8px;border-bottom:1.5px solid var(--ink)}
+  .phase-band:first-of-type{margin-top:6px}
+  .phase-band.p1{color:var(--violet)}.phase-band.p2{color:var(--cyan)}.phase-band.p3{color:var(--green)}
+
+  .note{border-left:3px solid var(--violet);background:var(--violet-bg);padding:14px 18px;border-radius:0 8px 8px 0;margin:20px 0;font-size:.9rem;color:#3a3550}
+  .note b{color:var(--violet)}
+  .note.warn{border-left-color:var(--red);background:var(--red-bg);color:#5a342e}
+  .note.warn b{color:var(--red)}
+  .note.good{border-left-color:var(--green);background:var(--green-bg);color:#1c3a2b}
+  .note.good b{color:var(--green)}
+  .note code{font-family:var(--mono);background:rgba(0,0,0,.05);padding:1px 5px;border-radius:4px;font-size:.85em}
+
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:13px}
+  .mcard{border:1.5px solid var(--ink);border-radius:6px;padding:22px;background:var(--paper)}
+  .mcard .k{font-family:var(--mono);font-size:.72rem;font-weight:600;margin-bottom:8px;letter-spacing:.03em}
+  .mcard p{color:var(--muted);font-size:.9rem}
+  .mcard code{font-family:var(--mono);background:var(--paper-2);padding:1px 5px;border-radius:4px;font-size:.85em;color:var(--amber)}
+
+  pre{background:#14201b;color:#e8e4d6;border-radius:8px;padding:16px 18px;overflow-x:auto;font-family:var(--mono);font-size:.82rem;line-height:1.5;margin:14px 0;border:1px solid #2a3830}
+  pre .cm{color:#7d9b86}
+  pre .kw{color:#e0a655}
+  pre .fn{color:#7bc4cf}
+  pre .st{color:#c99}
+
+  .extable{width:100%;border-collapse:collapse;border:1.5px solid var(--ink);border-radius:6px;overflow:hidden;font-size:.88rem}
+  .extable th{background:var(--paper-2);text-align:left;padding:12px 15px;font-family:var(--mono);font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;color:var(--cyan);border-bottom:1px solid var(--line);font-weight:600}
+  .extable td{padding:12px 15px;border-bottom:1px solid var(--line);vertical-align:top}
+  .extable tr:last-child td{border-bottom:none}
+  .extable tr:nth-child(even){background:var(--paper-3)}
+  .extable td:first-child{font-weight:600;white-space:nowrap;font-family:var(--mono);color:var(--violet)}
+  .tier{display:inline-block;font-family:var(--mono);font-size:.6rem;padding:2px 7px;border-radius:4px;font-weight:600}
+  .tier.alta{background:var(--green-bg);color:var(--green)}
+  .tier.media{background:#f3ead6;color:var(--amber)}
+  .tier.baja{background:var(--red-bg);color:var(--red)}
+
+  footer{padding:36px 0 56px;color:var(--muted);font-size:.78rem;font-family:var(--mono);border-top:1px solid var(--line)}
+  footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+</style>
+</head>
+<body>
+
+<header>
+  <svg class="ptr" viewBox="0 0 340 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect x="40" y="120" width="50" height="50" rx="4" stroke="#5a4fb3" stroke-width="2"/>
+    <rect x="120" y="120" width="50" height="50" rx="4" stroke="#1f6f78" stroke-width="2"/>
+    <rect x="200" y="120" width="50" height="50" rx="4" stroke="#1d7a4f" stroke-width="2"/>
+    <text x="52" y="152" font-family="monospace" font-size="15" fill="#152922">0x1</text>
+    <text x="132" y="152" font-family="monospace" font-size="15" fill="#152922">0x2</text>
+    <text x="212" y="152" font-family="monospace" font-size="15" fill="#152922">0x3</text>
+    <circle cx="65" cy="240" r="7" fill="#5a4fb3"/>
+    <path d="M65 240 C65 200 145 200 145 175" stroke="#5a4fb3" stroke-width="2" fill="none"/>
+    <path d="M140 180 L145 172 L150 180" stroke="#5a4fb3" stroke-width="2" fill="none"/>
+    <text x="40" y="275" font-family="monospace" font-size="13" fill="#5d685f">int *p</text>
+  </svg>
+  <div class="wrap">
+    <div class="eyebrow">C en verano · Base para SO · 2026</div>
+    <h1>Diez semanas para<br>leer C como <span class="em">el kernel</span> lo escribe.</h1>
+    <p class="lede">Un solo objetivo este verano: aprender C y llegar con base. La teoría de Sistemas Operativos la consolidas en clase; lo que cuesta arrancar en frío es el código. Si en septiembre lees un <code>fork()</code> o un semáforo sin bloquearte, ya has ganado. Diez semanas, un mini-proyecto por semana, todo en tu Debian.</p>
+    <div class="hero-meta">
+      <span class="pill">Semanas <b>10</b></span>
+      <span class="pill">Libro <b>King · A Modern Approach</b></span>
+      <span class="pill">Entorno <b>Debian 13 · gcc</b></span>
+      <span class="pill">Meta <b>leer y escribir C</b></span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#idea">00 · La idea</a>
+  <a href="#setup">01 · Debian listo</a>
+  <a href="#ruta">02 · Ruta de 10 semanas</a>
+  <a href="#punteros">03 · Punteros sin miedo</a>
+  <a href="#posix">04 · Puente a SO</a>
+  <a href="#habitos">05 · Hábitos</a>
+</div></nav>
+
+<!-- IDEA -->
+<section id="idea">
+<div class="wrap">
+  <div class="sec-head"><span class="sec-num">00</span><h2>La idea del verano</h2></div>
+  <p class="sub">Enfocar el verano solo en C es la jugada inteligente. Te explico por qué, para que lo hagas con convicción y no con la sensación de estar dejando cosas fuera.</p>
+  <div class="cards">
+    <div class="mcard"><div class="k" style="color:var(--green)">LA TEORÍA SE SIGUE EN CLASE</div><p>Procesos, memoria, archivos: son conceptos que <b>entiendes escuchando</b> si tienes la base. No necesitas adelantarlos; necesitas no perderte cuando el profesor los explique con código.</p></div>
+    <div class="mcard"><div class="k" style="color:var(--cyan)">C ES LO QUE CUESTA EN FRÍO</div><p>Nadie se atasca en "qué es un proceso". La gente se atasca cuando aparece <code>*ptr</code>, <code>fork()</code> o un semáforo y no sabe leerlo. Ese es el muro que derribas este verano.</p></div>
+    <div class="mcard"><div class="k" style="color:var(--amber)">C TE SIRVE PARA TODA LA CARRERA</div><p>No es solo para SO. Punteros, memoria y estructuras aparecen en EDA, en redes, en compiladores. Invertir el verano en C rinde en media carrera, no en una asignatura.</p></div>
+    <div class="mcard"><div class="k" style="color:var(--violet)">10 SEMANAS ES HOLGADO</div><p>Con diez semanas no vas justo: puedes ir <b>sin prisa, afianzando</b>. Un mini-proyecto por semana hace que no sea leer y olvidar, sino escribir código y que se quede.</p></div>
+  </div>
+  <div class="note good"><b>El listón que buscas.</b> No es "saber programar en C a nivel profesional". Es: leer un fragmento de C y entender qué hace, escribir un programa pequeño sin bloquearte, y reconocer punteros y structs cuando aparezcan. Con eso, en clase de SO consolidas en vez de descubrir. Ese es exactamente el objetivo, y con 10 semanas lo superas con margen.</div>
+</div>
+</section>
+
+<!-- SETUP -->
+<section id="setup">
+<div class="wrap">
+  <div class="sec-head"><span class="sec-num">01</span><h2>Debian listo en 5 minutos</h2></div>
+  <p class="sub">Tu dual boot con Debian 13 es <b>el mejor entorno posible</b> para esto: todo lo que necesitas es nativo, incluido lo de POSIX (<code>fork</code>, <code>pthread</code>) que en Windows exigiría montar WSL. Solo instala las herramientas y ya estás.</p>
+
+  <pre><span class="cm"># Instala compilador, make y el depurador (una sola vez)</span>
+sudo apt update
+sudo apt install <span class="kw">build-essential gdb</span>
+
+<span class="cm"># build-essential ya trae gcc. Comprueba que está:</span>
+gcc --version
+
+<span class="cm"># Compilar un programa y ejecutarlo:</span>
+gcc -Wall -Wextra -g hola.c -o hola
+./hola</pre>
+
+  <div class="cards">
+    <div class="mcard"><div class="k" style="color:var(--violet)"><code>-Wall -Wextra</code></div><p>Activa <b>todos los avisos</b> del compilador. En C esto es oro: te señala errores que en otros lenguajes petarían en ejecución. Úsalo siempre.</p></div>
+    <div class="mcard"><div class="k" style="color:var(--cyan)"><code>-g</code> + <code>gdb</code></div><p>Compila con información de depuración y usa <b>gdb</b> para ejecutar paso a paso cuando algo no cuadre. Aprender a depurar es media asignatura.</p></div>
+    <div class="mcard"><div class="k" style="color:var(--amber)">Editor</div><p>VS Code, Neovim o lo que uses. Con la extensión de C tendrás autocompletado. No te obsesiones con el setup: un editor y la terminal bastan.</p></div>
+    <div class="mcard"><div class="k" style="color:var(--green)">valgrind (más adelante)</div><p><code>sudo apt install valgrind</code>. Detecta fugas de memoria y accesos inválidos con punteros. Muy útil a partir de la semana de <code>malloc</code>.</p></div>
+  </div>
+  <div class="note"><b>Un consejo de arranque.</b> No inviertas días en configurar el editor perfecto. Con <code>gcc</code>, la terminal y un editor cualquiera ya puedes hacer las 10 semanas enteras. Lo importante es escribir código, compilar, ver el error, corregir. Ese bucle es el que enseña.</div>
+</div>
+</section>
+
+<!-- RUTA -->
+<section id="ruta">
+<div class="wrap">
+  <div class="sec-head"><span class="sec-num">02</span><h2>Ruta de 10 semanas</h2></div>
+  <p class="sub">Cada semana: un bloque del <b>King</b> para leer y un <b>mini-proyecto</b> para que lo aprendido se quede. No avances de semana sin haber hecho el proyecto — leer sin escribir código en C no funciona. Las semanas se agrupan en tres fases: fundamentos, el corazón (punteros y estructuras) y el puente hacia SO.</p>
+
+  <div class="phase-band p1">Fase 1 · Fundamentos del lenguaje · semanas 1–4</div>
+  <div class="weeks">
+
+    <div class="wk">
+      <div class="head"><span class="num">1</span><span class="htitle">Primer contacto y variables<small>King cap. 1–2</small></span><span class="kingtag">cap. 1–2</span></div>
+      <div class="body">
+        <div class="blk"><h4>Qué leer</h4><p>Qué es C y por qué existe. Estructura de un programa, <code>main</code>, <code>#include</code>, <code>printf</code>. Variables, tipos (<code>int</code>, <code>float</code>, <code>char</code>), asignación y <code>scanf</code> para leer datos.</p></div>
+        <div class="blk"><h4>Mini-proyecto</h4><div class="proj"><b>Conversor de temperatura.</b> Pide grados Celsius y muestra Fahrenheit. Amplíalo: que también haga la conversión inversa. Objetivo: compilar, ejecutar y leer entrada del usuario sin miedo.</div></div>
+      </div>
+    </div>
+
+    <div class="wk">
+      <div class="head"><span class="num">2</span><span class="htitle">Entrada/salida y expresiones<small>King cap. 3–4</small></span><span class="kingtag">cap. 3–4</span></div>
+      <div class="body">
+        <div class="blk"><h4>Qué leer</h4><p>El detalle de <code>printf</code> y <code>scanf</code>: especificadores de formato (<code>%d</code>, <code>%f</code>, <code>%c</code>). Operadores aritméticos, precedencia, incremento/decremento (<code>++</code>, <code>--</code>) y operadores de asignación compuesta.</p></div>
+        <div class="blk"><h4>Mini-proyecto</h4><div class="proj"><b>Calculadora de consola.</b> Lee dos números y una operación (+, −, ×, ÷) y muestra el resultado. Objetivo: manejar formato de salida y expresiones con soltura.</div></div>
+      </div>
+    </div>
+
+    <div class="wk">
+      <div class="head"><span class="num">3</span><span class="htitle">Decisiones y bucles<small>King cap. 5–6</small></span><span class="kingtag">cap. 5–6</span></div>
+      <div class="body">
+        <div class="blk"><h4>Qué leer</h4><p>Expresiones lógicas y relacionales. <code>if</code>/<code>else</code>, <code>if</code> encadenados, el operador condicional y <code>switch</code>. Bucles: <code>while</code>, <code>do-while</code>, <code>for</code>, y cómo salir con <code>break</code>/<code>continue</code>.</p></div>
+        <div class="blk"><h4>Mini-proyecto</h4><div class="proj"><b>Adivina el número.</b> El programa piensa un número aleatorio y el usuario intenta acertarlo con pistas "mayor/menor". Objetivo: combinar bucles y condiciones en algo que se siente un programa de verdad.</div></div>
+      </div>
+    </div>
+
+    <div class="wk">
+      <div class="head"><span class="num">4</span><span class="htitle">Tipos, arrays y funciones<small>King cap. 7–9</small></span><span class="kingtag">cap. 7–9</span></div>
+      <div class="body">
+        <div class="blk"><h4>Qué leer</h4><p>Tipos en detalle: enteros con y sin signo (<code>unsigned</code>), <code>char</code> como número, conversiones. <b>Arrays</b> (vectores) de una y dos dimensiones. <b>Funciones</b>: definición, parámetros, valor de retorno, ámbito de variables.</p></div>
+        <div class="blk"><h4>Mini-proyecto</h4><div class="proj"><b>Estadísticas de un array.</b> Rellena un array de notas y calcula media, máximo y mínimo con funciones separadas. Objetivo: descomponer en funciones y manejar arrays. Aquí ya programas "en serio".</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="phase-band p2">Fase 2 · El corazón de C · semanas 5–7</div>
+  <div class="weeks">
+
+    <div class="wk phase-2">
+      <div class="head"><span class="num">5</span><span class="htitle">Punteros<small>King cap. 11</small></span><span class="kingtag">cap. 11</span></div>
+      <div class="body">
+        <div class="blk"><h4>Qué leer</h4><p>El capítulo clave de toda la carrera. Qué es una dirección de memoria, el operador <code>&amp;</code> (dirección de) y <code>*</code> (contenido de). Punteros como parámetros de función (paso por referencia). Tómatelo con calma: es el concepto que más cuesta y más importa.</p></div>
+        <div class="blk"><h4>Mini-proyecto</h4><div class="proj"><b>Intercambio (swap).</b> Escribe una función <code>swap(int *a, int *b)</code> que intercambie dos números de verdad (no copias). Cuando entiendas por qué necesita punteros, has entendido punteros.</div></div>
+      </div>
+    </div>
+
+    <div class="wk phase-2">
+      <div class="head"><span class="num">6</span><span class="htitle">Punteros, arrays y cadenas<small>King cap. 12–13</small></span><span class="kingtag">cap. 12–13</span></div>
+      <div class="body">
+        <div class="blk"><h4>Qué leer</h4><p>La relación entre punteros y arrays (el nombre de un array <em>es</em> un puntero). Aritmética de punteros. <b>Cadenas</b> (strings) como arrays de <code>char</code> terminados en <code>\0</code>, y las funciones de <code>&lt;string.h&gt;</code> (<code>strlen</code>, <code>strcpy</code>, <code>strcmp</code>).</p></div>
+        <div class="blk"><h4>Mini-proyecto</h4><div class="proj"><b>Tus propias funciones de string.</b> Reimplementa <code>strlen</code> y <code>strcpy</code> recorriendo la cadena con un puntero. Objetivo: ver una cadena como lo que es, memoria con un puntero encima.</div></div>
+      </div>
+    </div>
+
+    <div class="wk phase-2">
+      <div class="head"><span class="num">7</span><span class="htitle">Structs y memoria dinámica<small>King cap. 16 + 17</small></span><span class="kingtag">cap. 16, 17</span></div>
+      <div class="body">
+        <div class="blk"><h4>Qué leer</h4><p><b>Structs</b>: agrupar datos relacionados en un tipo propio (cap. 16). Acceso con <code>.</code> y con <code>-&gt;</code> cuando tienes un puntero a struct. Y del cap. 17, lo esencial: <b>memoria dinámica</b> con <code>malloc</code> y <code>free</code>. Aquí conecta con la gestión de memoria de SO.</p></div>
+        <div class="blk"><h4>Mini-proyecto</h4><div class="proj"><b>Agenda de contactos.</b> Un <code>struct Contacto</code> con nombre y teléfono, un array de ellos, y funciones para añadir y listar. Si te animas, reserva el array con <code>malloc</code>. Objetivo: structs + punteros juntos, justo lo que verás en SO.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="phase-band p3">Fase 3 · El puente hacia Sistemas Operativos · semanas 8–10</div>
+  <div class="weeks">
+
+    <div class="wk phase-3">
+      <div class="head"><span class="num">8</span><span class="htitle">Procesos: fork, exec, wait<small>POSIX · fuera del King</small></span><span class="kingtag">POSIX</span></div>
+      <div class="body">
+        <div class="blk"><h4>Qué leer</h4><p>Ya no es C estándar, es la <b>API de Unix</b> (por eso el King no la trae, y por eso tu Debian es perfecto). Crear procesos con <code>fork()</code>, entender que devuelve dos veces (padre e hijo), reemplazar el programa con <code>exec()</code> y esperar al hijo con <code>wait()</code>.</p></div>
+        <div class="blk"><h4>Mini-proyecto</h4><div class="proj"><b>Padre e hijo.</b> Un programa que hace <code>fork()</code> y donde el padre imprime una cosa y el hijo otra. Juega con el orden y con <code>wait()</code>. Objetivo: cuando lo veas en SO, ya lo habrás tocado.</div></div>
+      </div>
+    </div>
+
+    <div class="wk phase-3">
+      <div class="head"><span class="num">9</span><span class="htitle">Hilos y sincronización<small>pthread + semáforos</small></span><span class="kingtag">POSIX</span></div>
+      <div class="body">
+        <div class="blk"><h4>Qué leer</h4><p>Hilos con <b>pthread</b>: crear (<code>pthread_create</code>), esperar (<code>pthread_join</code>). El problema de la sección crítica en la práctica, y cómo lo resuelven <b>mutex</b> (<code>pthread_mutex_lock</code>) y <b>semáforos</b> (<code>sem_wait</code>/<code>sem_post</code>). Compila con <code>-pthread</code>.</p></div>
+        <div class="blk"><h4>Mini-proyecto</h4><div class="proj"><b>El contador compartido.</b> Dos hilos que incrementan la misma variable un millón de veces. Primero sin protección (verás el resultado mal) y luego con un mutex (verás cómo se arregla). Es el ejemplo que sale en tus apuntes de SO.</div></div>
+      </div>
+    </div>
+
+    <div class="wk phase-3">
+      <div class="head"><span class="num">10</span><span class="htitle">Consolidar y un proyecto propio<small>repaso + integración</small></span><span class="kingtag">repaso</span></div>
+      <div class="body">
+        <div class="blk"><h4>Qué hacer</h4><p>Nada nuevo: afianzar. Repasa lo que quedó flojo (casi siempre punteros y memoria dinámica). Vuelve a los mini-proyectos que más te costaron y hazlos otra vez sin mirar. Lee código de otros y entiéndelo.</p></div>
+        <div class="blk"><h4>Proyecto de cierre</h4><div class="proj"><b>Junta varias piezas.</b> Ej: una agenda (struct + punteros) que guarde y lea de un fichero, o un productor-consumidor con dos hilos y un semáforo. Objetivo: demostrarte que ya lees y escribes C con criterio.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="note good"><b>Cómo repartir cada semana.</b> No hace falta maratón. Con leer el capítulo del King en 2–3 sesiones y dedicar una tarde al mini-proyecto vas sobrado. Lo importante no son las horas, es la constancia: mejor un rato casi todos los días que un atracón el domingo. El código se aprende con las manos.</div>
+
+  <div class="note warn"><b>Si una semana se atasca, la que se estira es punteros.</b> Las semanas 5–7 (punteros, cadenas, structs) son las duras. Si necesitas dos semanas para punteros en vez de una, tómatelas: es la inversión más rentable de todo el verano. Prefiere entender bien los punteros y recortar la fase POSIX que al revés — POSIX lo verás en clase, punteros los das por supuestos.</div>
+</div>
+</section>
+
+<!-- PUNTEROS -->
+<section id="punteros">
+<div class="wrap">
+  <div class="sec-head"><span class="sec-num">03</span><h2>Punteros sin miedo</h2></div>
+  <p class="sub">Es el concepto que hace que la gente abandone C, y es innecesario. Un puntero es solo <b>una variable que guarda una dirección de memoria</b> en vez de un valor. Nada más. Aquí lo tienes con el mínimo de código para que le pierdas el respeto antes de llegar a la semana 5.</p>
+
+  <pre><span class="cm">// Una variable normal guarda un valor</span>
+<span class="kw">int</span> x = 42;
+
+<span class="cm">// Un puntero guarda la DIRECCIÓN de otra variable</span>
+<span class="kw">int</span> *p = &amp;x;     <span class="cm">// &amp;x = "la dirección de x"</span>
+
+<span class="cm">// Ahora puedes leer x de dos formas:</span>
+printf(<span class="st">"%d\n"</span>, x);   <span class="cm">// 42  (directo)</span>
+printf(<span class="st">"%d\n"</span>, *p);  <span class="cm">// 42  (*p = "el contenido de lo que apunta p")</span>
+
+<span class="cm">// Y modificar x SIN nombrarla, a través del puntero:</span>
+*p = 100;
+printf(<span class="st">"%d\n"</span>, x);   <span class="cm">// 100  ← ¡x cambió!</span></pre>
+
+  <p class="sub" style="margin-top:22px">Dos símbolos, y siempre significan lo mismo:</p>
+  <table class="extable">
+    <tr><th>Símbolo</th><th>Se lee</th><th>Qué hace</th></tr>
+    <tr><td>&amp;x</td><td>"la dirección de x"</td><td>Te da dónde vive <code>x</code> en memoria. Es lo que guardas en un puntero.</td></tr>
+    <tr><td>*p</td><td>"el contenido de p"</td><td>Va a la dirección que guarda <code>p</code> y te da (o cambia) el valor que hay ahí.</td></tr>
+  </table>
+
+  <div class="note"><b>Por qué SO vive de esto.</b> Cuando en clase veas "la MMU traduce una dirección virtual a física", o "el PCB guarda un puntero a la tabla de páginas", estarás viendo punteros. Un puntero <em>es</em> una dirección de memoria; la asignatura entera va de gestionar direcciones. Por eso dominar el cap. 11 del King te desbloquea media teoría de SO sin esfuerzo extra.</div>
+
+  <div class="note good"><b>El truco para que cuaje:</b> dibújalo. Cada vez que tengas un puntero, haz un dibujo con cajas (variables) y flechas (punteros que apuntan a esas cajas). Los punteros se entienden en papel mucho antes que en la pantalla. Los profesores de SO dibujan exactamente eso en la pizarra.</div>
+</div>
+</section>
+
+<!-- POSIX -->
+<section id="posix">
+<div class="wrap">
+  <div class="sec-head"><span class="sec-num">04</span><h2>El puente a Sistemas Operativos</h2></div>
+  <p class="sub">Las tres últimas semanas (8–10) tocan la <b>API POSIX</b>: llamadas al sistema de Unix que no son C estándar (el King no las trae) pero que en tu Debian funcionan de fábrica. Es exactamente el código que aparece en tus apuntes de SO. Verlo este verano hace que en clase lo reconozcas en lugar de descubrirlo.</p>
+
+  <pre><span class="cm">// fork() crea un proceso hijo. Devuelve DOS veces:</span>
+<span class="cm">//   - al padre le devuelve el PID del hijo</span>
+<span class="cm">//   - al hijo le devuelve 0</span>
+<span class="kw">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+<span class="kw">#include</span> <span class="st">&lt;unistd.h&gt;</span>
+
+<span class="kw">int</span> <span class="fn">main</span>() {
+    pid_t pid = <span class="fn">fork</span>();
+    <span class="kw">if</span> (pid == 0)
+        printf(<span class="st">"Soy el hijo\n"</span>);
+    <span class="kw">else</span>
+        printf(<span class="st">"Soy el padre, mi hijo es %d\n"</span>, pid);
+    <span class="kw">return</span> 0;
+}</pre>
+
+  <p class="sub" style="margin-top:8px">Y el ejemplo estrella de sincronización, que es <b>literalmente el que está en tus apuntes de SO</b> (mutex protegiendo una sección crítica):</p>
+
+  <pre><span class="cm">// Compilar con: gcc -Wall -pthread contador.c -o contador</span>
+<span class="kw">#include</span> <span class="st">&lt;pthread.h&gt;</span>
+
+<span class="kw">int</span> contador = 0;
+pthread_mutex_t lock;
+
+<span class="kw">void</span>* <span class="fn">incrementar</span>(<span class="kw">void</span>* arg) {
+    <span class="kw">for</span> (<span class="kw">int</span> i = 0; i &lt; 1000000; i++) {
+        <span class="fn">pthread_mutex_lock</span>(&amp;lock);    <span class="cm">// entra a la sección crítica</span>
+        contador++;                    <span class="cm">// ---- SECCIÓN CRÍTICA ----</span>
+        <span class="fn">pthread_mutex_unlock</span>(&amp;lock);  <span class="cm">// sale</span>
+    }
+    <span class="kw">return</span> NULL;
+}</pre>
+
+  <div class="note good"><b>El momento "ajá".</b> Ejecuta ese contador primero <em>sin</em> el mutex (quita las dos líneas de lock): verás que el resultado no da 2.000.000, sino un número menor y distinto cada vez. Eso es una <b>condición de carrera</b>, el problema central de la Unidad 2 de SO. Al añadir el mutex, se arregla. Habrás <em>visto</em> con tus ojos lo que en clase te contarán en teoría. Eso es llegar con base.</div>
+
+  <div class="note"><b>Qué NO necesitas dominar.</b> No hace falta que memorices toda la API ni que sepas hacer un shell entero. Con haber tocado <code>fork</code>, un par de hilos y un mutex, ya reconocerás el 90% de lo que salga en SO. La profundidad la das en clase; tú vienes a que no te suene a chino.</div>
+</div>
+</section>
+
+<!-- HÁBITOS -->
+<section id="habitos" style="border-bottom:none">
+<div class="wrap">
+  <div class="sec-head"><span class="sec-num">05</span><h2>Cinco hábitos que lo cambian todo</h2></div>
+  <p class="sub">Aprender C va menos de leer y más de teclear. Estos hábitos hacen que el verano rinda.</p>
+  <div class="cards">
+    <div class="mcard"><div class="k" style="color:var(--green)">01 · ESCRIBE, NO COPIES</div><p>Teclea cada ejemplo tú mismo, aunque lo tengas delante. Copiar-pegar no enseña; teclear y equivocarte, sí. El error de compilación es tu profesor.</p></div>
+    <div class="mcard"><div class="k" style="color:var(--cyan)">02 · COMPILA CON <code>-Wall -Wextra</code></div><p>Siempre. Los avisos del compilador en C te salvan de errores que de otro modo descubrirías tarde y mal. Trata cada warning como un error a resolver.</p></div>
+    <div class="mcard"><div class="k" style="color:var(--amber)">03 · UN PROYECTO POR SEMANA</div><p>No pases de semana sin el mini-proyecto hecho y funcionando. Es lo que convierte "leí sobre punteros" en "sé usar punteros".</p></div>
+    <div class="mcard"><div class="k" style="color:var(--violet)">04 · DIBUJA LA MEMORIA</div><p>Punteros, arrays, structs: dibújalos con cajas y flechas en papel. Lo que no puedas dibujar, no lo has entendido todavía.</p></div>
+    <div class="mcard"><div class="k" style="color:var(--pink)">05 · ROMPE COSAS A PROPÓSITO</div><p>¿Qué pasa si accedes a <code>array[100]</code> de un array de 10? ¿Y si haces <code>*p</code> de un puntero sin inicializar? Romper y ver el fallo enseña cómo funciona por dentro.</p></div>
+    <div class="mcard"><div class="k" style="color:var(--blue)">06 · GUARDA TU CÓDIGO</div><p>Una carpeta por semana, o mejor un repo de git. En septiembre tendrás tu propio material de consulta, escrito por ti, que vale más que cualquier apunte.</p></div>
+  </div>
+
+  <div class="note"><b>Recursos, por si el King se te hace denso.</b> El King es excelente pero extenso. Si una tarde quieres algo más ligero para un concepto suelto, "Beej's Guide to C" es gratis y directo, y para la parte POSIX de las semanas 8–10, "Beej's Guide to Unix IPC" cubre <code>fork</code>, hilos y semáforos con ejemplos claros. Pero no te disperses: el King te basta para todo, los demás son solo apoyo puntual.</div>
+
+  <div class="note good"><b>En septiembre.</b> Llegarás leyendo C con soltura, con punteros y structs entendidos, y habiendo tocado <code>fork</code> y semáforos. Cuando el profesor de SO abra un ejemplo en C, tú estarás consolidando mientras otros descubren. Justo lo que querías: usar el verano para la base, y dejar la teoría para el curso, donde se entiende mejor con alguien explicándola.</div>
+</div>
+</section>
+
+<footer><div class="wrap">
+  <span>C en verano · Base para Sistemas Operativos · 2026</span>
+  <span>Ruta de 10 semanas sobre King "C Programming: A Modern Approach" · entorno Debian 13.</span>
+</div></footer>
+
+<script>
+document.addEventListener("DOMContentLoaded",function(){
+  const links=[...document.querySelectorAll('nav a')];
+  const secs=links.map(a=>document.querySelector(a.getAttribute('href')));
+  const obs=new IntersectionObserver((es)=>{
+    es.forEach(e=>{if(e.isIntersecting){
+      const id='#'+e.target.id;
+      links.forEach(l=>l.classList.toggle('active',l.getAttribute('href')===id));
+    }});
+  },{rootMargin:'-45% 0px -50% 0px'});
+  secs.forEach(s=>s&&obs.observe(s));
+});
+</script>
+</body>
+</html>
