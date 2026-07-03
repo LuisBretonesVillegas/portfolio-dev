@@ -3,6 +3,7 @@ title: Planning a self-hosted service centralization (v1 architecture)
 date: 2026-06-29
 description: I'd been running my self-hosted stuff in a messy, ad-hoc way and finally sat down to plan it properly. VLANs, OPNsense, Proxmox, and the headache of doing it right when there's real client data on the network.
 tags: [homelab, networking, opnsense, proxmox, self-hosting, security]
+project: Enterprise Network
 ---
 
 I've had a bunch of services running for a while now and honestly it's been a bit of a mess. A NAS over here, a couple of cloud accounts over there, smart home gadgets doing whatever they feel like on a flat network where everything can see everything. It works fine day to day, but "it works" and "it's actually designed" are two very different things. So before spending a single euro on new hardware I sat down and wrote a proper plan. This is a snapshot of where that plan is right now. Call it v1.
@@ -44,7 +45,7 @@ Internet (fiber, PPPoE/VLAN)
    │ OPNsense │  ← x86, Suricata IDS/IPS, QoS, inter-VLAN, deny-all default
    └────┬─────┘
         │ 802.1Q trunk
-   ┌────┴──────────┐
+   ┌────┴───────────┐
    │ Managed switch │
    └─┬───┬───┬──────┘
      │   │   └── AP (SSIDs → Home / IoT / Cameras / Guest)

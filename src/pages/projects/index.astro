@@ -134,7 +134,9 @@ function formatDate(date: Date): string {
       return (
         <a href={url} class="project-item">
           {project.data.date && (
-            <time class="project-date">{formatDate(project.data.date)}</time>
+            <time class="project-date" data-progress-url={project.data.progressUrl ?? undefined}>
+              {project.data.progressUrl ? `Started ${formatDate(project.data.date)}` : formatDate(project.data.date)}
+            </time>
           )}
           <p class="project-title">{project.data.title}</p>
           {project.data.description && (
@@ -152,4 +154,24 @@ function formatDate(date: Date): string {
       );
     })}
   </div>
+
+  <script>
+    document.querySelectorAll('time[data-progress-url]').forEach(async (el) => {
+      const url = el.getAttribute('data-progress-url');
+      if (!url) return;
+      try {
+        const res = await fetch(url + '?t=' + Date.now());
+        const data = await res.json();
+        const log = Array.isArray(data.log) ? data.log : [];
+        const last = log.length ? log[0].date : data.started;
+        if (!last) return;
+        const d = new Date(last + 'T00:00:00').toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: 'short',
+          day: 'numeric',
+        });
+        el.textContent = el.textContent + ' · Updated ' + d;
+      } catch {}
+    });
+  </script>
 </Portfolio>
