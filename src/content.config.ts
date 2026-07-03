@@ -15,6 +15,9 @@ export const collections = {
 				// Optional URL to a progress.json; if set, the blog listing shows a
 				// dynamic "Updated" date pulled from that file's latest log entry.
 				progressUrl: z.string().optional(),
+				// Optional project this post belongs to. Must match a project page
+				// title; when set, the blog listing groups the post under that project.
+				project: z.string().optional(),
 			}),
 		}),
 	}),

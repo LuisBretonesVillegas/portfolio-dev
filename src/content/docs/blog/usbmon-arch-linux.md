@@ -3,6 +3,7 @@ title: Getting started with usbmon on Arch Linux
 date: 2026-06-08
 description: Setting up Wireshark and usbmon to capture USB traffic on Arch Linux without running as root.
 tags: [arch-linux, usb, wireshark]
+project: Protocol Analysis of Wireless Audio Transceivers
 ---
 
 While I was poking at the protocol analysis of a Corsair wireless audio dongle, I needed to capture raw USB traffic on Arch Linux with Wireshark, and I really didn't want to run the whole thing as root just to do it. Here's the setup that ended up working.
