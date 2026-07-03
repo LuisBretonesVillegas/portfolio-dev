@@ -13,6 +13,7 @@ This is a living project. I'm documenting each phase as a blog entry, from the i
 
 The detailed posts live in the blog, grouped under this project:
 
+- [Infrastructure: choosing and justifying the hardware](/blog/infrastructure-hardware/)
 - [Planning a self-hosted service centralization (v1 architecture)](/blog/service-centralization-architecture/)
 
 More entries will land as the hardware arrives and each layer comes online.
