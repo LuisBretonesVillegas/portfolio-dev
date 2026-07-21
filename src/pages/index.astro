@@ -1,5 +1,25 @@
 ---
+import { getCollection } from 'astro:content';
 import Portfolio from '../layouts/Portfolio.astro';
+
+// Projects highlighted on the home page, in display order.
+const FEATURED = [
+  'projects/enterprise-network',
+  'projects/protocol-analysis-wireless-audio-transceivers',
+];
+
+const allDocs = await getCollection('docs');
+const featured = FEATURED
+  .map(slug => allDocs.find(e => e.id.replace(/\.mdx?$/, '') === slug))
+  .filter((e): e is NonNullable<typeof e> => Boolean(e));
+
+function formatDate(date: Date): string {
+  return date.toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+  });
+}
 ---
 <Portfolio>
   <style>
@@ -124,6 +144,79 @@ import Portfolio from '../layouts/Portfolio.astro';
     .c-muted .skill-cell-title { color: var(--text-muted); }
     .c-muted .skill-tag { border: 1px solid var(--border); color: var(--text-muted); }
 
+    /* ── FEATURED PROJECTS ── */
+    .featured-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.85rem;
+    }
+    .featured-card {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 1.4rem 1.3rem 1.2rem;
+      text-decoration: none;
+      color: var(--text);
+      transition: border-color 0.15s;
+    }
+    .featured-card:hover { border-color: var(--accent); }
+    .featured-date {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.62rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+    .featured-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.35rem;
+      font-weight: 700;
+      line-height: 1.25;
+      color: var(--text);
+      transition: color 0.2s;
+    }
+    .featured-card:hover .featured-title { color: var(--accent); }
+    .featured-desc {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+      flex: 1;
+    }
+    .featured-tags {
+      display: flex;
+      gap: 0.35rem;
+      flex-wrap: wrap;
+    }
+    .featured-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.62rem;
+      font-weight: 500;
+      padding: 0.15rem 0.5rem;
+      border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
+      border-radius: 2px;
+      color: var(--accent);
+    }
+    .featured-read {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      margin-top: 0.4rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      color: var(--accent);
+    }
+    .featured-read .arrow {
+      transition: transform 0.2s ease;
+    }
+    .featured-card:hover .featured-read .arrow {
+      transform: translateX(5px);
+    }
+
     /* ── CERT GRID ── */
     .cert-grid {
       display: grid;
@@ -212,6 +305,7 @@ import Portfolio from '../layouts/Portfolio.astro';
       .skill-cell:nth-child(3n) { border-right: 1px solid #b8b3ab; }
       .skill-cell:nth-child(2n) { border-right: none; }
       .cert-grid { grid-template-columns: repeat(2, 1fr); }
+      .featured-grid { grid-template-columns: 1fr; }
     }
   </style>
 
@@ -297,6 +391,34 @@ import Portfolio from '../layouts/Portfolio.astro';
           <span class="skill-tag">Documentation</span>
         </div>
       </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <p class="section-title">Featured // Selected projects</p>
+    <div class="featured-grid">
+      {featured.map(project => {
+        const url = `/${project.id.replace(/\.mdx?$/, '')}/`;
+        return (
+          <a href={url} class="featured-card">
+            {project.data.date && (
+              <time class="featured-date">{formatDate(project.data.date)}</time>
+            )}
+            <p class="featured-title">{project.data.title}</p>
+            {project.data.description && (
+              <p class="featured-desc">{project.data.description}</p>
+            )}
+            {project.data.tags && project.data.tags.length > 0 && (
+              <div class="featured-tags">
+                {project.data.tags.map(tag => (
+                  <span class="featured-tag">{tag}</span>
+                ))}
+              </div>
+            )}
+            <span class="featured-read">View project <span class="arrow">→</span></span>
+          </a>
+        );
+      })}
     </div>
   </section>
 
