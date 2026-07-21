@@ -20,6 +20,25 @@ function formatDate(date: Date): string {
     day: 'numeric',
   });
 }
+
+// Latest blog post date for a project, so projects without a progress.json
+// still get a "Started · Updated" label derived from their write-ups.
+const blogPosts = allDocs.filter(e => e.id.startsWith('blog/') && !e.id.match(/^blog\/index\.mdx?$/));
+function dateLabel(data: (typeof featured)[number]['data']): string {
+  if (!data.date) return '';
+  const started = formatDate(data.date);
+  if (data.progressUrl) return `Started ${started}`;
+  const times = blogPosts
+    .filter(p => p.data.project === data.title && p.data.date)
+    .map(p => new Date(p.data.date!).getTime());
+  if (times.length) {
+    const updated = new Date(Math.max(...times));
+    if (updated.getTime() > new Date(data.date).getTime()) {
+      return `Started ${started} · Updated ${formatDate(updated)}`;
+    }
+  }
+  return started;
+}
 ---
 <Portfolio>
   <style>
@@ -402,7 +421,9 @@ function formatDate(date: Date): string {
         return (
           <a href={url} class="featured-card">
             {project.data.date && (
-              <time class="featured-date">{formatDate(project.data.date)}</time>
+              <time class="featured-date" data-progress-url={project.data.progressUrl ?? undefined}>
+                {dateLabel(project.data)}
+              </time>
             )}
             <p class="featured-title">{project.data.title}</p>
             {project.data.description && (
@@ -451,4 +472,24 @@ function formatDate(date: Date): string {
       </div>
     </div>
   </section>
+
+  <script>
+    document.querySelectorAll('time[data-progress-url]').forEach(async (el) => {
+      const url = el.getAttribute('data-progress-url');
+      if (!url) return;
+      try {
+        const res = await fetch(url + '?t=' + Date.now());
+        const data = await res.json();
+        const log = Array.isArray(data.log) ? data.log : [];
+        const last = log.length ? log[0].date : data.started;
+        if (!last) return;
+        const d = new Date(last + 'T00:00:00').toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: 'short',
+          day: 'numeric',
+        });
+        el.textContent = el.textContent + ' · Updated ' + d;
+      } catch {}
+    });
+  </script>
 </Portfolio>
