@@ -88,3 +88,9 @@ Each version published with a changelog in n8n's history; revert = re-import the
 ### Result
 
 System in production with two users. Fully automatic dual document pipeline: invoices by email → IMAP → Paperless (typed and tagged by mail rule); receipts by Telegram → bot → Paperless (typed, classified by account, justified, and with fiscal metadata). Quarterly views by account and by justification status, ready for accounting.
+
+---
+
+**Homelab ED50 series** · Part 3 of 4 · Previous: [Domains and TLS with Caddy, invoice management with Paperless-ngx](/blog/homelab-ed50-caddy-paperless/) · Next: [Self-hosted invoicing and offsite backup on Hetzner](/blog/homelab-ed50-invoicing-offsite-backup/) · Project: [Enterprise Network](/projects/enterprise-network/)
+
+_Written by **Luis Bretones Villegas** · © 2026 · All rights reserved._
