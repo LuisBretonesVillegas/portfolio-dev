@@ -24,7 +24,7 @@ This was prioritized over other items out of convenience when configuring things
 
 Of course, every service that gets added has to be added manually:
 
-```caddyfile
+```txt
 @servicio host servicio.ed50.es
 handle @servicio {
     reverse_proxy 192.168.1.X:xxxx

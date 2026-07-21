@@ -93,7 +93,10 @@ export default defineConfig({
 				{ label: 'Home', link: '/' },
 				{
 					label: 'Projects',
-					items: [{ autogenerate: { directory: 'projects' } }],
+					items: [
+						{ label: 'Projects', link: '/projects/' },
+						{ autogenerate: { directory: 'projects' } },
+					],
 				},
 				{
 					label: 'Blog',
