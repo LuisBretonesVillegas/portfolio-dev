@@ -15,11 +15,17 @@ The infrastructure is now in production. Each phase is documented as a blog entr
 
 The detailed posts live in the blog, grouped under this project:
 
-- [Infrastructure: choosing and justifying the hardware](/blog/infrastructure-hardware/)
-- [Planning a self-hosted service centralization (v1 architecture)](/blog/service-centralization-architecture/)
-- [Homelab ED50 (1/4): final hardware, Immich, and a verified 3-2-1 backup strategy](/blog/homelab-ed50-hardware-immich-backup/)
-- [Homelab ED50 (2/4): domains and TLS with Caddy, invoice management with Paperless-ngx](/blog/homelab-ed50-caddy-paperless/)
-- [Homelab ED50 (3/4): TicketBot, receipt digitization via Telegram](/blog/homelab-ed50-ticketbot/)
-- [Homelab ED50 (4/4): self-hosted invoicing and offsite backup on Hetzner](/blog/homelab-ed50-invoicing-offsite-backup/)
+- [Infrastructure: choosing and justifying the hardware](/blog/infrastructure-hardware/)\
+  The hardware behind the v1 plan: backups, firewall appliance, and Proxmox server, with the reasoning for each choice.
+- [Planning a self-hosted service centralization (v1 architecture)](/blog/service-centralization-architecture/)\
+  The original blueprint: segmented VLANs, OPNsense at the edge, and the build order, all shaped by real client data on the network.
+- [Homelab ED50 (1/4): final hardware, Immich, and a verified 3-2-1 backup strategy](/blog/homelab-ed50-hardware-immich-backup/)\
+  How the plan was trimmed to the real budget, the final hardware, Immich in production, and a 3-2-1 backup verified end to end.
+- [Homelab ED50 (2/4): domains and TLS with Caddy, invoice management with Paperless-ngx](/blog/homelab-ed50-caddy-paperless/)\
+  Caddy as reverse proxy with a wildcard certificate and zero open ports, plus Paperless-ngx ingesting invoices automatically over IMAP.
+- [Homelab ED50 (3/4): TicketBot, receipt digitization via Telegram](/blog/homelab-ed50-ticketbot/)\
+  A Telegram bot that turns the photo of a paper receipt into a classified fiscal document in Paperless in about 15 seconds.
+- [Homelab ED50 (4/4): self-hosted invoicing and offsite backup on Hetzner](/blog/homelab-ed50-invoicing-offsite-backup/)\
+  Invoicing with FacturaScripts ready for Facturae and Verifactu, and the offsite copy on Hetzner that closes the 3-2-1.
 
 More entries will land as the project keeps evolving.
