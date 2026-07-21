@@ -149,3 +149,9 @@ Key-based authentication (ed25519) for automation, no passwords in scripts or cr
 API keys with a temporary scope, revoked after use (this was used with Immich).
 
 Backups with retention and automatic rotation. With real verification of restorability.
+
+---
+
+**Homelab ED50 series** · Part 1 of 4 · Next: [Domains and TLS with Caddy, invoice management with Paperless-ngx](/blog/homelab-ed50-caddy-paperless/) · Project: [Enterprise Network](/projects/enterprise-network/)
+
+_Written by **Luis Bretones Villegas** · © 2026 · All rights reserved._

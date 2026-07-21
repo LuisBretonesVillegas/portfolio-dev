@@ -156,3 +156,9 @@ From now on, every scheduled task is verified against the availability calendar 
 - **Offsite backup**: Hyper Backup → Hetzner Storage Box BX21 (5 TB, WebDAV, client-side encryption, Smart Recycle) · least-privilege sub-accounts · weekly provider snapshots
 - **On-demand cloud**: WebDAV as a network drive (Windows WebClient; rclone mount as the alternative)
 - **Power and network**: APC Back-UPS 950 UPS · TP-Link Archer BE550 (WiFi 7)
+
+---
+
+**Homelab ED50 series** · Part 4 of 4 · Previous: [TicketBot, receipt digitization via Telegram](/blog/homelab-ed50-ticketbot/) · Project: [Enterprise Network](/projects/enterprise-network/)
+
+_Written by **Luis Bretones Villegas** · © 2026 · All rights reserved._

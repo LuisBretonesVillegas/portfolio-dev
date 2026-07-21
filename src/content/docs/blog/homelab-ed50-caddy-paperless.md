@@ -160,3 +160,9 @@ docker compose exec -u paperless webserver python3 manage.py mail_fetcher
 - Document dropped into the consume folder (via `pct push`): consumed and indexed automatically.
 - Email with a PDF attachment: detected by the IMAP rule, attachment consumed, correspondent created automatically from the sender, email preserved and marked as read.
 - HTTPS access with a valid certificate via `facturas.ed50.es`, inside and outside the LAN (mobile app included, configured against the domain URL).
+
+---
+
+**Homelab ED50 series** · Part 2 of 4 · Previous: [Final hardware, Immich, and a verified 3-2-1 backup strategy](/blog/homelab-ed50-hardware-immich-backup/) · Next: [TicketBot, receipt digitization via Telegram](/blog/homelab-ed50-ticketbot/) · Project: [Enterprise Network](/projects/enterprise-network/)
+
+_Written by **Luis Bretones Villegas** · © 2026 · All rights reserved._
