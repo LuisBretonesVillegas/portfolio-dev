@@ -1,15 +1,15 @@
 ---
 title: Enterprise Network
 date: 2026-06-29
-description: Designing and building a segmented, self-hosted network to centralize services and storage for real client data, with security and GDPR compliance baked in from the start.
-tags: [networking, homelab, opnsense, proxmox, self-hosting, security]
+description: Centralizing a small consultancy's services and storage on self-hosted infrastructure, with security, GDPR compliance, and verified backups baked in from the start.
+tags: [networking, homelab, proxmox, self-hosting, security, backup]
 ---
 
-An ongoing project to design and build a proper enterprise-style network from scratch: segmented VLANs, a real firewall at the edge, a hypervisor running self-hosted services, and private cloud storage for files and photos. The detail that raises the bar is that it holds real client data, so security, encryption, and GDPR compliance drive every decision rather than being an afterthought.
+A project to centralize a small consultancy's services and storage on self-hosted infrastructure: a hypervisor running the whole service stack, private cloud for files and photos, document management and invoicing, and a verified 3-2-1 backup strategy. The detail that raises the bar is that it holds real client data, so security, encryption, and GDPR compliance drive every decision rather than being an afterthought.
 
 The project did not stay on the v1 plan. When I put the original design (OPNsense, VLANs, new hardware) against the real budget and the client's actual needs, the scope was trimmed: the ISP router stayed, the network stayed flat, and an existing PC became the hypervisor. The "Homelab ED50" series below documents the implementation that actually went into production, from the final hardware to the offsite backup.
 
-This is a living project. I'm documenting each phase as a blog entry, from the initial architecture and budget through to the actual build and everything that breaks along the way.
+The infrastructure is now in production. Each phase is documented as a blog entry, from the initial architecture and budget through to the actual build and everything that broke along the way.
 
 ## Write-ups
 
