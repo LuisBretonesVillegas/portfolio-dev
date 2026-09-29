@@ -357,3 +357,56 @@ The site has two main breakpoints, both at `max-width: 768px`.
 - **Start with the custom layout from day one.** Using Starlight's default layout for early pages (contact, about) meant migrating them to the custom Portfolio layout later, which created inconsistencies.
 - **Use a single `src/pages/` file per route from the start.** Mixing Starlight content routes with custom page routes works, but requires understanding the override precedence rules upfront.
 - **Version-lock Starlight.** The `v0.39` breaking change cost time during an active development session. Pinning the version in `package.json` and upgrading deliberately would have been cleaner.
+
+---
+
+## Project Status: Parked
+
+**Parked on 6 August 2026.** The last commit is the Vigía write up, pushed on 8 August 2026
+from work already drafted by then. The site is live at
+[luisbretones.dev](https://luisbretones.dev), builds clean (20 pages, no warnings), and deploys
+on every push to `main`. Nothing is half finished in the working tree: this is a deliberate stop
+at a complete state, not an abandoned branch.
+
+Development ran from 7 June to 8 August 2026, across 80 commits.
+
+### What shipped
+
+**Architecture**
+
+- Custom `Portfolio.astro` layout owning the four landing routes (`/`, `/projects/`, `/blog/`, `/contact/`) through `src/pages/` shadowing, with Starlight still rendering every individual project and blog page underneath.
+- A hand written blog sidebar builder in `astro.config.mjs`: it reads each post's frontmatter, groups posts that share a `project:` field under that project name, and orders groups and standalone posts together by date. Starlight's `autogenerate` sorts alphabetically and cannot group, so this had to be built by hand.
+- Three Starlight component overrides: `Footer`, `SiteTitle`, `ThemeSelect`.
+- Light only theme, enforced both by the `ThemeSelect` override (inline script, no dark flash) and by mapping the dark CSS custom properties to the same cream values.
+- GitHub Actions build and deploy to GitHub Pages, custom domain via CNAME.
+
+**Pages**
+
+- Home: hero with photo, a 3x2 skills grid using the container background as its own divider, a Featured projects section, and a certifications roadmap that encodes progress visually instead of with labels.
+- Projects listing with `Started · Updated` labels, derived from `progress.json` where present and otherwise from the dates of the write ups attached to each project.
+- Blog listing with the same grouping logic as the sidebar.
+- Contact page: email, GitHub, LinkedIn. No form, by choice.
+
+**Content**
+
+- 5 project pages: Enterprise Network, Java Summer 2026, Vigía, this portfolio, and the wireless audio transceiver protocol analysis.
+- 9 blog posts, including the four part Homelab ED50 series with cross post series navigation.
+
+### What was left out
+
+These are known gaps, not oversights discovered later:
+
+- **`/about/` is orphaned.** The page builds and is reachable by URL, but nothing links to it. Its content ended up folded into the home page hero and skills sections, and the nav was kept to four items. Either link it or delete it, but do not leave it in this state indefinitely.
+- **Superseded Starlight pages still in the tree.** `projects/index.mdx` and `contact.mdx` are marked `draft: true` and hidden from the sidebar because the custom `src/pages/` routes replaced them. They are excluded from the build, so they cost nothing, but they are duplicate sources of truth for anyone reading the repo cold.
+- **No dark mode.** Deliberate, and the removal is documented in Phase 5. Reintroducing it means undoing that work, not adding to it.
+- **No tag filtering or sorting** on the projects and blog listings. Pagefind search covers the Starlight rendered pages only.
+- **Starlight is not version locked.** The v0.39 sidebar breaking change already cost a development session once. Pin it before the next `npm install`.
+
+### Where to pick it up
+
+In this order, if the project is resumed:
+
+1. Pin the Astro and Starlight versions in `package.json`, then upgrade deliberately and read the changelog. Everything else depends on the build still working.
+2. Resolve `/about/`: link it from the nav or remove the file.
+3. Remove or consolidate the two superseded draft pages so there is one source of truth per route.
+4. Only then add content. The infrastructure side is finished; what the site needs next is more write ups, not more features.
