@@ -8,9 +8,9 @@ progressUrl: https://raw.githubusercontent.com/LuisBretonesVillegas/JAVA-SUMMER-
 
 import JavaProgress from '../../../components/JavaProgress.astro';
 
-This is me working through Liang's "Introduction to Java Programming and Data Structures" from front to back, one chapter at a time. It isn't a tutorial and it isn't a tidy course recap. It's just my raw notes: what actually clicked, the exercises I slogged through, and the honest bits about where I got stuck. The plan is to get through all 29 chapters before the summer runs out.
+This is me working through Liang's "Introduction to Java Programming and Data Structures" from front to back, one chapter at a time. It isn't a tutorial and it isn't a tidy course recap. It's just my raw notes: what actually clicked, the exercises I slogged through, and the honest bits about where I got stuck. The plan was to get through all 29 chapters before the summer ran out.
 
-The grid below tracks where I am chapter by chapter, and the devlog underneath captures what I picked up as I went. Both update by themselves whenever I push progress to the repo.
+The grid below tracks how far I got, chapter by chapter, and the devlog underneath captures what I picked up along the way. Both updated by themselves whenever I pushed progress to the repo, and both stopped when I parked the project in August.
 
 ## Progress
 
@@ -19,3 +19,54 @@ The grid below tracks where I am chapter by chapter, and the devlog underneath c
 ---
 
 All code and notes: [JAVA-SUMMER-2026 on GitHub](https://github.com/LuisBretonesVillegas/JAVA-SUMMER-2026)
+
+---
+
+## Project Status: Parked
+
+**Parked on 6 August 2026**, having started on 24 June. The chapter grid and the devlog above read
+from `progress.json` in the repo, so they froze on that same date. What follows is where the
+project actually stopped.
+
+### Where it got to
+
+Chapters 1 through 13 studied and worked through, with 78 exercise files in the repo, organised by
+week and chapter.
+
+The counter reads 16 of 29 because chapters 14 to 16 are marked closed without being studied. That
+was deliberate: those three cover JavaFX, which falls outside the syllabus of both courses this was
+preparing for. GUI work is handled with Swing instead, following Eck's *Introduction to Programming
+Using Java*. The decision is recorded in the devlog entry of 6 August.
+
+Chapter 17 (Binary I/O) was opened and never finished.
+
+### The final project
+
+The last thing built was a console Tic-tac-toe: 9 classes, around 730 lines, designed so that each
+piece exercises a specific chapter instead of just producing a working game.
+
+| Class | What it exercises |
+|-------|-------------------|
+| `Board` | Encapsulation of the 3x3 grid, win and draw detection |
+| `Player` (abstract), `HumanPlayer`, `AIPlayer` | Abstract classes and polymorphism. The game loop holds `Player` references only, with no `instanceof` |
+| `InvalidMoveException` | A custom checked exception for an occupied or out of range cell, so bad input never crashes the program |
+| `PlayerStats` | `Comparable` and an overridden `equals()`, for rankings sorted by wins |
+| `StatsManager` | `ArrayList` plus text I/O, persisting to `stats.txt` and starting clean when the file is missing |
+| `AIPlayer` minimax | Full game tree search scoring terminal states only, an early taste of chapter 18 |
+
+### What was left out
+
+Chapters 17 to 29, which is the entire data structures half of the book: recursion, generics,
+lists, stacks, queues, sets and maps, algorithm efficiency, sorting, binary search trees, AVL
+trees, hashing and graphs. That is the half that carries the most weight for the data structures
+course, and it is the half that is missing.
+
+### Where to pick it up
+
+1. Finish chapter 17 (Binary I/O). It is already open and it is short.
+2. Chapter 18 (Recursion). The minimax in `AIPlayer` is recursion in practice already, so this is
+   the cheapest place to restart.
+3. Chapters 19 to 21 (generics and collections), which make the rest of the book readable.
+4. Then the algorithms block, 22 to 29, in order.
+
+All code and notes stay at [JAVA-SUMMER-2026 on GitHub](https://github.com/LuisBretonesVillegas/JAVA-SUMMER-2026).
