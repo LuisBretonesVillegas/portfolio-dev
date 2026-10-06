@@ -1,0 +1,59 @@
+---
+title: Java Masterclass
+date: 2026-10-06
+description: Working through Tim Buchalka's Java Masterclass on Udemy section by section, to go deeper on what I covered in Java Summer 2026 and learn Java from the roots.
+tags: [java, learning]
+progressUrl: https://raw.githubusercontent.com/LuisBretonesVillegas/JAVA-MASTERCLASS/main/progress.json
+---
+
+import JavaProgress from '../../../components/JavaProgress.astro';
+
+export const SECTIONS = [
+  'Getting Started with Java Programming',
+  'Java Development Environment Setup',
+  'First Steps in Java Programming',
+  'Transitioning from JShell to IntelliJ IDEA: A Comprehensive IDE Guide',
+  'Mastering Java Expressions, Statements, Code Blocks, And Method Overloading',
+  'Mastering Conditional Logic, Loops, And Interactive Java Applications',
+  'Mastering Java OOP: Classes & Inheritance',
+  'Advanced OOP Techniques: Composition, Encapsulation, and Polymorphism in Action',
+  'Advanced Arrays in Java: Single & Multi-Dimensional Techniques',
+  'Mastering Lists, Iterators, and Autoboxing: ArrayList, LinkedList & Enums',
+  'Mastering Abstraction & Interfaces: Expand Polymorphism & Java Hierarchies',
+  'Deep Dive into Java Generics: Bounds, Comparators & Advanced Techniques',
+  'Exploring Nested Classes, Local Types & Anonymous Classes',
+  'Mastering Java Lambdas: Expressions, Interfaces, and Method References',
+  'Mastering Java Collections: Framework, Lists, Sets, and Maps',
+  'Mastering Mutability, Immutability and Final Keyword in Java OOP',
+  'Comprehensive Java Streams: Operations, Pipelines, and Sources',
+  'Java Core Fundamentals: Math, Randomization, BigDecimal, and Date/Time',
+  'Regular Expressions in Java: Mastering Pattern Matching and Text Manipulation',
+  'Comprehensive Java Input/Output (I/O) and File Operations',
+  'Mastering Java Concurrency and Multithreading',
+  'Mastering Java Database Connectivity: Interactions, Queries, and Frameworks',
+  'Mastering Java Network Programming: Sockets, NIO, and Modern Frameworks',
+  'Debugging and Testing in Java: A Comprehensive Guide',
+  'Comprehensive JavaFX UI Design',
+  'Deep Dive into the Java 9 Module System: JPMS Fundamentals',
+  'Migrating Existing Java Projects to Java 9 and the Module System',
+];
+
+This is the follow-up to [Java Summer 2026](/projects/java-summer-2026/). That project took me through the first half of Liang's book and then got parked. This one picks Java back up with a different source: Tim Buchalka's "Java Masterclass" on Udemy, around 135 hours of video that I'm working through one section at a time.
+
+The goal is threefold: go deeper on every concept I already saw over the summer, learn the ones I never reached, and understand Java from the roots instead of just well enough to pass an exercise.
+
+## Progress
+
+The course has 45 sections, but sections 28 to 45 are the older Java 11 version of the same material plus archived videos and extras. I'm tracking the 27 sections of the current syllabus, so the bar reaches 100% when the actual course is done.
+
+The grid and the devlog below read from `progress.json` in the repo, so they update by themselves whenever I push progress.
+
+<JavaProgress
+  items={SECTIONS}
+  url="https://raw.githubusercontent.com/LuisBretonesVillegas/JAVA-MASTERCLASS/main/progress.json"
+  unit="section"
+/>
+
+---
+
+All code and notes: [JAVA-MASTERCLASS on GitHub](https://github.com/LuisBretonesVillegas/JAVA-MASTERCLASS)
