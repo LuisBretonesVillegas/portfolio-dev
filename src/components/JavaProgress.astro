@@ -30,9 +30,23 @@ const CHAPTERS = [
   'Graphs and Applications',
   'Weighted Graphs and Applications',
 ];
+
+// Defaults keep the Java Summer 2026 page working with a bare <JavaProgress />.
+// Other trackers pass their own list, progress.json URL and unit name.
+interface Props {
+  items?: string[];
+  url?: string;
+  unit?: string;
+}
+
+const {
+  items = CHAPTERS,
+  url = 'https://raw.githubusercontent.com/LuisBretonesVillegas/JAVA-SUMMER-2026/main/progress.json',
+  unit = 'chapter',
+} = Astro.props;
 ---
 
-<div class="jp">
+<div class="jp" data-url={url} data-unit={unit} data-total={items.length}>
   <div class="jp-stats">
     <span class="jp-count" id="jp-count">. . .</span>
     <span class="jp-pct" id="jp-pct"></span>
@@ -43,7 +57,7 @@ const CHAPTERS = [
   <div class="jp-dates" id="jp-dates" hidden></div>
 
   <ol class="jp-list" id="jp-list">
-    {CHAPTERS.map((title, i) => (
+    {items.map((title, i) => (
       <li class="jp-item" data-chapter={i + 1}>
         <span class="jp-n">{String(i + 1).padStart(2, '0')}</span>
         <span class="jp-t">{title}</span>
@@ -191,7 +205,11 @@ const CHAPTERS = [
 </style>
 
 <script>
-  const url = 'https://raw.githubusercontent.com/LuisBretonesVillegas/JAVA-SUMMER-2026/main/progress.json';
+  const root = document.querySelector('.jp');
+  const url = root?.getAttribute('data-url') || '';
+  const unit = root?.getAttribute('data-unit') || 'chapter';
+  const unitLabel = unit.charAt(0).toUpperCase() + unit.slice(1);
+  const defaultTotal = Number(root?.getAttribute('data-total')) || 0;
 
   function fmtDate(iso) {
     try {
@@ -208,14 +226,14 @@ const CHAPTERS = [
   fetch(url + '?t=' + Date.now())
     .then((r) => r.json())
     .then((data) => {
-      const total = data.total || 29;
+      const total = data.total || defaultTotal;
       const done = data.completed || 0;
       const pct = Math.min((done / total) * 100, 100).toFixed(0);
 
       const count = document.getElementById('jp-count');
       const pctEl = document.getElementById('jp-pct');
       const bar = document.getElementById('jp-bar');
-      if (count) count.textContent = done + ' / ' + total + ' chapters';
+      if (count) count.textContent = done + ' / ' + total + ' ' + unit + 's';
       if (pctEl) pctEl.textContent = pct + '%';
       if (bar) bar.style.width = pct + '%';
 
@@ -240,7 +258,7 @@ const CHAPTERS = [
         if (entries) {
           entries.innerHTML = log
             .map((e) => {
-              const head = 'Chapter ' + e.chapter + (e.title ? ' - ' + e.title : '');
+              const head = unitLabel + ' ' + (e[unit] ?? e.chapter) + (e.title ? ' - ' + e.title : '');
               return (
                 '<div class="jp-entry">' +
                 '<div class="jp-entry-head">' +
