@@ -474,16 +474,17 @@ function dateLabel(data: (typeof featured)[number]['data']): string {
   </section>
 
   <script>
+    import { lastUpdated } from '../scripts/progressUpdated.js';
+
     document.querySelectorAll('time[data-progress-url]').forEach(async (el) => {
       const url = el.getAttribute('data-progress-url');
       if (!url) return;
       try {
         const res = await fetch(url + '?t=' + Date.now());
         const data = await res.json();
-        const log = Array.isArray(data.log) ? data.log : [];
-        const last = log.length ? log[0].date : data.started;
+        const last = await lastUpdated(url, data);
         if (!last) return;
-        const d = new Date(last + 'T00:00:00').toLocaleDateString('en-US', {
+        const d = last.toLocaleDateString('en-US', {
           year: 'numeric',
           month: 'short',
           day: 'numeric',

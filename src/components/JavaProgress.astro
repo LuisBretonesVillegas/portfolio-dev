@@ -205,6 +205,8 @@ const {
 </style>
 
 <script>
+  import { lastUpdated } from '../scripts/progressUpdated.js';
+
   const root = document.querySelector('.jp');
   const url = root?.getAttribute('data-url') || '';
   const unit = root?.getAttribute('data-unit') || 'chapter';
@@ -247,9 +249,12 @@ const {
 
       const datesEl = document.getElementById('jp-dates');
       if (datesEl && data.started) {
-        const lastUpdated = log.length ? log[0].date : data.started;
-        datesEl.textContent = 'Started ' + fmtDate(data.started) + '  ·  Last updated ' + fmtDate(lastUpdated);
-        datesEl.hidden = false;
+        lastUpdated(url, data).then((updated) => {
+          const fmt = (d) => d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+          datesEl.textContent =
+            'Started ' + fmtDate(data.started) + (updated ? '  ·  Last updated ' + fmt(updated) : '');
+          datesEl.hidden = false;
+        });
       }
 
       if (log.length) {
