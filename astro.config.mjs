@@ -86,7 +86,7 @@ export default defineConfig({
 		'/projects/java-masterclass': '/learning/java-masterclass/',
 		// Study plans and practice tests moved to their own subdomain.
 		...Object.fromEntries(
-			['SSII', 'pgpi', 'fisica', 'escalada', 'discreta-algebra', 'so', 'cronograma', 'algebra', 'álgebra', 'discreta'].map(
+			['SSII', 'pgpi', 'fisica', 'so', 'cronograma'].map(
 				(page) => [`/${page}`, `https://study.luisbretones.dev/${page}/`],
 			),
 		),
