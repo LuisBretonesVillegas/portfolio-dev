@@ -18,6 +18,8 @@ export const collections = {
 				// Optional project this post belongs to. Must match a project page
 				// title; when set, the blog listing groups the post under that project.
 				project: z.string().optional(),
+				// Optional short, measurable outcomes shown on the project cards.
+				results: z.array(z.string()).optional(),
 			}),
 		}),
 	}),

@@ -5,8 +5,16 @@ interface Props {
 }
 const {
   title = 'Luis Bretones | Computer Engineering Student',
-  description = 'Computer Engineering student at UAL, focused on networking and cloud infrastructure.',
+  description = 'Computer Engineering student at UAL building toward DevOps and SRE: self-hosted infrastructure, monitoring, and networking.',
 } = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const ogImage = new URL('/avatar.jpeg', Astro.site);
+
+// Highlight the nav link of the section being viewed.
+const path = Astro.url.pathname;
+const navClass = (href: string) =>
+  'nav-link' + ((href === '/' ? path === '/' : path.startsWith(href)) ? ' active' : '');
 ---
 <!DOCTYPE html>
 <html lang="en">
@@ -15,6 +23,17 @@ const {
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{title}</title>
   <meta name="description" content={description} />
+  <link rel="canonical" href={canonical} />
+  <link rel="alternate" type="application/rss+xml" title="Luis Bretones" href="/rss.xml" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Luis Bretones" />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:url" content={canonical} />
+  <meta property="og:image" content={ogImage} />
+  <meta property="og:image:alt" content="Luis Bretones" />
+  <meta property="og:locale" content="en_US" />
+  <meta name="twitter:card" content="summary" />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -168,6 +187,29 @@ const {
     }
     .view-all:hover { border-color: var(--accent); }
 
+    /* ── PROJECT RESULTS ── */
+    .card-results {
+      list-style: none;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.35rem 1rem;
+      margin-bottom: 0.85rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      line-height: 1.45;
+      color: var(--text);
+    }
+    .card-results li {
+      position: relative;
+      padding-left: 0.9rem;
+    }
+    .card-results li::before {
+      content: '▸';
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+    }
+
     /* ── FOOTER ── */
     footer {
       max-width: 860px;
@@ -198,6 +240,14 @@ const {
       .nav-link { font-size: 0.78rem; }
       .nav-subtitle { display: none; }
       .nav-right { gap: 0.85rem; }
+      .card-results { grid-template-columns: 1fr; }
+      .nav-left { display: none; }
+    }
+    /* Four nav links don't fit next to the icons on phones; the footer keeps the links. */
+    @media (max-width: 480px) {
+      .nav-right { display: none; }
+      .nav-inner { justify-content: center; }
+      .nav-center { gap: 1.1rem; }
     }
   </style>
 </head>
@@ -210,9 +260,11 @@ const {
         <span class="nav-subtitle">Almería</span>
       </div>
       <div class="nav-center">
-        <a href="/projects/" class="nav-link">Projects</a>
-        <a href="/blog/" class="nav-link">Blog</a>
-        <a href="/contact/" class="nav-link">Contact</a>
+        <a href="/" class={navClass('/')}>Home</a>
+        <a href="/projects/" class={navClass('/projects/')}>Projects</a>
+        <a href="/learning/" class={navClass('/learning/')}>Learning</a>
+        <a href="/blog/" class={navClass('/blog/')}>Blog</a>
+        <a href="/about/" class={navClass('/about/')}>About</a>
       </div>
       <div class="nav-right">
         <a href="https://github.com/LuisBretonesVillegas" target="_blank" rel="noopener" class="nav-icon-link" aria-label="GitHub">
@@ -232,6 +284,8 @@ const {
   <footer>
     <span>© {new Date().getFullYear()} Luis Bretones</span>
     <div class="footer-links">
+      <a href="/contact/">Contact</a>
+      <a href="/rss/">RSS</a>
       <a href="https://github.com/LuisBretonesVillegas" target="_blank" rel="noopener">GitHub</a>
       <a href="https://www.linkedin.com/in/luisbretonesvillegas" target="_blank" rel="noopener">LinkedIn</a>
     </div>

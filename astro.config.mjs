@@ -80,10 +80,31 @@ function blogSidebarItems() {
 // https://astro.build/config
 export default defineConfig({
 	site: 'https://luisbretones.dev',
+	// The Java logs moved from Projects to Learning; keep the old URLs working.
+	redirects: {
+		'/projects/java-summer-2026': '/learning/java-summer-2026/',
+		'/projects/java-masterclass': '/learning/java-masterclass/',
+		// Study plans and practice tests moved to their own subdomain.
+		...Object.fromEntries(
+			['SSII', 'pgpi', 'fisica', 'escalada', 'discreta-algebra', 'so', 'cronograma', 'algebra', 'álgebra', 'discreta'].map(
+				(page) => [`/${page}`, `https://study.luisbretones.dev/${page}/`],
+			),
+		),
+	},
 	integrations: [
 		starlight({
 			title: 'Luis Bretones',
 			customCss: ['./src/styles/custom.css'],
+			// Share previews and the blog feed on the Starlight-rendered pages too.
+			head: [
+				{ tag: 'meta', attrs: { property: 'og:image', content: 'https://luisbretones.dev/avatar.jpeg' } },
+				{ tag: 'meta', attrs: { property: 'og:image:alt', content: 'Luis Bretones' } },
+				{ tag: 'meta', attrs: { name: 'twitter:card', content: 'summary' } },
+				{
+					tag: 'link',
+					attrs: { rel: 'alternate', type: 'application/rss+xml', title: 'Luis Bretones', href: '/rss.xml' },
+				},
+			],
 			components: {
 				Footer: './src/components/Footer.astro',
 				SiteTitle: './src/components/SiteTitle.astro',
@@ -99,10 +120,17 @@ export default defineConfig({
 					],
 				},
 				{
+					label: 'Learning',
+					items: [
+						{ label: 'Learning', link: '/learning/' },
+						{ autogenerate: { directory: 'learning' } },
+					],
+				},
+				{
 					label: 'Blog',
 					items: blogSidebarItems(),
 				},
-				{ label: 'Contact', link: '/contact/' },
+				{ label: 'About', link: '/about/' },
 			],
 		}),
 	],

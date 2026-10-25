@@ -1,0 +1,95 @@
+---
+import Portfolio from '../layouts/Portfolio.astro';
+
+const feedUrl = new URL('/rss.xml', Astro.site).href;
+---
+<Portfolio title="RSS | Luis Bretones" description="Follow the blog with any RSS reader.">
+  <section class="section" style="padding-top: 4rem;">
+    <p class="section-title">RSS // Follow the blog</p>
+    <p class="rss-intro">
+      RSS lets you follow this blog from a feed reader, without social media or a newsletter.
+      Copy the address below into your reader and new posts will show up there as soon as I publish them.
+    </p>
+
+    <div class="rss-box">
+      <code class="rss-url" id="rss-url">{feedUrl}</code>
+      <button type="button" class="rss-copy" id="rss-copy">Copy</button>
+    </div>
+
+    <p class="rss-hint">
+      Don't have a reader yet? Free options include
+      <a href="https://feedly.com" target="_blank" rel="noopener">Feedly</a>,
+      <a href="https://www.inoreader.com" target="_blank" rel="noopener">Inoreader</a>, and
+      <a href="https://netnewswire.com" target="_blank" rel="noopener">NetNewsWire</a>.
+    </p>
+  </section>
+</Portfolio>
+
+<script>
+  const button = document.getElementById('rss-copy')!;
+  const url = document.getElementById('rss-url')!.textContent ?? '';
+  button.addEventListener('click', async () => {
+    try {
+      await navigator.clipboard.writeText(url);
+      button.textContent = 'Copied';
+    } catch {
+      // Clipboard can be blocked; select the text so it can be copied by hand.
+      const range = document.createRange();
+      range.selectNodeContents(document.getElementById('rss-url')!);
+      getSelection()?.removeAllRanges();
+      getSelection()?.addRange(range);
+      button.textContent = 'Press Ctrl+C';
+    }
+    setTimeout(() => (button.textContent = 'Copy'), 2000);
+  });
+</script>
+
+<style>
+  .rss-intro {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    line-height: 1.75;
+    max-width: 640px;
+    margin-bottom: 1.75rem;
+  }
+  .rss-box {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.6rem 0.6rem 0.6rem 1.1rem;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    background: var(--bg-card);
+    max-width: 640px;
+  }
+  .rss-url {
+    flex: 1;
+    min-width: 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    color: var(--text);
+    overflow-wrap: anywhere;
+  }
+  .rss-copy {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.5rem 0.9rem;
+    border-radius: 3px;
+    border: 1px solid var(--accent);
+    background: var(--accent);
+    color: #fff;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .rss-copy:hover { opacity: 0.9; }
+  .rss-hint {
+    margin-top: 1.25rem;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    line-height: 1.7;
+  }
+  .rss-hint a { color: var(--accent); }
+</style>

@@ -1,0 +1,171 @@
+---
+import Portfolio from '../layouts/Portfolio.astro';
+---
+<Portfolio title="About | Luis Bretones">
+  <section class="section" style="padding-top: 4rem;">
+    <p class="section-title">About // Who I am</p>
+    <p class="about-intro">
+      Computer Engineering student based in Spain, focused on networking and cloud infrastructure.
+      I'm currently studying for the CCNA, with the RHCSA next and the AWS Solutions Architect
+      Associate after that, building toward a career in DevOps and SRE. C1 English level. This site is where I document what
+      I build and learn along the way.
+    </p>
+  </section>
+
+  <section class="section">
+    <p class="section-title">Education</p>
+    <div class="about-entry">
+      <p class="about-entry-title">Bachelor's Degree in Computer Engineering</p>
+      <p class="about-entry-meta">University of Almería (UAL) · 2024 – 2030 (expected)</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <p class="section-title">Experience</p>
+    <div class="about-entry">
+      <p class="about-entry-title">Infrastructure build for a small consultancy (ED50)</p>
+      <p class="about-entry-meta">Jun 2026 – Aug 2026 · In production</p>
+      <ul class="about-list">
+        <li>Designed and deployed the company's self-hosted infrastructure on Proxmox VE: photo management (Immich), document management (Paperless-ngx), and invoicing (FacturaScripts), each in its own unprivileged LXC.</li>
+        <li>Put every service behind Caddy with a wildcard Let's Encrypt certificate (ACME DNS-01), with zero ports open to the Internet and remote access only over Tailscale.</li>
+        <li>Implemented a 3-2-1 backup strategy verified end to end, with a client-side encrypted offsite copy on Hetzner, and found that the NAS had been silently skipping its nightly backups for years.</li>
+        <li>Migrated ~145 GB of photo archive (2004 to present) with verification.</li>
+        <li>Built TicketBot, a Telegram bot (n8n + vision model + Paperless API) that turns a photo of a receipt into an archived, classified fiscal document in about 15 seconds.</li>
+        <li>Wrote Vigía, a Java / Spring Boot service that monitors the 11 services in production and sends Telegram alerts only on state changes.</li>
+        <li>Real client data on the network, so security and GDPR compliance shaped every design decision.</li>
+      </ul>
+      <a href="/projects/enterprise-network/" class="about-link">Read the full project →</a>
+    </div>
+  </section>
+
+  <section class="section">
+    <p class="section-title">Skills</p>
+    <div class="about-skills">
+      <div class="about-skill-group">
+        <p class="about-skill-title">Networking</p>
+        <dl>
+          <dt>Fundamentals</dt>
+          <dd>TCP/IP, subnetting, VLANs, and DNS. Segmented network design in the ED50 v1 plan; CCNA in progress</dd>
+          <dt>Analysis</dt>
+          <dd>Wireshark and usbmon for USB traffic capture in the wireless audio protocol analysis</dd>
+          <dt>Simulation</dt>
+          <dd>Cisco Packet Tracer for topology design and troubleshooting</dd>
+        </dl>
+      </div>
+      <div class="about-skill-group">
+        <p class="about-skill-title">Virtualization &amp; Containers</p>
+        <dl>
+          <dt>Proxmox VE</dt>
+          <dd>Hypervisor for the ED50 stack: unprivileged LXCs with nesting, vzdump, LVM-Thin</dd>
+          <dt>Docker</dt>
+          <dd>Docker Engine and Docker Compose with pinned versions for Immich, Paperless-ngx, FacturaScripts, and n8n</dd>
+        </dl>
+      </div>
+      <div class="about-skill-group">
+        <p class="about-skill-title">Access &amp; Security</p>
+        <dl>
+          <dt>Reverse proxy &amp; TLS</dt>
+          <dd>Caddy with a wildcard Let&#39;s Encrypt certificate via ACME DNS-01, one subdomain per service</dd>
+          <dt>Remote access</dt>
+          <dd>Tailscale (WireGuard mesh, MagicDNS, subnet router) with zero ports open to the Internet</dd>
+          <dt>Compliance</dt>
+          <dd>GDPR-driven design decisions for a network holding real client data</dd>
+        </dl>
+      </div>
+      <div class="about-skill-group">
+        <p class="about-skill-title">Backup &amp; Monitoring</p>
+        <dl>
+          <dt>Backups</dt>
+          <dd>3-2-1 strategy verified end to end: vzdump, Synology Hyper Backup, client-side encrypted offsite copy on Hetzner with rclone</dd>
+          <dt>Monitoring</dt>
+          <dd>Vigía: HTTP and ping checks against 11 production services, Telegram alerts on state changes</dd>
+        </dl>
+      </div>
+      <div class="about-skill-group">
+        <p class="about-skill-title">Automation &amp; CI/CD</p>
+        <dl>
+          <dt>Workflows</dt>
+          <dd>n8n for TicketBot: Telegram, vision model, and Paperless API</dd>
+          <dt>CI/CD</dt>
+          <dd>GitHub Actions building and deploying this site to GitHub Pages</dd>
+          <dt>Services</dt>
+          <dd>systemd units and cron jobs for scheduled and long-running tasks</dd>
+        </dl>
+      </div>
+      <div class="about-skill-group">
+        <p class="about-skill-title">Code &amp; OS</p>
+        <dl>
+          <dt>Java</dt>
+          <dd>Java 21, Spring Boot, and Maven for Vigía; ongoing Java Masterclass</dd>
+          <dt>Python</dt>
+          <dd>Previous projects and scripting</dd>
+          <dt>Linux</dt>
+          <dd>Debian 13 on servers and my main machine; Arch Linux before that</dd>
+        </dl>
+      </div>
+    </div>
+  </section>
+</Portfolio>
+
+<style>
+  .about-intro,
+  .about-text {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    line-height: 1.75;
+    max-width: 640px;
+  }
+  .about-entry-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 0.25rem;
+  }
+  .about-entry-meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--text-muted);
+  }
+  .about-list {
+    margin: 0.9rem 0 0 1.1rem;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    line-height: 1.7;
+    max-width: 680px;
+  }
+  .about-list li { margin-bottom: 0.4rem; }
+  .about-link {
+    display: inline-block;
+    margin-top: 0.75rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--accent);
+    text-decoration: none;
+  }
+  .about-link:hover { text-decoration: underline; }
+  .about-skills { display: flex; flex-direction: column; gap: 2rem; }
+  .about-skill-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.75rem;
+  }
+  dl {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    gap: 0.6rem 1.25rem;
+    font-size: 0.875rem;
+    line-height: 1.6;
+  }
+  dt { font-weight: 600; color: var(--text); }
+  dd { color: var(--text-muted); }
+
+  @media (max-width: 768px) {
+    dl { grid-template-columns: 1fr; gap: 0.15rem; }
+    dd { margin-bottom: 0.6rem; }
+  }
+</style>

@@ -5,7 +5,7 @@ import Portfolio from '../layouts/Portfolio.astro';
 // Projects highlighted on the home page, in display order.
 const FEATURED = [
   'projects/enterprise-network',
-  'projects/java-summer-2026',
+  'projects/vigia',
 ];
 
 const allDocs = await getCollection('docs');
@@ -236,59 +236,25 @@ function dateLabel(data: (typeof featured)[number]['data']): string {
       transform: translateX(5px);
     }
 
-    /* ── CERT GRID ── */
-    .cert-grid {
+    /* ── CERT ROADMAP ── */
+    .cert-list { display: flex; flex-direction: column; }
+    .cert-row {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 0.85rem;
+      grid-template-columns: 110px 1fr auto;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.75rem 0;
+      border-top: 1px solid var(--border);
+      font-size: 0.9rem;
     }
-    .cert-card {
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      padding: 1.1rem 1rem 0.9rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.6rem;
-      position: relative;
-      overflow: hidden;
-    }
-    .cert-card.active { border-color: var(--accent); }
-    .cert-card.active::before {
-      content: '';
-      position: absolute;
-      inset: 0 0 auto 0;
-      height: 3px;
-      background: var(--accent);
-    }
-    .cert-vendor {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.58rem;
-      font-weight: 600;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--text-muted);
-    }
-    .cert-acronym {
-      font-family: 'Playfair Display', serif;
-      font-size: 2rem;
-      font-weight: 800;
-      line-height: 1;
-      color: var(--text);
-    }
-    .cert-card.active .cert-acronym { color: var(--accent); }
-    .cert-fullname {
-      font-size: 0.72rem;
-      color: var(--text-muted);
-      line-height: 1.4;
-      flex: 1;
-    }
+    .cert-row:last-child { border-bottom: 1px solid var(--border); }
     .cert-status {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.58rem;
+      font-size: 0.6rem;
       font-weight: 700;
       letter-spacing: 0.08em;
       text-transform: uppercase;
-      align-self: flex-start;
+      justify-self: start;
       padding: 0.2rem 0.5rem;
       border-radius: 3px;
     }
@@ -298,9 +264,16 @@ function dateLabel(data: (typeof featured)[number]['data']): string {
       border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
     }
     .cert-status.status-planned {
-      background: transparent;
       color: var(--text-muted);
       border: 1px solid var(--border);
+    }
+    .cert-name { color: var(--text); font-weight: 500; }
+    .cert-row.planned .cert-name { color: var(--text-muted); font-weight: 400; }
+    .cert-target {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      white-space: nowrap;
     }
 
     /* ── RESPONSIVE ── */
@@ -323,7 +296,8 @@ function dateLabel(data: (typeof featured)[number]['data']): string {
       .skill-grid { grid-template-columns: repeat(2, 1fr); }
       .skill-cell:nth-child(3n) { border-right: 1px solid #b8b3ab; }
       .skill-cell:nth-child(2n) { border-right: none; }
-      .cert-grid { grid-template-columns: repeat(2, 1fr); }
+      .cert-row { grid-template-columns: 96px 1fr; row-gap: 0.2rem; }
+      .cert-target { grid-column: 2; }
       .featured-grid { grid-template-columns: 1fr; }
     }
   </style>
@@ -334,7 +308,7 @@ function dateLabel(data: (typeof featured)[number]['data']): string {
       <p class="role">Computer Engineering Student</p>
       <p class="tagline">
         Networking &amp; cloud infrastructure.<br />
-        Building toward CCNA and AWS certifications.<br />
+        Studying for the CCNA, with RHCSA next.<br />
         Documenting what I learn and build along the way.
       </p>
       <div class="hero-actions">
@@ -354,60 +328,61 @@ function dateLabel(data: (typeof featured)[number]['data']): string {
         <p class="skill-cell-title">Networking</p>
         <div class="skill-cell-tags">
           <span class="skill-tag">TCP/IP</span>
-          <span class="skill-tag">Routing & Switching</span>
-          <span class="skill-tag">VLANs</span>
           <span class="skill-tag">Subnetting</span>
-          <span class="skill-tag">BGP</span>
-          <span class="skill-tag">OSPF</span>
-          <span class="skill-tag">Cisco IOS</span>
+          <span class="skill-tag">VLANs</span>
+          <span class="skill-tag">DNS</span>
+          <span class="skill-tag">Wireshark</span>
+          <span class="skill-tag">Packet Tracer</span>
         </div>
       </div>
       <div class="skill-cell c-blue">
-        <p class="skill-cell-title">Cloud & Infra</p>
+        <p class="skill-cell-title">Virtualization &amp; Containers</p>
         <div class="skill-cell-tags">
-          <span class="skill-tag">AWS</span>
+          <span class="skill-tag">Proxmox VE</span>
+          <span class="skill-tag">LXC</span>
           <span class="skill-tag">Docker</span>
-          <span class="skill-tag">Linux</span>
-          <span class="skill-tag">Bash</span>
-          <span class="skill-tag">GitHub Actions</span>
+          <span class="skill-tag">Docker Compose</span>
         </div>
       </div>
       <div class="skill-cell c-orange">
-        <p class="skill-cell-title">Analysis & Tools</p>
+        <p class="skill-cell-title">Access &amp; Security</p>
         <div class="skill-cell-tags">
-          <span class="skill-tag">Wireshark</span>
-          <span class="skill-tag">Packet Tracer</span>
-          <span class="skill-tag">GNS3</span>
-          <span class="skill-tag">Nmap</span>
-          <span class="skill-tag">tcpdump</span>
-        </div>
-      </div>
-      <div class="skill-cell c-purple">
-        <p class="skill-cell-title">Programming</p>
-        <div class="skill-cell-tags">
-          <span class="skill-tag">Java</span>
-          <span class="skill-tag">Python</span>
-          <span class="skill-tag">C</span>
-          <span class="skill-tag">Bash</span>
-          <span class="skill-tag">Git</span>
+          <span class="skill-tag">Caddy</span>
+          <span class="skill-tag">Let&#39;s Encrypt</span>
+          <span class="skill-tag">Tailscale</span>
+          <span class="skill-tag">WireGuard</span>
+          <span class="skill-tag">GDPR</span>
         </div>
       </div>
       <div class="skill-cell c-teal">
-        <p class="skill-cell-title">OS & Systems</p>
+        <p class="skill-cell-title">Backup &amp; Monitoring</p>
         <div class="skill-cell-tags">
-          <span class="skill-tag">Arch Linux</span>
-          <span class="skill-tag">Debian 13</span>
-          <span class="skill-tag">Windows Server</span>
-          <span class="skill-tag">VirtualBox</span>
+          <span class="skill-tag">3-2-1 backups</span>
+          <span class="skill-tag">vzdump</span>
+          <span class="skill-tag">Hyper Backup</span>
+          <span class="skill-tag">rclone</span>
+          <span class="skill-tag">Telegram alerting</span>
+        </div>
+      </div>
+      <div class="skill-cell c-purple">
+        <p class="skill-cell-title">Automation &amp; CI/CD</p>
+        <div class="skill-cell-tags">
+          <span class="skill-tag">n8n</span>
+          <span class="skill-tag">GitHub Actions</span>
+          <span class="skill-tag">systemd</span>
+          <span class="skill-tag">cron</span>
+          <span class="skill-tag">Git</span>
         </div>
       </div>
       <div class="skill-cell c-muted">
-        <p class="skill-cell-title">Project Management</p>
+        <p class="skill-cell-title">Code &amp; OS</p>
         <div class="skill-cell-tags">
-          <span class="skill-tag">Git Flow</span>
-          <span class="skill-tag">GitHub</span>
-          <span class="skill-tag">Markdown</span>
-          <span class="skill-tag">Documentation</span>
+          <span class="skill-tag">Java</span>
+          <span class="skill-tag">Spring Boot</span>
+          <span class="skill-tag">Maven</span>
+          <span class="skill-tag">Python</span>
+          <span class="skill-tag">Debian</span>
+          <span class="skill-tag">Arch Linux</span>
         </div>
       </div>
     </div>
@@ -429,6 +404,11 @@ function dateLabel(data: (typeof featured)[number]['data']): string {
             {project.data.description && (
               <p class="featured-desc">{project.data.description}</p>
             )}
+            {project.data.results && project.data.results.length > 0 && (
+              <ul class="card-results">
+                {project.data.results.map(result => <li>{result}</li>)}
+              </ul>
+            )}
             {project.data.tags && project.data.tags.length > 0 && (
               <div class="featured-tags">
                 {project.data.tags.map(tag => (
@@ -445,30 +425,21 @@ function dateLabel(data: (typeof featured)[number]['data']): string {
 
   <section class="section">
     <p class="section-title">Certifications // Roadmap</p>
-    <div class="cert-grid">
-      <div class="cert-card active">
-        <span class="cert-vendor">Cisco</span>
-        <span class="cert-acronym">CCNA</span>
-        <span class="cert-fullname">Cisco Certified Network Associate</span>
+    <div class="cert-list">
+      <div class="cert-row">
         <span class="cert-status status-active">In progress</span>
+        <span class="cert-name">Cisco Certified Network Associate (CCNA 200-301)</span>
+        <span class="cert-target">Exam early 2028</span>
       </div>
-      <div class="cert-card active">
-        <span class="cert-vendor">AWS</span>
-        <span class="cert-acronym">CCP</span>
-        <span class="cert-fullname">AWS Certified Cloud Practitioner</span>
-        <span class="cert-status status-active">In progress</span>
-      </div>
-      <div class="cert-card">
-        <span class="cert-vendor">Cisco</span>
-        <span class="cert-acronym">CCNP</span>
-        <span class="cert-fullname">Cisco Certified Network Professional</span>
+      <div class="cert-row planned">
         <span class="cert-status status-planned">Planned</span>
+        <span class="cert-name">Red Hat Certified System Administrator (RHCSA)</span>
+        <span class="cert-target">2028</span>
       </div>
-      <div class="cert-card">
-        <span class="cert-vendor">AWS</span>
-        <span class="cert-acronym">SAA</span>
-        <span class="cert-fullname">AWS Solutions Architect Associate</span>
+      <div class="cert-row planned">
         <span class="cert-status status-planned">Planned</span>
+        <span class="cert-name">AWS Certified Solutions Architect – Associate</span>
+        <span class="cert-target">2028–29</span>
       </div>
     </div>
   </section>

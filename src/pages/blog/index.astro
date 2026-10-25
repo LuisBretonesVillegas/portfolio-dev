@@ -15,7 +15,7 @@ const posts = allDocs
 // Map project page titles to their URL so a post's `project` can link out.
 const projectHref = new Map<string, string>();
 allDocs
-  .filter(e => e.id.startsWith('projects/') && !e.id.match(/^projects\/index\.mdx?$/))
+  .filter(e => /^(projects|learning)\//.test(e.id) && !e.id.match(/^(projects|learning)\/index\.mdx?$/))
   .forEach(p => projectHref.set(p.data.title, `/${p.id.replace(/\.mdx?$/, '')}/`));
 
 const time = (d: Date | undefined) => (d ? new Date(d).getTime() : 0);

@@ -3,6 +3,11 @@ title: Vigía
 date: 2026-08-08
 description: A Java service that watches every service in the homelab with HTTP and ping checks and sends Telegram alerts only on state changes, running as a systemd unit in an unprivileged LXC.
 tags: [java, spring-boot, homelab, telegram, monitoring, systemd]
+results:
+  - "11 services watched"
+  - "44 tests"
+  - "172 MB RAM, 0.8 s startup"
+  - "One alert per outage, zero duplicates"
 ---
 
 > _Project · Java 21 + Spring Boot 4 · August 2026 · [Vigía on GitHub](https://github.com/LuisBretonesVillegas/VIGIA)_ · IP addresses, hostnames, and paths are examples; this page contains no credentials or identifiers in use.

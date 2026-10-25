@@ -1,0 +1,202 @@
+---
+import { getCollection } from 'astro:content';
+import Portfolio from '../../layouts/Portfolio.astro';
+
+const allDocs = await getCollection('docs');
+const entries = allDocs
+  .filter(e => e.id.startsWith('learning/') && !e.id.match(/^learning\/index\.mdx?$/))
+  .sort((a, b) => {
+    const dateA = a.data.date ? new Date(a.data.date).getTime() : 0;
+    const dateB = b.data.date ? new Date(b.data.date).getTime() : 0;
+    return dateB - dateA;
+  });
+
+function formatDate(date: Date): string {
+  return date.toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+  });
+}
+
+// Latest blog post date for a project, so projects without a progress.json
+// still get a "Started · Updated" label derived from their write-ups.
+const blogPosts = allDocs.filter(e => e.id.startsWith('blog/') && !e.id.match(/^blog\/index\.mdx?$/));
+function dateLabel(data: (typeof entries)[number]['data']): string {
+  if (!data.date) return '';
+  const started = formatDate(data.date);
+  if (data.progressUrl) return `Started ${started}`;
+  const times = blogPosts
+    .filter(p => p.data.project === data.title && p.data.date)
+    .map(p => new Date(p.data.date!).getTime());
+  if (times.length) {
+    const updated = new Date(Math.max(...times));
+    if (updated.getTime() > new Date(data.date).getTime()) {
+      return `Started ${started} · Updated ${formatDate(updated)}`;
+    }
+  }
+  return started;
+}
+---
+<Portfolio title="Learning | Luis Bretones">
+  <style>
+    .projects-header {
+      padding: 4rem 0 2.5rem;
+    }
+    .projects-header h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.75rem;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 0.5rem;
+      line-height: 1.15;
+    }
+    .projects-header p {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      max-width: 480px;
+      line-height: 1.6;
+    }
+
+    .project-list {
+      padding-bottom: 3rem;
+    }
+
+    .project-item {
+      display: block;
+      padding: 2rem 0;
+      border-top: 1px solid var(--border);
+      text-decoration: none;
+      color: var(--text);
+      transition: padding-left 0.2s ease;
+    }
+    .project-item:last-child {
+      border-bottom: 1px solid var(--border);
+    }
+    .project-item:hover {
+      padding-left: 0.6rem;
+    }
+
+    .project-date {
+      display: block;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.6rem;
+    }
+
+    .project-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.3;
+      margin-bottom: 0.6rem;
+      transition: color 0.2s;
+    }
+    .project-item:hover .project-title {
+      color: var(--accent);
+    }
+
+    .project-desc {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.65;
+      margin-bottom: 0.85rem;
+    }
+
+    .project-tags {
+      display: flex;
+      gap: 0.35rem;
+      flex-wrap: wrap;
+    }
+    .project-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.62rem;
+      font-weight: 500;
+      padding: 0.15rem 0.5rem;
+      border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
+      border-radius: 2px;
+      color: var(--accent);
+    }
+
+    .project-read {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      margin-top: 1.1rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      color: var(--accent);
+    }
+    .project-read .arrow {
+      transition: transform 0.2s ease;
+    }
+    .project-item:hover .project-read .arrow {
+      transform: translateX(5px);
+    }
+  </style>
+
+  <div class="projects-header">
+    <h2>Learning</h2>
+    <p>Courses and books I'm working through, with progress tracked in public.</p>
+  </div>
+
+  <div class="project-list">
+    {entries.map(project => {
+      const url = `/${project.id.replace(/\.mdx?$/, '')}/`;
+      return (
+        <a href={url} class="project-item">
+          {project.data.date && (
+            <time class="project-date" data-progress-url={project.data.progressUrl ?? undefined}>
+              {dateLabel(project.data)}
+            </time>
+          )}
+          <p class="project-title">{project.data.title}</p>
+          {project.data.description && (
+            <p class="project-desc">{project.data.description}</p>
+          )}
+          {project.data.results && project.data.results.length > 0 && (
+            <ul class="card-results">
+              {project.data.results.map(result => <li>{result}</li>)}
+            </ul>
+          )}
+          {project.data.tags && project.data.tags.length > 0 && (
+            <div class="project-tags">
+              {project.data.tags.map(tag => (
+                <span class="project-tag">{tag}</span>
+              ))}
+            </div>
+          )}
+          <span class="project-read">View log <span class="arrow">→</span></span>
+        </a>
+      );
+    })}
+  </div>
+
+  <script>
+    import { lastUpdated } from '../../scripts/progressUpdated.js';
+
+    document.querySelectorAll('time[data-progress-url]').forEach(async (el) => {
+      const url = el.getAttribute('data-progress-url');
+      if (!url) return;
+      try {
+        const res = await fetch(url + '?t=' + Date.now());
+        const data = await res.json();
+        const last = await lastUpdated(url, data);
+        if (!last) return;
+        const d = last.toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: 'short',
+          day: 'numeric',
+        });
+        el.textContent = el.textContent + ' · Updated ' + d;
+      } catch {}
+    });
+  </script>
+</Portfolio>

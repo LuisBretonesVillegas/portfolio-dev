@@ -3,6 +3,11 @@ title: Enterprise Network
 date: 2026-06-29
 description: Centralizing a small consultancy's services and storage on self-hosted infrastructure, with security, GDPR compliance, and verified backups baked in from the start.
 tags: [networking, homelab, proxmox, self-hosting, security, backup]
+results:
+  - "11 services in production"
+  - "0 ports open to the Internet"
+  - "~145 GB of photos migrated and verified"
+  - "Receipt to archived document in ~15 s"
 ---
 
 A project to centralize a small consultancy's services and storage on self-hosted infrastructure: a hypervisor running the whole service stack, private cloud for files and photos, document management and invoicing, and a verified 3-2-1 backup strategy. The detail that raises the bar is that it holds real client data, so security, encryption, and GDPR compliance drive every decision rather than being an afterthought.
@@ -10,6 +15,12 @@ A project to centralize a small consultancy's services and storage on self-hoste
 The project did not stay on the v1 plan. When I put the original design (OPNsense, VLANs, new hardware) against the real budget and the client's actual needs, the scope was trimmed: the ISP router stayed, the network stayed flat, and an existing PC became the hypervisor. The "Homelab ED50" series below documents the implementation that actually went into production, from the final hardware to the offsite backup.
 
 The infrastructure is now in production. Each phase is documented as a blog entry, from the initial architecture and budget through to the actual build and everything that broke along the way.
+
+## Architecture
+
+What is running in production today. Every service lives on one Proxmox host, Caddy is the single entry point, and nothing on the Internet can open a connection into the office: remote access goes over Tailscale and everything else is outbound.
+
+[![ED50 infrastructure: a Proxmox host running Caddy, Immich, Paperless-ngx, FacturaScripts, n8n and Vigía, backed up to a Synology NAS and from there, encrypted, to a Hetzner Storage Box](/diagrams/ed50-architecture.svg)](/diagrams/ed50-architecture.svg)
 
 ## Write-ups
 

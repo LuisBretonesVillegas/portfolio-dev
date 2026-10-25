@@ -161,6 +161,11 @@ function dateLabel(data: (typeof projects)[number]['data']): string {
           {project.data.description && (
             <p class="project-desc">{project.data.description}</p>
           )}
+          {project.data.results && project.data.results.length > 0 && (
+            <ul class="card-results">
+              {project.data.results.map(result => <li>{result}</li>)}
+            </ul>
+          )}
           {project.data.tags && project.data.tags.length > 0 && (
             <div class="project-tags">
               {project.data.tags.map(tag => (
