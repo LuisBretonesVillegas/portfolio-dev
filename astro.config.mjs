@@ -80,10 +80,11 @@ function blogSidebarItems() {
 // https://astro.build/config
 export default defineConfig({
 	site: 'https://luisbretones.dev',
-	// The Java logs moved from Projects to Learning; keep the old URLs working.
+	// These pages moved to Learning; keep the old URLs working.
 	redirects: {
 		'/projects/java-summer-2026': '/learning/java-summer-2026/',
 		'/projects/java-masterclass': '/learning/java-masterclass/',
+		'/blog/ccna-exam-delay': '/learning/ccna-exam-delay/',
 		// Study plans and practice tests moved to their own subdomain.
 		...Object.fromEntries(
 			['SSII', 'pgpi'].map(
