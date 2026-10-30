@@ -10,7 +10,14 @@ import Portfolio from '../layouts/Portfolio.astro';
       Associate after that, building toward a career in DevOps and SRE. C1 English level. This site is where I document what
       I build and learn along the way.
     </p>
-    <a href="/cv/" class="about-link">View my CV →</a>
+  </section>
+
+  <section class="section">
+    <p class="section-title">CV</p>
+    <div class="about-entry">
+      <a href="/cv/" class="about-entry-title about-cv-link">View my CV →</a>
+      <p class="about-entry-meta">One page · View online or download as PDF</p>
+    </div>
   </section>
 
   <section class="section">
@@ -122,6 +129,11 @@ import Portfolio from '../layouts/Portfolio.astro';
     color: var(--text);
     margin-bottom: 0.25rem;
   }
+  .about-cv-link {
+    display: block;
+    text-decoration: none;
+  }
+  .about-cv-link:hover { color: var(--accent); }
   .about-entry-meta {
     font-family: 'JetBrains Mono', monospace;
     font-size: 0.72rem;
