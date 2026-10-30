@@ -132,6 +132,7 @@ export default defineConfig({
 					items: blogSidebarItems(),
 				},
 				{ label: 'About', link: '/about/' },
+				{ label: 'CV', link: '/cv/' },
 			],
 		}),
 	],

@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Luis Bretones CV</title>
+<style>
+  @page { size: A4; margin: 13mm 16mm; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: Arial, Helvetica, sans-serif; font-size: 9.8pt; line-height: 1.32; color: #111111; }
+  a { color: inherit; text-decoration: none; }
+  h1 { color: #1a5c00; font-size: 23pt; font-weight: 800; text-align: center; letter-spacing: 0.01em; }
+  .contact { text-align: center; margin-top: 3pt; }
+  h2 { color: #1a5c00; font-size: 11pt; font-weight: 700; margin-top: 11pt; padding-bottom: 2pt; border-bottom: 0.75pt solid #9a9a9a; }
+  .entry { margin-top: 6pt; }
+  .row { display: flex; justify-content: space-between; gap: 12pt; }
+  .row span:last-child { white-space: nowrap; }
+  .name { font-weight: 700; }
+  ul { margin: 2.5pt 0 0 17pt; }
+  li { margin-bottom: 1.5pt; }
+  .plain { margin-top: 6pt; margin-left: 0; list-style: none; }
+  .plain b { font-weight: 700; }
+</style>
+</head>
+<body>
+  <h1>LUIS BRETONES</h1>
+  <p class="contact">Almería, Spain • <a href="mailto:lbretonesvillegas@gmail.com">lbretonesvillegas@gmail.com</a> • <a href="https://luisbretones.dev">luisbretones.dev</a></p>
+  <p class="contact">github.com/LuisBretonesVillegas • linkedin.com/in/luisbretonesvillegas</p>
+
+  <h2>Education</h2>
+  <div class="entry">
+    <div class="row"><span class="name">University of Almería (UAL)</span><span>Almería, Spain</span></div>
+    <div class="row"><span>Bachelor's Degree in Computer Engineering</span><span>2024 to 2030 (expected)</span></div>
+  </div>
+
+  <h2>Experience</h2>
+  <div class="entry">
+    <div class="row"><span class="name">ED50</span><span>Spain</span></div>
+    <div class="row"><span>Infrastructure build for a small consultancy (in production)</span><span>Jun 2026 to Aug 2026</span></div>
+    <ul>
+      <li>Designed and deployed self-hosted infrastructure on Proxmox VE, running 11 monitored services with zero ports open to the Internet.</li>
+      <li>Published services through Caddy with a wildcard Let's Encrypt certificate (ACME DNS-01), with remote access only over Tailscale.</li>
+      <li>Implemented a 3-2-1 backup strategy verified by test restores, with client-side encrypted offsite copies on Hetzner.</li>
+      <li>Found and fixed a power schedule that had silently prevented the NAS's nightly backups from running for years.</li>
+      <li>Migrated about 145 GB of photo archives to Immich with verification.</li>
+      <li>Built TicketBot with n8n, a vision model and the Paperless-ngx API, turning a receipt photo into an archived fiscal document in about 15 seconds.</li>
+    </ul>
+  </div>
+
+  <h2>Projects</h2>
+  <div class="entry">
+    <div class="row"><span class="name">Vigía</span><span>2026</span></div>
+    <div>Java 21, Spring Boot, systemd</div>
+    <ul>
+      <li>Built a monitoring service with HTTP and ping checks across 11 production services, alerting on Telegram only on state changes.</li>
+      <li>Wrote 44 tests, including timeouts, 5xx responses, broken YAML and notifier failures.</li>
+      <li>Runs in an unprivileged LXC at 172 MB of RAM with a 0.8-second startup.</li>
+    </ul>
+  </div>
+  <div class="entry">
+    <div class="row"><span class="name">Protocol Analysis of Wireless Audio Transceivers</span><span>2026</span></div>
+    <div>Wireshark, usbmon</div>
+    <ul>
+      <li>Mapped the 4 USB interfaces of a Corsair wireless dongle and captured its traffic on Linux without running as root.</li>
+    </ul>
+  </div>
+
+  <h2>Certifications &amp; Languages</h2>
+  <ul class="plain">
+    <li><b>Certifications:</b> Cisco CCNA 200-301 (in preparation, exam planned for February 2028)</li>
+    <li><b>Languages:</b> Spanish (native), English (C1), German (A1)</li>
+  </ul>
+
+  <h2>Technical Skills</h2>
+  <ul class="plain">
+    <li><b>Infrastructure:</b> Proxmox VE, LXC, Docker, Docker Compose, Debian, systemd, cron</li>
+    <li><b>Networking and access:</b> TCP/IP, subnetting, DNS, Wireshark, Packet Tracer, Caddy, Let's Encrypt, Tailscale, WireGuard</li>
+    <li><b>Backup and automation:</b> vzdump, rsync, Hyper Backup, n8n, GitHub Actions, Git</li>
+    <li><b>Programming:</b> Java, Spring Boot, Maven, Python</li>
+  </ul>
+</body>
+</html>
