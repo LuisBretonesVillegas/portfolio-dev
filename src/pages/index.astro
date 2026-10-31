@@ -313,11 +313,62 @@ function dateLabel(data: (typeof featured)[number]['data']): string {
       </p>
       <div class="hero-actions">
         <a href="/projects/" class="btn btn-primary">Projects →</a>
-        <a href="/blog/" class="btn btn-secondary">Blog →</a>
+        <a href="/cv/" class="btn btn-secondary">CV →</a>
       </div>
     </div>
     <div class="hero-right">
       <img src="/avatar.jpeg" alt="Luis Bretones" class="avatar" />
+    </div>
+  </section>
+
+  <section class="section">
+    <p class="section-title">Featured // Selected projects</p>
+    <div class="featured-grid">
+      {featured.map(project => {
+        const url = `/${project.id.replace(/\.mdx?$/, '')}/`;
+        return (
+          <a href={url} class="featured-card">
+            {project.data.date && (
+              <time class="featured-date" data-progress-url={project.data.progressUrl ?? undefined}>
+                {dateLabel(project.data)}
+              </time>
+            )}
+            <p class="featured-title">{project.data.title}</p>
+            {project.data.description && (
+              <p class="featured-desc">{project.data.description}</p>
+            )}
+            {project.data.results && project.data.results.length > 0 && (
+              <ul class="card-results">
+                {project.data.results.map(result => <li>{result}</li>)}
+              </ul>
+            )}
+            {project.data.tags && project.data.tags.length > 0 && (
+              <div class="featured-tags">
+                {project.data.tags.map(tag => (
+                  <span class="featured-tag">{tag}</span>
+                ))}
+              </div>
+            )}
+            <span class="featured-read">View project <span class="arrow">→</span></span>
+          </a>
+        );
+      })}
+    </div>
+  </section>
+
+  <section class="section">
+    <p class="section-title">Explore // Blog and learning</p>
+    <div class="featured-grid">
+      <a href="/blog/" class="featured-card">
+        <p class="featured-title">Blog</p>
+        <p class="featured-desc">Write-ups on my homelab, monitoring, and Linux, including what broke along the way.</p>
+        <span class="featured-read">Read the blog <span class="arrow">→</span></span>
+      </a>
+      <a href="/learning/" class="featured-card">
+        <p class="featured-title">Learning</p>
+        <p class="featured-desc">The courses and certifications I'm working through, with my progress and plans.</p>
+        <span class="featured-read">See what I'm learning <span class="arrow">→</span></span>
+      </a>
     </div>
   </section>
 
@@ -384,41 +435,6 @@ function dateLabel(data: (typeof featured)[number]['data']): string {
           <span class="skill-tag">Arch Linux</span>
         </div>
       </div>
-    </div>
-  </section>
-
-  <section class="section">
-    <p class="section-title">Featured // Selected projects</p>
-    <div class="featured-grid">
-      {featured.map(project => {
-        const url = `/${project.id.replace(/\.mdx?$/, '')}/`;
-        return (
-          <a href={url} class="featured-card">
-            {project.data.date && (
-              <time class="featured-date" data-progress-url={project.data.progressUrl ?? undefined}>
-                {dateLabel(project.data)}
-              </time>
-            )}
-            <p class="featured-title">{project.data.title}</p>
-            {project.data.description && (
-              <p class="featured-desc">{project.data.description}</p>
-            )}
-            {project.data.results && project.data.results.length > 0 && (
-              <ul class="card-results">
-                {project.data.results.map(result => <li>{result}</li>)}
-              </ul>
-            )}
-            {project.data.tags && project.data.tags.length > 0 && (
-              <div class="featured-tags">
-                {project.data.tags.map(tag => (
-                  <span class="featured-tag">{tag}</span>
-                ))}
-              </div>
-            )}
-            <span class="featured-read">View project <span class="arrow">→</span></span>
-          </a>
-        );
-      })}
     </div>
   </section>
 
