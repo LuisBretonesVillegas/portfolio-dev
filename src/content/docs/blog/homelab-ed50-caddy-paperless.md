@@ -3,7 +3,7 @@ title: "Homelab ED50 (2/4): domains and TLS with Caddy, invoice management with 
 date: 2026-07-18
 description: Caddy as a reverse proxy with a wildcard Let's Encrypt certificate and zero open ports, plus Paperless-ngx as the invoice document manager with automatic intake over IMAP.
 tags: [homelab, caddy, tls, paperless-ngx, reverse-proxy, self-hosting]
-project: Enterprise Network
+project: Homelab ED50
 ---
 
 > _Homelab ED50 · Entry 2 of 4 · 18 July 2026_ · IP addresses, hostnames, users, and paths are examples; this post contains no credentials, API keys, or identifiers in use.
@@ -163,6 +163,6 @@ docker compose exec -u paperless webserver python3 manage.py mail_fetcher
 
 ---
 
-**Homelab ED50 series** · Part 2 of 4 · Previous: [Final hardware, Immich, and a verified 3-2-1 backup strategy](/blog/homelab-ed50-hardware-immich-backup/) · Next: [TicketBot, receipt digitization via Telegram](/blog/homelab-ed50-ticketbot/) · Project: [Enterprise Network](/projects/enterprise-network/)
+**Homelab ED50 series** · Part 2 of 4 · Previous: [Final hardware, Immich, and a verified 3-2-1 backup strategy](/blog/homelab-ed50-hardware-immich-backup/) · Next: [TicketBot, receipt digitization via Telegram](/blog/homelab-ed50-ticketbot/) · Project: [Homelab ED50](/projects/enterprise-network/)
 
 _Written by **Luis Bretones Villegas** · © 2026 · All rights reserved._

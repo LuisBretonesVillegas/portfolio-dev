@@ -25,7 +25,7 @@ After a few weeks of building services in the homelab (photos, invoices, documen
 
 ## How it is deployed
 
-It runs as a systemd service inside an unprivileged Debian LXC on Proxmox, under a no-shell service user. The jar is built on the PC and copied to the container, which only needs a JRE. It survives container reboots (verified with `pct reboot`) and the LXC is part of the nightly vzdump backup. All traffic is outbound: an external port scan sees the same before and after the project, that is, nothing.
+It runs as a systemd service inside an unprivileged Debian LXC on Proxmox, under a no-shell service user. The jar is built on the PC and copied to the container, which only needs a JRE. It survives container reboots (verified with `pct reboot`) and the LXC is part of the weekly vzdump backup. All traffic is outbound: an external port scan sees the same before and after the project, that is, nothing.
 
 ## Numbers
 

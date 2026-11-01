@@ -166,7 +166,7 @@ The homepage is the most complex page. It has four sections:
 
 Each category has a color class (`.c-green`, `.c-blue`, `.c-orange`, `.c-purple`, `.c-teal`, `.c-muted`) that sets the title and tag border/text colors.
 
-**Certifications** - four cards in a 4-column grid showing current and planned certifications. Active certifications (CCNA, AWS CCP) get a 3px green top bar via `::before` pseudo-element and a green acronym. Planned ones (CCNP, SAA) use muted styling. The visual hierarchy communicates progress without needing labels.
+**Certifications** - originally four cards in a 4-column grid, where active certifications got a 3px green top bar via `::before` pseudo-element and a green acronym, and planned ones used muted styling. It is now a simple roadmap list where each row shows its status, name, and target date: the CCNA in progress, with the RHCSA and AWS Solutions Architect Associate planned.
 
 ```css
 .cert-card.active::before {

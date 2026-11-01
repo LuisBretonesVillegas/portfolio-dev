@@ -3,7 +3,7 @@ title: "Homelab ED50 (1/4): final hardware, Immich, and a verified 3-2-1 backup 
 date: 2026-07-17
 description: How the v1 plan got trimmed against the real budget, the final hardware, self-hosted photo management with Immich, and a 3-2-1 backup strategy verified end to end, including the migration of ~145 GB of family photos.
 tags: [homelab, proxmox, immich, backup, tailscale, synology]
-project: Enterprise Network
+project: Homelab ED50
 ---
 
 > _Homelab ED50 · Entry 1 of 4 · 17 July 2026_ · IP addresses, hostnames, users, and paths are examples; this post contains no credentials, API keys, or identifiers in use.
@@ -152,6 +152,6 @@ Backups with retention and automatic rotation. With real verification of restora
 
 ---
 
-**Homelab ED50 series** · Part 1 of 4 · Next: [Domains and TLS with Caddy, invoice management with Paperless-ngx](/blog/homelab-ed50-caddy-paperless/) · Project: [Enterprise Network](/projects/enterprise-network/)
+**Homelab ED50 series** · Part 1 of 4 · Next: [Domains and TLS with Caddy, invoice management with Paperless-ngx](/blog/homelab-ed50-caddy-paperless/) · Project: [Homelab ED50](/projects/enterprise-network/)
 
 _Written by **Luis Bretones Villegas** · © 2026 · All rights reserved._

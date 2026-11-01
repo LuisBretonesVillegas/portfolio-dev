@@ -1,9 +1,9 @@
 ---
 title: "Infrastructure: choosing and justifying the hardware"
 date: 2026-07-03
-description: The hardware behind the enterprise network project, backups, firewall, and the Proxmox server, and the reasoning for each choice.
+description: The hardware behind the Homelab ED50 project, backups, firewall, and the Proxmox server, and the reasoning for each choice.
 tags: [homelab, networking, hardware, proxmox, opnsense, synology, backup]
-project: Enterprise Network
+project: Homelab ED50
 ---
 
 ## 0. BACKUPS

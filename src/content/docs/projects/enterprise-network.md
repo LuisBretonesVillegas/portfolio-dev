@@ -1,5 +1,5 @@
 ---
-title: Enterprise Network
+title: Homelab ED50
 date: 2026-06-29
 description: Centralizing a small consultancy's services and storage on self-hosted infrastructure, with security, GDPR compliance, and verified backups baked in from the start.
 tags: [networking, homelab, proxmox, self-hosting, security, backup]

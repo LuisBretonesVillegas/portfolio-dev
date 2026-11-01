@@ -3,7 +3,7 @@ title: "Homelab ED50 (3/4): TicketBot, receipt digitization via Telegram"
 date: 2026-07-19
 description: A Telegram bot that turns the photo of a paper receipt into an archived, classified fiscal document in Paperless-ngx in about 15 seconds, built with n8n, a vision model, and the Paperless API.
 tags: [homelab, n8n, telegram, paperless-ngx, automation, gemini]
-project: Enterprise Network
+project: Homelab ED50
 ---
 
 > _Homelab ED50 · Entry 3 of 4 · 19 July 2026_ · IP addresses, hostnames, users, and paths are examples; this post contains no credentials, API keys, or identifiers in use.
@@ -91,6 +91,6 @@ System in production with two users. Fully automatic dual document pipeline: inv
 
 ---
 
-**Homelab ED50 series** · Part 3 of 4 · Previous: [Domains and TLS with Caddy, invoice management with Paperless-ngx](/blog/homelab-ed50-caddy-paperless/) · Next: [Self-hosted invoicing and offsite backup on Hetzner](/blog/homelab-ed50-invoicing-offsite-backup/) · Project: [Enterprise Network](/projects/enterprise-network/)
+**Homelab ED50 series** · Part 3 of 4 · Previous: [Domains and TLS with Caddy, invoice management with Paperless-ngx](/blog/homelab-ed50-caddy-paperless/) · Next: [Self-hosted invoicing and offsite backup on Hetzner](/blog/homelab-ed50-invoicing-offsite-backup/) · Project: [Homelab ED50](/projects/enterprise-network/)
 
 _Written by **Luis Bretones Villegas** · © 2026 · All rights reserved._

@@ -3,7 +3,7 @@ title: "Homelab ED50 (4/4): self-hosted invoicing and offsite backup on Hetzner"
 date: 2026-07-20
 description: Invoice issuing with FacturaScripts, prepared for Facturae and Verifactu, and the client-side encrypted offsite copy on a Hetzner Storage Box that closes the 3-2-1, uncovering years of silently failing NAS backups along the way.
 tags: [homelab, facturascripts, hetzner, backup, self-hosting, invoicing]
-project: Enterprise Network
+project: Homelab ED50
 ---
 
 > _Homelab ED50 · Entry 4 of 4 · 20 July 2026_ · IP addresses, hostnames, users, and paths are examples; this post contains no credentials, API keys, or identifiers in use.
@@ -159,6 +159,6 @@ From now on, every scheduled task is verified against the availability calendar 
 
 ---
 
-**Homelab ED50 series** · Part 4 of 4 · Previous: [TicketBot, receipt digitization via Telegram](/blog/homelab-ed50-ticketbot/) · Project: [Enterprise Network](/projects/enterprise-network/)
+**Homelab ED50 series** · Part 4 of 4 · Previous: [TicketBot, receipt digitization via Telegram](/blog/homelab-ed50-ticketbot/) · Project: [Homelab ED50](/projects/enterprise-network/)
 
 _Written by **Luis Bretones Villegas** · © 2026 · All rights reserved._

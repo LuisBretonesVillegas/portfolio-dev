@@ -34,7 +34,7 @@ import Portfolio from '../layouts/Portfolio.astro';
       <p class="about-entry-title">Infrastructure build for a small consultancy (ED50)</p>
       <p class="about-entry-meta">Jun 2026 – Aug 2026 · In production</p>
       <ul class="about-list">
-        <li>Designed and deployed the company's self-hosted infrastructure on Proxmox VE: photo management (Immich), document management (Paperless-ngx), and invoicing (FacturaScripts), each in its own unprivileged LXC.</li>
+        <li>Designed and deployed the company's self-hosted infrastructure on Proxmox VE: photo management (Immich) in a VM, and document management (Paperless-ngx) and invoicing (FacturaScripts), each in its own unprivileged LXC.</li>
         <li>Put every service behind Caddy with a wildcard Let's Encrypt certificate (ACME DNS-01), with zero ports open to the Internet and remote access only over Tailscale.</li>
         <li>Implemented a 3-2-1 backup strategy verified end to end, with a client-side encrypted offsite copy on Hetzner, and found that the NAS had been silently skipping its nightly backups for years.</li>
         <li>Migrated ~145 GB of photo archive (2004 to present) with verification.</li>
@@ -84,7 +84,7 @@ import Portfolio from '../layouts/Portfolio.astro';
         <p class="about-skill-title">Backup &amp; Monitoring</p>
         <dl>
           <dt>Backups</dt>
-          <dd>3-2-1 strategy verified end to end: vzdump, Synology Hyper Backup, client-side encrypted offsite copy on Hetzner with rclone</dd>
+          <dd>3-2-1 strategy verified end to end: vzdump, Synology Hyper Backup, client-side encrypted offsite copy on Hetzner over WebDAV</dd>
           <dt>Monitoring</dt>
           <dd>Vigía: HTTP and ping checks against 11 production services, Telegram alerts on state changes</dd>
         </dl>
