@@ -7,9 +7,9 @@ tags: [ccna, certifications, networking, career]
 
 Four months ago I decided I was going to finish my degree with the CCNA. At that point my university finals were only a few weeks away, so I put off planning it until they were over.
 
-Then over the summer I put together a roadmap, a kind of outline of what I needed to finish my degree with a portfolio that gets recruiters interested in my profile. I concluded that the order was CCNA -> RHCSA as the essentials, with the rest depending on the path I choose later on. I also set myself the goal of finishing my degree with a B1 in German, which together with my C1 in English makes it viable for me to aim at the international market.
+Then over the summer I put together a roadmap, a kind of outline of what I needed to finish my degree with a portfolio that gets recruiters interested in my profile. I concluded that the CCNA was the essential one, with the rest depending on the path I choose later on. I also set myself the goal of finishing my degree with a B1 in German, which together with my C1 in English makes it viable for me to aim at the international market.
 
-In the first version of this roadmap I planned one certification per year, studying for the CCNA and RHCSA alongside my degree and arriving at my company internship with both. What I didn't take into account was how much time I'd have once classes started.
+In the first version of this roadmap I planned one certification per year, studying for the CCNA alongside my degree and arriving at my company internship with it done. What I didn't take into account was how much time I'd have once classes started.
 
 Every class day adds up to 4 hours of travel between my home and the university, so I had much less time than I'd expected.
 

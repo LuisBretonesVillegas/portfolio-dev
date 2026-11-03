@@ -84,7 +84,7 @@ export default defineConfig({
 	redirects: {
 		'/projects/java-summer-2026': '/learning/java-summer-2026/',
 		'/projects/java-masterclass': '/learning/java-masterclass/',
-		'/blog/ccna-exam-delay': '/learning/ccna-exam-delay/',
+		'/learning/ccna-exam-delay': '/blog/ccna-exam-delay/',
 		// Study plans and practice tests moved to their own subdomain.
 		...Object.fromEntries(
 			['SSII', 'pgpi'].map(

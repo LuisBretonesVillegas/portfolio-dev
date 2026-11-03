@@ -1,0 +1,45 @@
+---
+title: Terraform Associate (TA-004) Course
+date: 2026-11-03
+description: Working through Bryan Krausen's HashiCorp Certified Terraform Associate 004 Exam Prep Course section by section, to prepare the exam and migrate the ED50 v2.0 infrastructure to IaC.
+tags: [terraform, iac, certifications, learning]
+progressUrl: https://raw.githubusercontent.com/LuisBretonesVillegas/Terraform-Udemy-Course/main/progress.json
+---
+
+import JavaProgress from '../../../components/JavaProgress.astro';
+
+export const SECTIONS = [
+  'Introduction',
+  'Preparing Your Environment',
+  'Terraform Foundations',
+  'The Core Terraform Workflow',
+  'Terraform CLI',
+  'Terraform File Structure and Organization',
+  'Terraform Configuration - Fundamentals',
+  'Hands-On Labs - Writing Your First Terraform Configurations',
+  'Understanding and Managing Terraform State',
+  'Making Code Reusable',
+  'Refactoring Terraform State',
+  'Terraform Modules',
+  'Managing Resource Behavior and Dependencies',
+  'Securing Terraform Configurations',
+  'Terraform Troubleshooting',
+  'HCP Terraform',
+  'Exam Prep Essentials: What to Know for Each Objective',
+];
+
+This is Bryan Krausen's "HashiCorp Certified Terraform Associate 004 Exam Prep Course" on Udemy, around 23 hours of video that I'm working through one section at a time. It's the first step of my [Terraform, CCNA, Kubernetes plan](/blog/terraform-kubernetes-certifications/), and the knowledge goes straight into the IaC migration of [ED50 v2.0](/projects/ed50-v2/).
+
+## Progress
+
+The grid and the devlog below read from `progress.json` in the repo, so they update by themselves whenever I push progress.
+
+<JavaProgress
+  items={SECTIONS}
+  url="https://raw.githubusercontent.com/LuisBretonesVillegas/Terraform-Udemy-Course/main/progress.json"
+  unit="section"
+/>
+
+---
+
+All code and notes: [Terraform-Udemy-Course on GitHub](https://github.com/LuisBretonesVillegas/Terraform-Udemy-Course)
