@@ -95,6 +95,8 @@ export default defineConfig({
 	integrations: [
 		starlight({
 			title: 'Luis Bretones',
+			// The 404 page lives in src/pages/404.astro with the portfolio layout.
+			disable404Route: true,
 			customCss: ['./src/styles/custom.css'],
 			// Share previews and the blog feed on the Starlight-rendered pages too.
 			head: [
