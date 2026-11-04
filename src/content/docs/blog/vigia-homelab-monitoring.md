@@ -8,7 +8,7 @@ project: Vigía
 
 > _Homelab ED50 · Vigía · 8 August 2026_ · IP addresses, hostnames, users, and paths are examples; this post contains no credentials, API keys, or identifiers in use.
 
-In the last entry of the series I told how the NAS had spent years not running its nightly backups without anyone knowing. That sentence stuck with me. Systems do not fail loudly. They fail in silence, and you find out the day you need exactly the thing that broke. The homelab already had invoicing, family photos, and document management in production, and not a single piece watching whether all of that stayed alive. Vigía exists for that. HTTP and ping checks against the 11 services, and an alert on my phone only when something changes state.
+In the last entry of the series I described how the NAS had spent years not running its nightly backups without anyone knowing. That sentence stuck with me. Systems do not fail loudly. They fail in silence, and you find out the day you need exactly the thing that broke. The homelab already had invoicing, family photos, and document management in production, and not a single piece watching whether all of that stayed alive. Vigía exists for that. HTTP and ping checks against the 11 services, and an alert on my phone only when something changes state.
 
 ## Goal
 
@@ -20,19 +20,19 @@ In the last entry of the series I told how the NAS had spent years not running i
 
 In the portfolio I had the original plan written down: a FastAPI backend with SQLite, a React frontend as a PWA, Telegram notifications. Three pieces, two languages, and a web panel to look at charts.
 
-I discarded it for two reasons. The first is that it was the comfortable stack. One more Python project, learning little. This summer I am dedicating to Java for real, and a real project I depend on daily teaches more than any tutorial. The second is that the web panel was a lie. I know myself: I was going to look at it twice during the first week and never again. What I need is my phone ringing when something goes down and staying quiet when it does not.
+I discarded it for two reasons. The first is that it was the comfortable stack. One more Python project, learning little. I am dedicating this summer to Java for real, and a real project I depend on daily teaches more than any tutorial. The second is that the web panel was a lie. I know myself: I was going to look at it twice during the first week and never again. What I need is my phone ringing when something goes down and staying quiet when it does not.
 
 With that idea the scope trimmed itself. Out went the frontend; out went the database, because state lives in memory and if the process restarts, one minute of checks brings back the truth; out went the endpoints. What remains is a process that reads a YAML file, runs checks, and sends messages.
 
-## Isn't Spring Boot for this like killing flies with cannon fire?
+## Isn't Spring Boot a sledgehammer to crack a nut?
 
-Using Spring Boot for a pinger is using a country's nuclear arsenal to take out one guy. I own that. I chose it anyway, for three reasons.
+Using Spring Boot for a pinger is overkill, and I own that. I chose it anyway, for three reasons.
 
 First: it is a learning project with production stakes. The Java job market runs on Maven, Spring, and JUnit, and I wanted to practice that stack on something whose failure hurts me, not on a book exercise. A service you depend on teaches you systemd, unprivileged containers, secrets handling, and what happens after a reboot.
 
 Second: the framework footprint is minimal on purpose. Only the base starter, no web server, no actuator, no Spring Data. Spring provides the bootstrap, the clean shutdown, the external configuration, and the packaging into a single jar. The monitoring engine is pure JDK: `HttpClient` for the checks, `ScheduledExecutorService` for the scheduling, `ProcessBuilder` for the ping. The state machine has not a single framework import.
 
-Third: measured in production, the cannon fire comes out cheap. 172 MB of RAM in a 1.5 GB container, a 0.8 second startup, a 9 MB jar. And v2, with system metrics and checks for the nightly jobs, grows into the framework instead of outgrowing a shell script.
+Third: measured in production, the sledgehammer turns out to be light. 172 MB of RAM in a 1.5 GB container, a 0.8 second startup, a 9 MB jar. And v2, with system metrics and checks for the nightly jobs, grows into the framework instead of outgrowing a shell script.
 
 ## The state machine
 

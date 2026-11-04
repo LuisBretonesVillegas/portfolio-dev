@@ -11,9 +11,9 @@ A personal portfolio site built from scratch with Astro and Starlight. This page
 
 | Layer | Technology |
 |-------|-----------|
-| **Framework** | Astro v4+ with Starlight |
+| **Framework** | Astro 6 with Starlight 0.39 |
 | **Styling** | Handwritten CSS, Starlight CSS custom properties |
-| **Fonts** | Playfair Display · DM Sans · JetBrains Mono (Google Fonts) |
+| **Fonts** | Playfair Display · DM Sans · JetBrains Mono (self-hosted with the Astro Fonts API) |
 | **Deployment** | GitHub Actions → GitHub Pages |
 | **Domain** | luisbretones.dev |
 
@@ -31,25 +31,43 @@ The tradeoff: Starlight is opinionated. Its default layout (sidebar + breadcrumb
 
 ```
 src/
-├── pages/              ← custom routes that shadow Starlight
+├── pages/                 ← custom routes that shadow Starlight
 │   ├── index.astro
+│   ├── about.astro
 │   ├── contact.astro
+│   ├── cv.astro
+│   ├── rss.astro          ← how to follow the blog
+│   ├── rss.xml.ts         ← hand-rolled RSS 2.0 feed
+│   ├── 404.astro
 │   ├── projects/index.astro
+│   ├── learning/index.astro
 │   └── blog/index.astro
 ├── layouts/
-│   └── Portfolio.astro ← shared nav, footer, global CSS
+│   └── Portfolio.astro    ← shared nav, footer, design tokens, global CSS
 ├── content/docs/
-│   ├── projects/       ← individual project pages (Starlight MDX)
-│   └── blog/           ← blog posts (Starlight MDX)
-├── components/         ← Starlight component overrides
-│   ├── Footer.astro
+│   ├── projects/          ← individual project pages (Starlight)
+│   ├── learning/          ← course trackers (Starlight MDX)
+│   └── blog/              ← blog posts (Starlight)
+├── components/
+│   ├── Footer.astro       ← Starlight component overrides
+│   ├── Head.astro
+│   ├── PageTitle.astro    ← adds the date and reading time to blog posts
 │   ├── SiteTitle.astro
-│   └── ThemeSelect.astro
+│   ├── ThemeSelect.astro
+│   ├── EntryList.astro    ← shared listing for /projects/ and /learning/
+│   └── JavaProgress.astro ← progress grid + devlog for the course trackers
+├── assets/
+│   ├── avatar.jpeg        ← optimized to WebP at build time
+│   └── fonts/             ← self-hosted woff2 files
+├── lib/
+│   └── entries.ts         ← sorting, URLs and date labels shared by the landing pages
+├── scripts/
+│   └── progressUpdated.js ← "last updated" date from the tracker repo's latest commit
 └── styles/
-    └── custom.css      ← Starlight CSS custom property overrides
+    └── custom.css         ← Starlight CSS custom property overrides
 ```
 
-The key insight: placing a file at `src/pages/index.astro` shadows Starlight's generated `/` route. The same applies to `/projects/` and `/blog/`. This means the custom `Portfolio.astro` layout owns those landing pages while Starlight still handles individual content pages at `/projects/some-project/` and `/blog/some-post/`.
+The key insight: placing a file at `src/pages/index.astro` shadows Starlight's generated `/` route. The same applies to `/projects/`, `/learning/` and `/blog/`. This means the custom `Portfolio.astro` layout owns those landing pages while Starlight still handles individual content pages at `/projects/some-project/`, `/learning/some-course/` and `/blog/some-post/`. The 404 page works the same way: Starlight's own 404 route is disabled with `disable404Route: true` and `src/pages/404.astro` uses the portfolio layout.
 
 ---
 
@@ -82,7 +100,7 @@ The palette went through several iterations. The green started as a generic `#2d
 }
 ```
 
-These are applied as CSS custom properties on `:root` in `Portfolio.astro` for custom pages, and mirrored as Starlight CSS custom properties in `custom.css` for Starlight-rendered pages:
+These are applied as CSS custom properties on `:root` in `Portfolio.astro` for custom pages (together with a few extra tokens for the hover state and the skills grid, so no page hardcodes a color), and mirrored as Starlight CSS custom properties in `custom.css` for Starlight-rendered pages:
 
 ```css
 /* custom.css - maps portfolio tokens to Starlight's own variables */
@@ -101,18 +119,30 @@ Overriding both `light` and `dark` selectors with identical values is how dark m
 
 Three fonts, each with a distinct role:
 
-**Playfair Display** - headings only. Serif, high contrast, elegant. Used for `h1`, `h2`, and the cert card acronyms. Contrast with the sans-serif body makes section titles land with weight without needing large font sizes.
+**Playfair Display** - headings only. Serif, high contrast, elegant. Used for `h1`, `h2`, and the card and post titles on the landing pages. Contrast with the sans-serif body makes section titles land with weight without needing large font sizes.
 
 **DM Sans** - body text. A geometric humanist sans-serif that stays readable at small sizes. Used for all prose, descriptions, nav links, and body copy.
 
-**JetBrains Mono** - metadata and labels. Used for section titles (`SKILLS // CURRENT STACK`), tags (`arch-linux`), nav subtitle (`ALMERÍA`), and the hero buttons. The monospace rhythm gives those elements a technical, terminal-like feel that matches the networking/infrastructure content.
+**JetBrains Mono** - metadata and labels. Used for section titles (`SKILLS // CURRENT STACK`), tags (`arch-linux`), dates, the nav subtitle (`ALMERÍA`), and the buttons. The monospace rhythm gives those elements a technical, terminal-like feel that matches the networking/infrastructure content.
+
+The woff2 files live in `src/assets/fonts/` and are registered with the Astro Fonts API, so the site makes no requests to Google Fonts at runtime:
+
+```js
+// astro.config.mjs (one variant shown)
+fonts: [{
+  provider: fontProviders.local(),
+  name: 'DM Sans',
+  cssVariable: '--font-body',
+  fallbacks: ['sans-serif'],
+  options: { variants: [{ src: ['./src/assets/fonts/dm-sans-300-700-normal-latin.woff2'], weight: '300 700', style: 'normal' }] },
+}]
+```
+
+`<Font />` in `Portfolio.astro` and in a `Head.astro` override for Starlight pages emits the `@font-face` rules, and the Starlight variables point at the same fonts:
 
 ```css
-/* All three loaded via Google Fonts in Portfolio.astro */
-@import url('...DM+Sans...Playfair+Display...JetBrains+Mono...');
-
---sl-font:      'DM Sans', sans-serif;
---sl-font-mono: 'JetBrains Mono', monospace;
+--sl-font:      var(--font-body);
+--sl-font-mono: var(--font-mono);
 ```
 
 ---
@@ -121,9 +151,9 @@ Three fonts, each with a distinct role:
 
 ### Homepage
 
-The homepage is the most complex page. It has four sections:
+The homepage is the most complex page. It has five sections:
 
-**Hero** - two-column grid: text on the left, circular photo on the right. The photo uses `border-radius: 50%`, `object-fit: cover`, and `object-position: center top` to keep the face in frame regardless of crop. Desktop avatar: 280px. The hero padding (`5rem 0 4rem`) gives it room to breathe before the first section separator.
+**Hero** - two-column grid: text on the left, circular photo on the right. The photo is an `astro:assets` `<Image>` (WebP, with a srcset for the 88px and 280px sizes) and uses `border-radius: 50%`, `object-fit: cover`, and `object-position: center top` to keep the face in frame regardless of crop. Desktop avatar: 280px. The hero padding (`5rem 0 4rem`) gives it room to breathe before the first section separator. Two buttons sit under the tagline: Projects and CV.
 
 ```css
 .hero {
@@ -142,21 +172,21 @@ The homepage is the most complex page. It has four sections:
 }
 ```
 
-**Skills grid** - a 3×2 CSS grid showing six skill categories with color-coded tags. The visual trick: the grid container's `background` is set to the desired divider color (`#b8b3ab`), and `overflow: hidden` clips the cells to the container. Each cell has its own background (`#eae6de`) and borders on the right and bottom edges. The container background becomes visible between cells - acting as the divider - without any extra markup.
+**Skills grid** - a 3×2 CSS grid showing six skill categories with color-coded tags. The visual trick: the grid container's `background` is set to the desired divider color (`--grid-line`), and `overflow: hidden` clips the cells to the container. Each cell has its own background (`--bg-cell`) and borders on the right and bottom edges. The container background becomes visible between cells - acting as the divider - without any extra markup.
 
 ```css
 .skill-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  background: #b8b3ab;      /* this is the divider color */
-  border: 1px solid #b8b3ab;
+  background: var(--grid-line);      /* this is the divider color */
+  border: 1px solid var(--grid-line);
   border-radius: 4px;
   overflow: hidden;
 }
 .skill-cell {
-  background: #eae6de;      /* cell background, slightly lighter */
-  border-right: 1px solid #b8b3ab;
-  border-bottom: 1px solid #b8b3ab;
+  background: var(--bg-cell);        /* cell background, slightly lighter */
+  border-right: 1px solid var(--grid-line);
+  border-bottom: 1px solid var(--grid-line);
   padding: 1.25rem 1.1rem;
 }
 /* remove borders on last column and last row */
@@ -166,7 +196,9 @@ The homepage is the most complex page. It has four sections:
 
 Each category has a color class (`.c-green`, `.c-blue`, `.c-orange`, `.c-purple`, `.c-teal`, `.c-muted`) that sets the title and tag border/text colors.
 
-**Certifications** - originally four cards in a 4-column grid, where active certifications got a 3px green top bar via `::before` pseudo-element and a green acronym, and planned ones used muted styling. It is now a simple roadmap list where each row shows its status, name, and target date: the Terraform Associate, CCNA and Kubernetes certification in progress, with the AWS Solutions Architect Associate planned.
+**Certifications** - originally four cards in a 4-column grid, where active certifications got a 3px green top bar via `::before` pseudo-element and a green acronym, and planned ones used muted styling. It is now a simple roadmap list where each row shows its status, name, and target exam date: the Terraform Associate, CCNA and Kubernetes certification in progress, with the AWS Solutions Architect Associate planned.
+
+The original card style, for reference:
 
 ```css
 .cert-card.active::before {
@@ -178,27 +210,37 @@ Each category has a color class (`.c-green`, `.c-blue`, `.c-orange`, `.c-purple`
 }
 ```
 
-**Repo feed** - a single featured project card linking to the projects page, followed by a `~/explore_all →` dashed-border link. The card uses `background: var(--bg-card)` to lift slightly off the page.
+**Featured projects** - two cards in a 2-column grid, picked by slug in a `FEATURED` list at the top of `index.astro`. Each card shows the project's start date (plus an "Updated" date taken from its latest blog write-up or, for tracked courses, from the repo's latest commit), title, description, a short list of measurable results from the `results` frontmatter field, and tags. It replaced an earlier terminal-style "repo feed".
+
+**Explore** - two cards linking to the Blog and Learning sections.
 
 ### Projects page
 
-The projects listing (`/projects/`) was redesigned from a terminal-style repo feed to a more intuitive card layout. Each card has:
+The projects listing (`/projects/`) was redesigned from a terminal-style repo feed to a more intuitive list, sorted by start date (most recent first). Each entry has:
+- The start date, plus the date of the latest related blog post
 - A Playfair Display title
 - A one-line description
+- The `results` list, when the project has one
 - Tag pills in green
-- A visible "View project →" button that fills green on hover
-
-On mobile, the button stacks below the text (not beside it) via a `flex-direction: column` media query.
+- A "View project →" link whose arrow slides right on hover
 
 The original design used `~/project-name` monospace names and `view_source →` text - visually interesting but not immediately recognizable as clickable project cards.
 
+### Learning page
+
+Same layout as projects, with "View log →" as the CTA. Each course tracker page reads a `progress.json` from its own repo, so the progress grid and devlog update by themselves whenever I push progress.
+
 ### Blog page
 
-Same layout as projects, with "Read post →" as the CTA. Consistent visual language across both listing pages.
+Same visual language as projects, with "Read post →" as the CTA. Posts that share a `project:` frontmatter field are grouped under that project (linking to its page), and groups and standalone posts are interleaved by date. The Blog sidebar in `astro.config.mjs` is built the same way, since Starlight's `autogenerate` can only sort alphabetically.
 
 ### Contact page
 
-Simple list of contact methods: email, GitHub, LinkedIn. No form. Each row shows the platform name on the left and the handle/link on the right, separated by a dotted spacer.
+Simple list of contact methods: email, GitHub, LinkedIn. No form. Each row shows an icon and the platform name on the left, the handle in the middle, and an arrow on the right. It is linked from the footer rather than the nav.
+
+### About, CV and RSS pages
+
+About covers who I am, education, experience, and skills. The CV page embeds the PDF with download and open buttons (on phones the embed is hidden, because mobile browsers don't render PDFs inline reliably). The RSS page explains how to follow the blog and has a button that copies the feed URL.
 
 ---
 
@@ -209,7 +251,7 @@ Simple list of contact methods: email, GitHub, LinkedIn. No form. Each row shows
 Fixed, frosted-glass navbar with `backdrop-filter: blur(12px)`. Three-column grid inside a `max-width: 860px` wrapper:
 
 ```
-[Luis Bretones / ALMERÍA]   [Projects  Blog  Contact]   [GitHub  LinkedIn]
+[Luis Bretones / ALMERÍA]   [Home  Projects  Learning  Blog  About  CV]   [GitHub  LinkedIn]
 ```
 
 The `1fr auto 1fr` column layout keeps the center links truly centered regardless of the left/right content widths. The `max-width` wrapper aligns the nav with the page content.
@@ -227,7 +269,11 @@ The `1fr auto 1fr` column layout keeps the center links truly centered regardles
 
 ### Mobile
 
-On mobile the nav switches to `display: flex; justify-content: space-between` - a single row with name on the left, Projects/Blog/Contact in the center (smaller font), and icons on the right. The subtitle ("ALMERÍA") hides on mobile to reduce vertical space. This replaced an earlier two-row approach that felt too tall.
+At 768px and below the nav switches to `display: flex; justify-content: space-between`: the name and subtitle are hidden, and the six links (smaller font) sit next to the GitHub and LinkedIn icons. At 480px and below the icons are hidden too and the links are centered, because six links and two icons don't fit on a phone; the footer still carries GitHub and LinkedIn. This replaced an earlier two-row approach that felt too tall.
+
+### Footer
+
+The same footer appears on both kinds of page: `Portfolio.astro` renders it on the custom pages, and the `Footer.astro` override renders it on Starlight pages. It shows the year and links to Contact, RSS, GitHub and LinkedIn.
 
 ---
 
@@ -281,13 +327,16 @@ jobs:
 
   deploy:
     needs: build
+    runs-on: ubuntu-latest
     permissions:
       pages: write
       id-token: write
     environment:
       name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/deploy-pages@v4
+        id: deployment
 ```
 
 ### Domain
@@ -340,15 +389,19 @@ When editing CSS blocks with multiple similar declarations, the `old_string` in 
 
 ## Mobile Responsive Design
 
-The site has two main breakpoints, both at `max-width: 768px`.
+The site has two breakpoints: `max-width: 768px` for tablets and phones, and `max-width: 480px` for narrow phones.
 
-**Hero:** Stays as a two-column grid on mobile (text left, avatar right) but with a reduced avatar size (88px) and compressed padding.
+**Hero:** Collapses to a single column, with a reduced avatar (88px) above the text and compressed padding.
 
 **Skills grid:** Drops from 3 columns to 2. The `:nth-child` border selectors are overridden to account for the new column count.
 
-**Cert grid:** Drops from 4 columns to 2.
+**Featured projects and results:** The featured grid and each card's results list drop from 2 columns to 1.
 
-**Nav:** Switches from a 3-column grid to a single-row flexbox with `justify-content: space-between`.
+**Cert roadmap:** Each row keeps the status and name side by side, and the target date moves under the name.
+
+**CV:** The PDF embed is hidden; the download and open buttons remain.
+
+**Nav:** Switches from a 3-column grid to a single-row flexbox at 768px, and drops the icons at 480px (see Phase 4).
 
 ---
 

@@ -19,3 +19,18 @@ export async function lastUpdated(progressUrl, data) {
   const fallback = log.length ? log[0].date : data.started;
   return fallback ? new Date(fallback + 'T00:00:00') : null;
 }
+
+// Appends " · Updated <date>" to every <time data-progress-url> on the page.
+export function showUpdatedDates() {
+  document.querySelectorAll('time[data-progress-url]').forEach(async (el) => {
+    const url = el.getAttribute('data-progress-url');
+    if (!url) return;
+    try {
+      const res = await fetch(url + '?t=' + Date.now());
+      const last = await lastUpdated(url, await res.json());
+      if (!last) return;
+      const d = last.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+      el.textContent = el.textContent + ' · Updated ' + d;
+    } catch {}
+  });
+}

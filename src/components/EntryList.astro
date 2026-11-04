@@ -1,0 +1,158 @@
+---
+// Listing used by /projects/ and /learning/: header, one card per entry, and
+// the client-side "Updated" dates for entries tracked through a progress.json.
+import { getCollection } from 'astro:content';
+import { sectionEntries, entryUrl, dateLabel } from '../lib/entries';
+
+interface Props {
+  section: 'projects' | 'learning';
+  heading: string;
+  intro: string;
+  cta: string;
+}
+
+const { section, heading, intro, cta } = Astro.props;
+const allDocs = await getCollection('docs');
+const entries = sectionEntries(allDocs, section);
+---
+<div class="projects-header">
+  <h2>{heading}</h2>
+  <p>{intro}</p>
+</div>
+
+<div class="project-list">
+  {entries.map(entry => (
+    <a href={entryUrl(entry)} class="project-item">
+      {entry.data.date && (
+        <time class="project-date" data-progress-url={entry.data.progressUrl ?? undefined}>
+          {dateLabel(entry.data, allDocs)}
+        </time>
+      )}
+      <p class="project-title">{entry.data.title}</p>
+      {entry.data.description && (
+        <p class="project-desc">{entry.data.description}</p>
+      )}
+      {entry.data.results && entry.data.results.length > 0 && (
+        <ul class="card-results">
+          {entry.data.results.map(result => <li>{result}</li>)}
+        </ul>
+      )}
+      {entry.data.tags && entry.data.tags.length > 0 && (
+        <div class="project-tags">
+          {entry.data.tags.map(tag => (
+            <span class="project-tag">{tag}</span>
+          ))}
+        </div>
+      )}
+      <span class="project-read">{cta} <span class="arrow">→</span></span>
+    </a>
+  ))}
+</div>
+
+<script>
+  import { showUpdatedDates } from '../scripts/progressUpdated.js';
+  showUpdatedDates();
+</script>
+
+<style>
+  .projects-header {
+    padding: 4rem 0 2.5rem;
+  }
+  .projects-header h2 {
+    font-family: var(--font-display);
+    font-size: 2.75rem;
+    font-weight: 800;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+    line-height: 1.15;
+  }
+  .projects-header p {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    max-width: 480px;
+    line-height: 1.6;
+  }
+
+  .project-list {
+    padding-bottom: 3rem;
+  }
+
+  .project-item {
+    display: block;
+    padding: 2rem 0;
+    border-top: 1px solid var(--border);
+    text-decoration: none;
+    color: var(--text);
+    transition: padding-left 0.2s ease;
+  }
+  .project-item:last-child {
+    border-bottom: 1px solid var(--border);
+  }
+  .project-item:hover {
+    padding-left: 0.6rem;
+  }
+
+  .project-date {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.6rem;
+  }
+
+  .project-title {
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.3;
+    margin-bottom: 0.6rem;
+    transition: color 0.2s;
+  }
+  .project-item:hover .project-title {
+    color: var(--accent);
+  }
+
+  .project-desc {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    line-height: 1.65;
+    margin-bottom: 0.85rem;
+  }
+
+  .project-tags {
+    display: flex;
+    gap: 0.35rem;
+    flex-wrap: wrap;
+  }
+  .project-tag {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 500;
+    padding: 0.15rem 0.5rem;
+    border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
+    border-radius: 2px;
+    color: var(--accent);
+  }
+
+  .project-read {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-top: 1.1rem;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: var(--accent);
+  }
+  .project-read .arrow {
+    transition: transform 0.2s ease;
+  }
+  .project-item:hover .project-read .arrow {
+    transform: translateX(5px);
+  }
+</style>

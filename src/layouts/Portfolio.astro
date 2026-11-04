@@ -1,4 +1,6 @@
 ---
+import { Font } from 'astro:assets';
+
 interface Props {
   title?: string;
   description?: string;
@@ -35,9 +37,9 @@ const navClass = (href: string) =>
   <meta property="og:locale" content="en_US" />
   <meta name="twitter:card" content="summary" />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Playfair+Display:wght@700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <Font cssVariable="--font-body" />
+  <Font cssVariable="--font-display" />
+  <Font cssVariable="--font-mono" />
   <style is:global>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -45,13 +47,27 @@ const navClass = (href: string) =>
       --bg: #f5f0e8;
       --bg-card: #ede8df;
       --text: #111111;
-      --text-muted: #6b7280;
+      /* Text colors are the darkest-necessary shade for WCAG AA (4.5:1) on --bg and --bg-cell. */
+      --text-muted: #616874;
       --accent: #1a5c00;
       --border: #e5e7eb;
+      --accent-hover: #0f3a00;
+      --white: #ffffff;
+      /* Home page skills grid */
+      --grid-line: #b8b3ab;
+      --bg-cell: #eae6de;
+      --blue: #336aa1;
+      --blue-border: #a3c4e8;
+      --orange: #a25125;
+      --orange-border: #dda882;
+      --purple: #6a5e9f;
+      --purple-border: #b8aed6;
+      --teal: #267361;
+      --teal-border: #8fcfc0;
     }
 
     body {
-      font-family: 'DM Sans', sans-serif;
+      font-family: var(--font-body);
       font-variant-numeric: lining-nums;
       background-color: var(--bg);
       color: var(--text);
@@ -65,7 +81,7 @@ const navClass = (href: string) =>
       z-index: 100;
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
-      background: rgba(245, 240, 232, 0.92);
+      background: color-mix(in srgb, var(--bg) 92%, transparent);
       border-bottom: 1px solid var(--border);
     }
     .nav-inner {
@@ -85,8 +101,8 @@ const navClass = (href: string) =>
     }
     .nav-name:hover { color: var(--accent); }
     .nav-subtitle {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.62rem;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
       font-weight: 500;
       letter-spacing: 0.08em;
       color: var(--accent);
@@ -118,8 +134,8 @@ const navClass = (href: string) =>
     .section { padding: 3rem 0; border-bottom: 1px solid var(--border); }
     .section:last-child { border-bottom: none; }
     .section-title {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.65rem;
+      font-family: var(--font-mono);
+      font-size: 0.8125rem;
       font-weight: 600;
       letter-spacing: 0.14em;
       text-transform: uppercase;
@@ -148,7 +164,7 @@ const navClass = (href: string) =>
       gap: 1rem;
     }
     .repo-item-name {
-      font-family: 'JetBrains Mono', monospace;
+      font-family: var(--font-mono);
       font-size: 0.875rem;
       font-weight: 600;
       color: var(--text);
@@ -157,15 +173,15 @@ const navClass = (href: string) =>
     .repo-item-name::before { content: '~/'; color: var(--text-muted); font-weight: 400; }
     .repo-item:hover .repo-item-name { color: var(--accent); }
     .repo-item-src {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.72rem;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
       color: var(--accent);
       white-space: nowrap;
     }
     .repo-item-tags { display: flex; gap: 0.35rem; flex-wrap: wrap; margin-bottom: 0.5rem; }
     .repo-item-tag {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.65rem;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
       font-weight: 500;
       padding: 0.15rem 0.5rem;
       border-radius: 3px;
@@ -177,7 +193,7 @@ const navClass = (href: string) =>
       display: block;
       margin-top: 0.75rem;
       padding: 0.7rem;
-      font-family: 'JetBrains Mono', monospace;
+      font-family: var(--font-mono);
       font-size: 0.75rem;
       color: var(--accent);
       text-decoration: none;
@@ -195,8 +211,8 @@ const navClass = (href: string) =>
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 0.35rem 1rem;
       margin-bottom: 0.85rem;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.7rem;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
       line-height: 1.45;
       color: var(--text);
     }

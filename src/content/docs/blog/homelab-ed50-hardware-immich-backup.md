@@ -148,7 +148,7 @@ Key-based authentication (ed25519) for automation, no passwords in scripts or cr
 
 API keys with a temporary scope, revoked after use (this was used with Immich).
 
-Backups with retention and automatic rotation. With real verification of restorability.
+Backups with retention, automatic rotation, and real verification of restorability.
 
 ---
 

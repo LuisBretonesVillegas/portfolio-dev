@@ -1,0 +1,49 @@
+---
+import Portfolio from '../layouts/Portfolio.astro';
+---
+<Portfolio title="Page not found | Luis Bretones" description="The page you are looking for does not exist or has moved.">
+  <section class="section nf">
+    <p class="section-title">404 // Page not found</p>
+    <h2>This page doesn't exist.</h2>
+    <p class="nf-text">It may have moved, or the link may be wrong. Try one of these instead:</p>
+    <div class="nf-actions">
+      <a href="/" class="nf-btn nf-btn-primary">Home →</a>
+      <a href="/projects/" class="nf-btn">Projects →</a>
+      <a href="/blog/" class="nf-btn">Blog →</a>
+    </div>
+  </section>
+</Portfolio>
+
+<style>
+  .nf { padding-top: 4rem; }
+  .nf h2 {
+    font-family: var(--font-display);
+    font-size: 2.75rem;
+    font-weight: 800;
+    color: var(--text);
+    line-height: 1.15;
+    margin-bottom: 0.75rem;
+  }
+  .nf-text {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    line-height: 1.7;
+    margin-bottom: 1.75rem;
+  }
+  .nf-actions { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+  .nf-btn {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.55rem 1.1rem;
+    border-radius: 3px;
+    text-decoration: none;
+    color: var(--accent);
+    border: 1px solid var(--accent);
+  }
+  .nf-btn:hover { background: color-mix(in srgb, var(--accent) 10%, transparent); }
+  .nf-btn-primary { background: var(--accent); color: var(--white); }
+  .nf-btn-primary:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
+</style>

@@ -1,0 +1,34 @@
+---
+// Starlight's page title, plus the date and an estimated reading time on blog posts.
+import Default from '@astrojs/starlight/components/PageTitle.astro';
+import { formatDate } from '../lib/entries';
+
+const { entry } = Astro.locals.starlightRoute;
+const isPost = entry.id.startsWith('blog/');
+
+// ~230 words per minute, ignoring code blocks, which are skimmed rather than read.
+const words = (entry.body ?? '')
+	.replace(/```[\s\S]*?```/g, '')
+	.split(/\s+/)
+	.filter(Boolean).length;
+const minutes = Math.max(1, Math.round(words / 230));
+---
+<Default />
+{isPost && (
+	<p class="post-meta">
+		{entry.data.date && <time datetime={entry.data.date.toISOString()}>{formatDate(entry.data.date)}</time>}
+		{entry.data.date && <span aria-hidden="true"> · </span>}
+		<span>{minutes} min read</span>
+	</p>
+)}
+
+<style>
+	.post-meta {
+		margin-top: 0.5rem;
+		font-family: var(--sl-font-mono);
+		font-size: var(--sl-text-xs);
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		color: var(--sl-color-text-accent);
+	}
+</style>

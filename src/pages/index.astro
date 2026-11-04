@@ -1,6 +1,9 @@
 ---
 import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+import avatar from '../assets/avatar.jpeg';
 import Portfolio from '../layouts/Portfolio.astro';
+import { entryUrl, dateLabel } from '../lib/entries';
 
 // Projects highlighted on the home page, in display order.
 const FEATURED = [
@@ -9,38 +12,28 @@ const FEATURED = [
 ];
 
 const allDocs = await getCollection('docs');
+
+// Structured data so search engines can tie the site to its author.
+const person = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: 'Luis Bretones',
+  url: Astro.site?.href,
+  image: new URL('/avatar.jpeg', Astro.site).href,
+  jobTitle: 'Computer Engineering Student',
+  affiliation: { '@type': 'CollegeOrUniversity', name: 'University of Almería' },
+  sameAs: [
+    'https://github.com/LuisBretonesVillegas',
+    'https://www.linkedin.com/in/luisbretonesvillegas',
+  ],
+};
 const featured = FEATURED
   .map(slug => allDocs.find(e => e.id.replace(/\.mdx?$/, '') === slug))
   .filter((e): e is NonNullable<typeof e> => Boolean(e));
 
-function formatDate(date: Date): string {
-  return date.toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
-  });
-}
-
-// Latest blog post date for a project, so projects without a progress.json
-// still get a "Started · Updated" label derived from their write-ups.
-const blogPosts = allDocs.filter(e => e.id.startsWith('blog/') && !e.id.match(/^blog\/index\.mdx?$/));
-function dateLabel(data: (typeof featured)[number]['data']): string {
-  if (!data.date) return '';
-  const started = formatDate(data.date);
-  if (data.progressUrl) return `Started ${started}`;
-  const times = blogPosts
-    .filter(p => p.data.project === data.title && p.data.date)
-    .map(p => new Date(p.data.date!).getTime());
-  if (times.length) {
-    const updated = new Date(Math.max(...times));
-    if (updated.getTime() > new Date(data.date).getTime()) {
-      return `Started ${started} · Updated ${formatDate(updated)}`;
-    }
-  }
-  return started;
-}
 ---
 <Portfolio>
+  <script type="application/ld+json" set:html={JSON.stringify(person)} />
   <style>
     /* ── HERO ── */
     .hero {
@@ -52,8 +45,8 @@ function dateLabel(data: (typeof featured)[number]['data']): string {
       border-bottom: 1px solid var(--border);
     }
     .hero-meta {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.7rem;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
       font-weight: 500;
       letter-spacing: 0.1em;
       text-transform: uppercase;
@@ -61,7 +54,7 @@ function dateLabel(data: (typeof featured)[number]['data']): string {
       margin-bottom: 1.5rem;
     }
     h1 {
-      font-family: 'Playfair Display', serif;
+      font-family: var(--font-display);
       font-size: clamp(2.8rem, 6vw, 4rem);
       font-weight: 800;
       letter-spacing: -0.02em;
@@ -84,7 +77,7 @@ function dateLabel(data: (typeof featured)[number]['data']): string {
     }
     .hero-actions { display: flex; gap: 0.75rem; flex-wrap: wrap; }
     .btn {
-      font-family: 'JetBrains Mono', monospace;
+      font-family: var(--font-mono);
       font-size: 0.75rem;
       font-weight: 600;
       letter-spacing: 0.08em;
@@ -96,10 +89,10 @@ function dateLabel(data: (typeof featured)[number]['data']): string {
     }
     .btn-primary {
       background: var(--accent);
-      color: #fff;
+      color: var(--white);
       border: 1px solid var(--accent);
     }
-    .btn-primary:hover { background: #0f3a00; border-color: #0f3a00; }
+    .btn-primary:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
     .btn-secondary {
       background: transparent;
       color: var(--accent);
@@ -120,24 +113,24 @@ function dateLabel(data: (typeof featured)[number]['data']): string {
     .skill-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      border: 1px solid #b8b3ab;
+      border: 1px solid var(--grid-line);
       border-radius: 4px;
       overflow: hidden;
-      background: #b8b3ab;
+      background: var(--grid-line);
     }
     .skill-cell {
       padding: 1.25rem 1.1rem;
-      background: #eae6de;
-      border-right: 1px solid #b8b3ab;
-      border-bottom: 1px solid #b8b3ab;
+      background: var(--bg-cell);
+      border-right: 1px solid var(--grid-line);
+      border-bottom: 1px solid var(--grid-line);
     }
     .skill-cell:nth-child(3n) { border-right: none; }
     .skill-cell:nth-last-child(-n+3) { border-bottom: none; }
     .skill-cell-title {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.6rem;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
       font-weight: 600;
-      letter-spacing: 0.12em;
+      letter-spacing: 0.06em;
       text-transform: uppercase;
       margin-bottom: 0.85rem;
     }
@@ -152,14 +145,14 @@ function dateLabel(data: (typeof featured)[number]['data']): string {
     .c-green .skill-cell-title { color: var(--accent); }
     .c-green .skill-tag { border: 1px solid color-mix(in srgb, var(--accent) 40%, transparent); color: var(--accent); }
 
-    .c-blue .skill-cell-title { color: #3d7fc1; }
-    .c-blue .skill-tag { border: 1px solid #a3c4e8; color: #3d7fc1; }
-    .c-orange .skill-cell-title { color: #b85c2a; }
-    .c-orange .skill-tag { border: 1px solid #dda882; color: #b85c2a; }
-    .c-purple .skill-cell-title { color: #6b5fa0; }
-    .c-purple .skill-tag { border: 1px solid #b8aed6; color: #6b5fa0; }
-    .c-teal .skill-cell-title { color: #2e8c76; }
-    .c-teal .skill-tag { border: 1px solid #8fcfc0; color: #2e8c76; }
+    .c-blue .skill-cell-title { color: var(--blue); }
+    .c-blue .skill-tag { border: 1px solid var(--blue-border); color: var(--blue); }
+    .c-orange .skill-cell-title { color: var(--orange); }
+    .c-orange .skill-tag { border: 1px solid var(--orange-border); color: var(--orange); }
+    .c-purple .skill-cell-title { color: var(--purple); }
+    .c-purple .skill-tag { border: 1px solid var(--purple-border); color: var(--purple); }
+    .c-teal .skill-cell-title { color: var(--teal); }
+    .c-teal .skill-tag { border: 1px solid var(--teal-border); color: var(--teal); }
     .c-muted .skill-cell-title { color: var(--text-muted); }
     .c-muted .skill-tag { border: 1px solid var(--border); color: var(--text-muted); }
 
@@ -182,15 +175,15 @@ function dateLabel(data: (typeof featured)[number]['data']): string {
     }
     .featured-card:hover { border-color: var(--accent); }
     .featured-date {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.62rem;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
       font-weight: 600;
       letter-spacing: 0.12em;
       text-transform: uppercase;
       color: var(--accent);
     }
     .featured-title {
-      font-family: 'Playfair Display', serif;
+      font-family: var(--font-display);
       font-size: 1.35rem;
       font-weight: 700;
       line-height: 1.25;
@@ -210,8 +203,8 @@ function dateLabel(data: (typeof featured)[number]['data']): string {
       flex-wrap: wrap;
     }
     .featured-tag {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.62rem;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
       font-weight: 500;
       padding: 0.15rem 0.5rem;
       border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
@@ -223,8 +216,8 @@ function dateLabel(data: (typeof featured)[number]['data']): string {
       align-items: center;
       gap: 0.4rem;
       margin-top: 0.4rem;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.72rem;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
       font-weight: 600;
       letter-spacing: 0.04em;
       color: var(--accent);
@@ -249,12 +242,13 @@ function dateLabel(data: (typeof featured)[number]['data']): string {
     }
     .cert-row:last-child { border-bottom: 1px solid var(--border); }
     .cert-status {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.6rem;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
       font-weight: 700;
       letter-spacing: 0.08em;
       text-transform: uppercase;
       justify-self: start;
+      white-space: nowrap;
       padding: 0.2rem 0.5rem;
       border-radius: 3px;
     }
@@ -270,8 +264,8 @@ function dateLabel(data: (typeof featured)[number]['data']): string {
     .cert-name { color: var(--text); font-weight: 500; }
     .cert-row.planned .cert-name { color: var(--text-muted); font-weight: 400; }
     .cert-target {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.7rem;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
       color: var(--text-muted);
       white-space: nowrap;
     }
@@ -294,9 +288,9 @@ function dateLabel(data: (typeof featured)[number]['data']): string {
       .tagline { max-width: 100%; }
       h1 { font-size: clamp(2.2rem, 10vw, 3rem); }
       .skill-grid { grid-template-columns: repeat(2, 1fr); }
-      .skill-cell:nth-child(3n) { border-right: 1px solid #b8b3ab; }
+      .skill-cell:nth-child(3n) { border-right: 1px solid var(--grid-line); }
       .skill-cell:nth-child(2n) { border-right: none; }
-      .cert-row { grid-template-columns: 96px 1fr; row-gap: 0.2rem; }
+      .cert-row { grid-template-columns: 112px 1fr; row-gap: 0.2rem; }
       .cert-target { grid-column: 2; }
       .featured-grid { grid-template-columns: 1fr; }
     }
@@ -317,7 +311,17 @@ function dateLabel(data: (typeof featured)[number]['data']): string {
       </div>
     </div>
     <div class="hero-right">
-      <img src="/avatar.jpeg" alt="Luis Bretones" class="avatar" />
+      <Image
+        src={avatar}
+        alt="Luis Bretones"
+        class="avatar"
+        width={280}
+        height={280}
+        widths={[176, 280, 560]}
+        sizes="(max-width: 768px) 88px, 280px"
+        loading="eager"
+        fetchpriority="high"
+      />
     </div>
   </section>
 
@@ -325,12 +329,11 @@ function dateLabel(data: (typeof featured)[number]['data']): string {
     <p class="section-title">Featured // Selected projects</p>
     <div class="featured-grid">
       {featured.map(project => {
-        const url = `/${project.id.replace(/\.mdx?$/, '')}/`;
         return (
-          <a href={url} class="featured-card">
+          <a href={entryUrl(project)} class="featured-card">
             {project.data.date && (
               <time class="featured-date" data-progress-url={project.data.progressUrl ?? undefined}>
-                {dateLabel(project.data)}
+                {dateLabel(project.data, allDocs)}
               </time>
             )}
             <p class="featured-title">{project.data.title}</p>
@@ -448,7 +451,7 @@ function dateLabel(data: (typeof featured)[number]['data']): string {
       </div>
       <div class="cert-row">
         <span class="cert-status status-active">In progress</span>
-        <span class="cert-name">Cisco Certified Network Associate (CCNA 200-301)</span>
+        <span class="cert-name">Cisco Certified Network Associate <span style="white-space: nowrap;">(CCNA 200-301)</span></span>
         <span class="cert-target">Exam early 2028</span>
       </div>
       <div class="cert-row">
@@ -465,23 +468,7 @@ function dateLabel(data: (typeof featured)[number]['data']): string {
   </section>
 
   <script>
-    import { lastUpdated } from '../scripts/progressUpdated.js';
-
-    document.querySelectorAll('time[data-progress-url]').forEach(async (el) => {
-      const url = el.getAttribute('data-progress-url');
-      if (!url) return;
-      try {
-        const res = await fetch(url + '?t=' + Date.now());
-        const data = await res.json();
-        const last = await lastUpdated(url, data);
-        if (!last) return;
-        const d = last.toLocaleDateString('en-US', {
-          year: 'numeric',
-          month: 'short',
-          day: 'numeric',
-        });
-        el.textContent = el.textContent + ' · Updated ' + d;
-      } catch {}
-    });
+    import { showUpdatedDates } from '../scripts/progressUpdated.js';
+    showUpdatedDates();
   </script>
 </Portfolio>

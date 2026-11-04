@@ -10,23 +10,23 @@ project: Homelab ED50
 
 > With the base services running, it was time to solve two real annoyances. Stop memorizing IPs and ports, and stop piling up invoices on paper and in mail folders. The answer was Caddy as a reverse proxy with a wildcard certificate, without opening a single port, and Paperless-ngx as a document manager with automatic intake over IMAP. Here is the full deployment and the incidents that came up along the way.
 
-## Domains, certificates, and redirection with Caddy
+## Domains, certificates, and routing with Caddy
 
 ### Goal
 
-To avoid having to memorize the IPs and ports of each service, and to stop the browser from flagging access to the page as insecure. The proposed solution is to use Caddy.
+I wanted to stop memorizing the IP and port of each service, and to stop the browser from flagging every page as insecure. The proposed solution is Caddy.
 
-Caddy acts like an office receptionist. You, as the user, arrive at the front desk and tell Caddy (which has an IP we'll call 192.168.1.20), "look, I want to talk to synology.ed50.es"; you are talking to Caddy's IP, and it is this service that says "of course, come with me" and redirects you to 192.168.1.X:xxxx. This is configured for every included service.
+Caddy acts like an office receptionist. You, as the user, arrive at the front desk and tell Caddy (which has an IP we'll call 192.168.1.20), "look, I want to talk to synology.ed50.es"; you are talking to Caddy's IP, and it is this service that says "of course, come with me" and forwards your request to 192.168.1.X:xxxx. This is configured for every included service.
 
-The goal is to have access to every service through its own subdomain (`servicio.ed50.es`) with valid Let's Encrypt TLS certificates, achieving zero ports open to the outside and remote access exclusively over Tailscale.
+The goal is to have access to every service through its own subdomain (`service.ed50.es`) with valid Let's Encrypt TLS certificates, achieving zero ports open to the outside and remote access exclusively over Tailscale.
 
-This was prioritized over other items out of convenience when configuring things; I don't like having many tabs open, nor having to type out the IPs and ports.
+I prioritized this over other items for convenience while configuring everything else: I don't like having many tabs open, or typing out IPs and ports.
 
-Of course, every service that gets added has to be added manually:
+Every new service has to be added to the Caddyfile by hand:
 
 ```txt
-@servicio host servicio.ed50.es
-handle @servicio {
+@service host service.ed50.es
+handle @service {
     reverse_proxy 192.168.1.X:xxxx
 }
 ```
@@ -67,15 +67,16 @@ Deploy a document management system for a consultancy's invoices, integrated int
 
 ```
 (outside home: Tailscale → subnet router)
-Client ─ https://facturas.ed50.es ──► Caddy (LXC, .20) ──► LXC Paperless (.21:8000)
-                                                                  
-                                              ┌─────────────────────┼──────────────────┐
-|                                        │  Docker Compose     
-|                                        │  paperless-ngx ─ PostgreSQL 17 ─ Redis 8
-|                                        |      └─────────────────────┬──────────────────┘
-                    Intake 1: IMAP (facturas@ mailbox) 
-                    Intake 2: consume folder / web upload
-                    Intake 3: Telegram bot (for receipts)
+Client ─ https://invoices.ed50.es ──► Caddy (LXC, .20) ──► LXC Paperless (.21:8000)
+                                                                   │
+                                          ┌────────────────────────┴────────────────────┐
+                                          │  Docker Compose                             │
+                                          │  paperless-ngx ─ PostgreSQL 17 ─ Redis 8    │
+                                          └────────────────────────▲────────────────────┘
+                                                                   │
+                            Intake 1: IMAP (invoices@ mailbox) ────┤
+                            Intake 2: consume folder / web upload ─┤
+                            Intake 3: Telegram bot (for receipts) ─┘
 ```
 
 ### Implementation
@@ -98,7 +99,7 @@ Relevant service configuration:
 
 ```yaml
 environment:
-  PAPERLESS_URL: https://facturas.ed50.es   # CSRF correcto tras el proxy
+  PAPERLESS_URL: https://invoices.ed50.es   # correct CSRF behind the proxy
   PAPERLESS_TIME_ZONE: Europe/Madrid
   PAPERLESS_OCR_LANGUAGE: spa
 ```
@@ -107,7 +108,7 @@ PostgreSQL password and `PAPERLESS_SECRET_KEY` generated and kept safe in a pass
 
 #### Email intake (IMAP)
 
-Dedicated mailbox `facturas@ed50.es` at the domain provider, used exclusively as an intake queue for machines.
+Dedicated mailbox `invoices@ed50.es` at the domain provider, used exclusively as an intake queue for machines.
 
 Mail rule in Paperless:
 
@@ -136,7 +137,7 @@ With a prior backup of the Caddyfile, validation (`caddy validate`) before reloa
 - **Creation date.** Extracted by OCR from the invoice content as the fiscal axis. It is the issue date, the one that determines the quarter for VAT purposes, regardless of when the email arrives.
 - **Saved views per quarter.**
     Zero maintenance (Paperless has the creation-date filters), impossible to forget, and the quarterly export for the accountants comes down to opening the view and downloading the selection.
-- Correspondents generated automatically from the email senders; it uses the name and, if not available (it doesn't exist), it uses the email address.
+- Correspondents generated automatically from the email senders, using the sender's name or, when there is none, the email address.
 
 ### Problems found
 
@@ -159,7 +160,7 @@ docker compose exec -u paperless webserver python3 manage.py mail_fetcher
 - Document uploaded via web: OCR correct, inner text findable from the search box.
 - Document dropped into the consume folder (via `pct push`): consumed and indexed automatically.
 - Email with a PDF attachment: detected by the IMAP rule, attachment consumed, correspondent created automatically from the sender, email preserved and marked as read.
-- HTTPS access with a valid certificate via `facturas.ed50.es`, inside and outside the LAN (mobile app included, configured against the domain URL).
+- HTTPS access with a valid certificate via `invoices.ed50.es`, inside and outside the LAN (mobile app included, configured against the domain URL).
 
 ---
 

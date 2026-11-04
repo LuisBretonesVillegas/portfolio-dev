@@ -1,24 +1,15 @@
 ---
 import { getCollection } from 'astro:content';
 import Portfolio from '../../layouts/Portfolio.astro';
+import { sectionEntries, entryUrl, formatDate, time } from '../../lib/entries';
 
 const allDocs = await getCollection('docs');
-
-const posts = allDocs
-  .filter(e => e.id.startsWith('blog/') && !e.id.match(/^blog\/index\.mdx?$/))
-  .sort((a, b) => {
-    const dateA = a.data.date ? new Date(a.data.date).getTime() : 0;
-    const dateB = b.data.date ? new Date(b.data.date).getTime() : 0;
-    return dateB - dateA;
-  });
+const posts = sectionEntries(allDocs, 'blog');
 
 // Map project page titles to their URL so a post's `project` can link out.
 const projectHref = new Map<string, string>();
-allDocs
-  .filter(e => /^(projects|learning)\//.test(e.id) && !e.id.match(/^(projects|learning)\/index\.mdx?$/))
-  .forEach(p => projectHref.set(p.data.title, `/${p.id.replace(/\.mdx?$/, '')}/`));
-
-const time = (d: Date | undefined) => (d ? new Date(d).getTime() : 0);
+[...sectionEntries(allDocs, 'projects'), ...sectionEntries(allDocs, 'learning')]
+  .forEach(p => projectHref.set(p.data.title, entryUrl(p)));
 
 // Split posts into project groups and standalone posts.
 const groups = new Map<string, typeof posts>();
@@ -56,13 +47,6 @@ for (const [title, list] of groups) {
 // entries stay interleaved newest-first.
 blocks.sort((a, b) => b.date - a.date);
 
-function formatDate(date: Date): string {
-  return date.toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
-  });
-}
 ---
 <Portfolio title="Blog | Luis Bretones">
   <style>
@@ -70,7 +54,7 @@ function formatDate(date: Date): string {
       padding: 4rem 0 2.5rem;
     }
     .blog-header h2 {
-      font-family: 'Playfair Display', serif;
+      font-family: var(--font-display);
       font-size: 2.75rem;
       font-weight: 800;
       color: var(--text);
@@ -111,8 +95,8 @@ function formatDate(date: Date): string {
     }
     .project-eyebrow {
       display: block;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.62rem;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
       font-weight: 600;
       letter-spacing: 0.14em;
       text-transform: uppercase;
@@ -120,7 +104,7 @@ function formatDate(date: Date): string {
       margin-bottom: 0.4rem;
     }
     .project-group-title {
-      font-family: 'Playfair Display', serif;
+      font-family: var(--font-display);
       font-size: 1.7rem;
       font-weight: 800;
       color: var(--text);
@@ -146,8 +130,8 @@ function formatDate(date: Date): string {
 
     .post-date {
       display: block;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.68rem;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
       font-weight: 600;
       letter-spacing: 0.1em;
       text-transform: uppercase;
@@ -156,7 +140,7 @@ function formatDate(date: Date): string {
     }
 
     .post-title {
-      font-family: 'Playfair Display', serif;
+      font-family: var(--font-display);
       font-size: 1.4rem;
       font-weight: 700;
       color: var(--text);
@@ -181,8 +165,8 @@ function formatDate(date: Date): string {
       flex-wrap: wrap;
     }
     .post-tag {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.62rem;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
       font-weight: 500;
       padding: 0.15rem 0.5rem;
       border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
@@ -195,8 +179,8 @@ function formatDate(date: Date): string {
       align-items: center;
       gap: 0.4rem;
       margin-top: 1.1rem;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.72rem;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
       font-weight: 600;
       letter-spacing: 0.04em;
       color: var(--accent);
@@ -229,9 +213,8 @@ function formatDate(date: Date): string {
     {blocks.map(block => {
       if (block.kind === 'post') {
         const post = block.post;
-        const url = `/${post.id.replace(/\.mdx?$/, '')}/`;
         return (
-          <a href={url} class="post-item">
+          <a href={entryUrl(post)} class="post-item">
             {post.data.date && (
               <time class="post-date" data-progress-url={post.data.progressUrl ?? undefined}>
                 {post.data.progressUrl ? `Started ${formatDate(post.data.date)}` : formatDate(post.data.date)}
@@ -263,9 +246,8 @@ function formatDate(date: Date): string {
           )}
           <div class="group-posts">
             {block.posts.map(post => {
-              const url = `/${post.id.replace(/\.mdx?$/, '')}/`;
               return (
-                <a href={url} class="post-item">
+                <a href={entryUrl(post)} class="post-item">
                   {post.data.date && (
                     <time class="post-date" data-progress-url={post.data.progressUrl ?? undefined}>
                       {post.data.progressUrl ? `Started ${formatDate(post.data.date)}` : formatDate(post.data.date)}
@@ -293,22 +275,7 @@ function formatDate(date: Date): string {
   </div>
 
   <script>
-    document.querySelectorAll('time[data-progress-url]').forEach(async (el) => {
-      const url = el.getAttribute('data-progress-url');
-      if (!url) return;
-      try {
-        const res = await fetch(url + '?t=' + Date.now());
-        const data = await res.json();
-        const log = Array.isArray(data.log) ? data.log : [];
-        const last = log.length ? log[0].date : data.started;
-        if (!last) return;
-        const d = new Date(last + 'T00:00:00').toLocaleDateString('en-US', {
-          year: 'numeric',
-          month: 'short',
-          day: 'numeric',
-        });
-        el.textContent = el.textContent + ' · Updated ' + d;
-      } catch {}
-    });
+    import { showUpdatedDates } from '../../scripts/progressUpdated.js';
+    showUpdatedDates();
   </script>
 </Portfolio>
