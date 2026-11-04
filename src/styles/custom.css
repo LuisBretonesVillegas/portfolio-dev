@@ -40,10 +40,10 @@ header.header {
 
 /* ── Content prose ── */
 .sl-markdown-content {
-  font-family: 'DM Sans', sans-serif;
+  font-family: var(--sl-font);
 }
 
 .sl-markdown-content code,
 .sl-markdown-content pre {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: var(--sl-font-mono);
 }

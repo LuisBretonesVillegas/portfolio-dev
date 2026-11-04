@@ -48,8 +48,8 @@ const pdf = '/luis-bretones-cv.pdf';
     border: 1px solid var(--accent);
   }
   .cv-btn:hover { background: color-mix(in srgb, var(--accent) 10%, transparent); }
-  .cv-btn-primary { background: var(--accent); color: #fff; }
-  .cv-btn-primary:hover { background: #0f3a00; border-color: #0f3a00; }
+  .cv-btn-primary { background: var(--accent); color: var(--white); }
+  .cv-btn-primary:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
   .cv-preview { padding-bottom: 3rem; }
   .cv-preview iframe {
     display: block;
@@ -57,7 +57,7 @@ const pdf = '/luis-bretones-cv.pdf';
     height: 1120px;
     border: 1px solid var(--border);
     border-radius: 4px;
-    background: #fff;
+    background: var(--white);
   }
 
   /* Phone browsers don't render PDFs inline reliably; the buttons cover it. */

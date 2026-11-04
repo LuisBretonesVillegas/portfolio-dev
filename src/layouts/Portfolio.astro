@@ -48,6 +48,19 @@ const navClass = (href: string) =>
       --text-muted: #6b7280;
       --accent: #1a5c00;
       --border: #e5e7eb;
+      --accent-hover: #0f3a00;
+      --white: #ffffff;
+      /* Home page skills grid */
+      --grid-line: #b8b3ab;
+      --bg-cell: #eae6de;
+      --blue: #3d7fc1;
+      --blue-border: #a3c4e8;
+      --orange: #b85c2a;
+      --orange-border: #dda882;
+      --purple: #6b5fa0;
+      --purple-border: #b8aed6;
+      --teal: #2e8c76;
+      --teal-border: #8fcfc0;
     }
 
     body {
@@ -65,7 +78,7 @@ const navClass = (href: string) =>
       z-index: 100;
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
-      background: rgba(245, 240, 232, 0.92);
+      background: color-mix(in srgb, var(--bg) 92%, transparent);
       border-bottom: 1px solid var(--border);
     }
     .nav-inner {

@@ -96,10 +96,10 @@ function dateLabel(data: (typeof featured)[number]['data']): string {
     }
     .btn-primary {
       background: var(--accent);
-      color: #fff;
+      color: var(--white);
       border: 1px solid var(--accent);
     }
-    .btn-primary:hover { background: #0f3a00; border-color: #0f3a00; }
+    .btn-primary:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
     .btn-secondary {
       background: transparent;
       color: var(--accent);
@@ -120,16 +120,16 @@ function dateLabel(data: (typeof featured)[number]['data']): string {
     .skill-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      border: 1px solid #b8b3ab;
+      border: 1px solid var(--grid-line);
       border-radius: 4px;
       overflow: hidden;
-      background: #b8b3ab;
+      background: var(--grid-line);
     }
     .skill-cell {
       padding: 1.25rem 1.1rem;
-      background: #eae6de;
-      border-right: 1px solid #b8b3ab;
-      border-bottom: 1px solid #b8b3ab;
+      background: var(--bg-cell);
+      border-right: 1px solid var(--grid-line);
+      border-bottom: 1px solid var(--grid-line);
     }
     .skill-cell:nth-child(3n) { border-right: none; }
     .skill-cell:nth-last-child(-n+3) { border-bottom: none; }
@@ -152,14 +152,14 @@ function dateLabel(data: (typeof featured)[number]['data']): string {
     .c-green .skill-cell-title { color: var(--accent); }
     .c-green .skill-tag { border: 1px solid color-mix(in srgb, var(--accent) 40%, transparent); color: var(--accent); }
 
-    .c-blue .skill-cell-title { color: #3d7fc1; }
-    .c-blue .skill-tag { border: 1px solid #a3c4e8; color: #3d7fc1; }
-    .c-orange .skill-cell-title { color: #b85c2a; }
-    .c-orange .skill-tag { border: 1px solid #dda882; color: #b85c2a; }
-    .c-purple .skill-cell-title { color: #6b5fa0; }
-    .c-purple .skill-tag { border: 1px solid #b8aed6; color: #6b5fa0; }
-    .c-teal .skill-cell-title { color: #2e8c76; }
-    .c-teal .skill-tag { border: 1px solid #8fcfc0; color: #2e8c76; }
+    .c-blue .skill-cell-title { color: var(--blue); }
+    .c-blue .skill-tag { border: 1px solid var(--blue-border); color: var(--blue); }
+    .c-orange .skill-cell-title { color: var(--orange); }
+    .c-orange .skill-tag { border: 1px solid var(--orange-border); color: var(--orange); }
+    .c-purple .skill-cell-title { color: var(--purple); }
+    .c-purple .skill-tag { border: 1px solid var(--purple-border); color: var(--purple); }
+    .c-teal .skill-cell-title { color: var(--teal); }
+    .c-teal .skill-tag { border: 1px solid var(--teal-border); color: var(--teal); }
     .c-muted .skill-cell-title { color: var(--text-muted); }
     .c-muted .skill-tag { border: 1px solid var(--border); color: var(--text-muted); }
 
@@ -294,7 +294,7 @@ function dateLabel(data: (typeof featured)[number]['data']): string {
       .tagline { max-width: 100%; }
       h1 { font-size: clamp(2.2rem, 10vw, 3rem); }
       .skill-grid { grid-template-columns: repeat(2, 1fr); }
-      .skill-cell:nth-child(3n) { border-right: 1px solid #b8b3ab; }
+      .skill-cell:nth-child(3n) { border-right: 1px solid var(--grid-line); }
       .skill-cell:nth-child(2n) { border-right: none; }
       .cert-row { grid-template-columns: 96px 1fr; row-gap: 0.2rem; }
       .cert-target { grid-column: 2; }
