@@ -47,7 +47,8 @@ const navClass = (href: string) =>
       --bg: #f5f0e8;
       --bg-card: #ede8df;
       --text: #111111;
-      --text-muted: #6b7280;
+      /* Text colors are the darkest-necessary shade for WCAG AA (4.5:1) on --bg and --bg-cell. */
+      --text-muted: #616874;
       --accent: #1a5c00;
       --border: #e5e7eb;
       --accent-hover: #0f3a00;
@@ -55,13 +56,13 @@ const navClass = (href: string) =>
       /* Home page skills grid */
       --grid-line: #b8b3ab;
       --bg-cell: #eae6de;
-      --blue: #3d7fc1;
+      --blue: #336aa1;
       --blue-border: #a3c4e8;
-      --orange: #b85c2a;
+      --orange: #a25125;
       --orange-border: #dda882;
-      --purple: #6b5fa0;
+      --purple: #6a5e9f;
       --purple-border: #b8aed6;
-      --teal: #2e8c76;
+      --teal: #267361;
       --teal-border: #8fcfc0;
     }
 
