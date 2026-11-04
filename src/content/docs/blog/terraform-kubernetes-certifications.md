@@ -6,7 +6,7 @@ tags: [terraform, kubernetes, certifications, devops]
 project: ED50 v2.0 From Homelab to Enterprise Network
 ---
 
-Looking at the ED50 v2.0 project, I've decided to prepare the Terraform (TA-004) and Kubernetes (CKA) certifications. In this project I've limited my use of AI, because what I'm after is testing my own knowledge, not being efficient. If I'm not going to lean on AI, I need to learn these technologies in a structured way, and a certification gives me a syllabus and a way to measure my progress.
+Looking at the ED50 v2.0 project, I've decided to prepare for the Terraform (TA-004) and Kubernetes (CKA) certifications. In this project I've limited my use of AI, because what I'm after is testing my own knowledge, not being efficient. If I'm not going to lean on AI, I need to learn these technologies in a structured way, and a certification gives me a syllabus and a way to measure my progress.
 
 The order I plan to take them in is Terraform -> CCNA -> Kubernetes. I've moved Terraform forward because I know enough networking to take on the project, but I don't know anything about IaC. This doesn't change the CCNA date: I'm still aiming for February 2028 to make use of the UAL discount.
 

@@ -36,4 +36,4 @@ It runs as a systemd service inside an unprivileged Debian LXC on Proxmox, under
 
 ## Isn't Spring Boot too much for this?
 
-Yes. The fair question is whether a cron job and four curls would not solve this, and the short answer is that they would. The long answer, with the reasoning behind the decision and the first real incident of the deployment included, is in [the blog entry](/blog/vigia-homelab-monitoring/).
+Yes. The fair question is whether a cron job and four curls would solve this, and the short answer is that they would. The long answer, with the reasoning behind the decision and the first real incident of the deployment included, is in [the blog entry](/blog/vigia-homelab-monitoring/).

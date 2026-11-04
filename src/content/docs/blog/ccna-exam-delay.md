@@ -13,7 +13,7 @@ In the first version of this roadmap I planned one certification per year, study
 
 Every class day adds up to 4 hours of travel between my home and the university, so I had much less time than I'd expected.
 
-That's when I realized I wasn't going to make it to the CCNA before February. It was impossible, so I replanned the roadmap. Instead of taking the exam before it changes to version v2.0, I went for a much more relaxed approach, where I finish preparing in June and take the exam between August and October, depending on how well my theory review goes.
+That's when I realized I wasn't going to make it to the CCNA before February. It was impossible, so I replanned the roadmap. Instead of taking the exam before it changes to version 2.0, I went for a much more relaxed approach, where I finish preparing in June and take the exam between August and October, depending on how well my theory review goes.
 
 Then I realized that if I take it in February 2028, I can do it with a 70% discount from my university. That obviously changed my decision, and I moved the exam to the end of February.
 

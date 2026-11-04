@@ -16,7 +16,7 @@ project: Homelab ED50
 
 The company is already operating on a self-hosted infrastructure over Proxmox VE with the Paperless manager, and a Telegram bot that digitizes expense receipts and archives them automatically.
 
-The issuing piece was missing. Invoicing clients, public administrations included, with payment tracking, complying with the RGPD and the Spanish regulatory calendar.
+The issuing piece was missing. Invoicing clients, public administrations included, with payment tracking, complying with the GDPR and the Spanish regulatory calendar.
 
 ### Requirements
 
@@ -79,7 +79,7 @@ Caddy (LXC, reverse proxy, TLS wildcard DNS-01)
 
 Close the 3-2-1 strategy with the offsite copy. Production (hypervisor SSD / working disks) → local copy (NAS) → copy in the cloud. The requirements:
 
-1. Automatic nightly backup of the selected NAS folders (~1.5 TB of client data, documentation, and photo archive), **client-side encrypted** before leaving the house. So that the provider never sees data in the clear, thereby complying with GDPR.
+1. Automatic nightly backup of the selected NAS folders (~1.5 TB of client data, documentation, and photo archive), **client-side encrypted** before leaving the house, so that the provider never sees data in the clear and the setup complies with GDPR.
 2. A second zone of the same box mounted as a network drive in the file explorer. This is for on-demand access, with no synchronization and no local replica.
 3. Protection against the scenario "the attacker compromises the NAS and destroys the remote copy too", since a backup that depends on the NAS makes no sense.
 

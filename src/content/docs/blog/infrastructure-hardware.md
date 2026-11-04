@@ -1,7 +1,7 @@
 ---
 title: "Infrastructure: choosing and justifying the hardware"
 date: 2026-07-03
-description: The hardware behind the Homelab ED50 project, backups, firewall, and the Proxmox server, and the reasoning for each choice.
+description: "The hardware behind the Homelab ED50 project: backups, firewall, and the Proxmox server, with the reasoning for each choice."
 tags: [homelab, networking, hardware, proxmox, opnsense, synology, backup]
 project: Homelab ED50
 ---
@@ -12,17 +12,18 @@ The NAS in use is a Synology DS718+. This unit supports Active Backup for Busine
 
 Two opposite backup flows coexist in this project and must not be mixed:
 
-- Hyper Backup pushes data from the NAS to an external USB drive, will use the "Seagate Expansion Desktop 12TB STKP12000400" as the USB drive.
-- Active Backup for Business pulls data from PCs and VMs into the NAS. 
+- Hyper Backup pushes data from the NAS to an external USB drive, a Seagate Expansion Desktop 12 TB (STKP12000400).
+- Active Backup for Business pulls data from PCs and VMs into the NAS.
 
 ### Why Hyper Backup
 
-The NAS is using RAID1 wich provides availability. It is not a backup, because it immediately replicates any change, including accidental deletions and ransomware encryption. To get real protection against those events comes from versioned backups. Hyper Backup produces those versions in a proprietary format (.hbk) with deduplication, allowing recovery of an earlier state after a deletion or an attack.
+The NAS uses RAID1, which provides availability. It is not a backup, because it immediately replicates any change, including accidental deletions and ransomware encryption. Real protection against those events comes from versioned backups. Hyper Backup produces those versions in a proprietary format (.hbk) with deduplication, allowing recovery of an earlier state after a deletion or an attack.
+
 ### Destination and configuration
 
 1. Backup engine: Hyper Backup, included in DSM, at no cost and with no third-party dependency.
 2. Destination: Seagate Expansion Desktop 12 TB external drive (STKP12000400), connected to the rear USB 3.0 port of the DS718+.
-3.  Encryption enabled on the task. The encryption key is stored off the NAS and is unrecoverable if lost.
+3. Encryption enabled on the task. The encryption key is stored off the NAS and is unrecoverable if lost.
 4. Nightly schedule with version rotation (Smart Recycle).
 5. Backup scope: the critical dataset is backed up. With about 5 TB used out of 9.1 TB available, the full volume fits with room for versions.
 
@@ -43,7 +44,7 @@ The 12 TB desktop drives in this range are helium-based and use CMR recording, s
 To harden the system, a second external drive is considered:
 
 - Changing the brand protects against a batch or model defect that could affect both copies at once.
-- Rotation with one unit always kept off-site provides the "1" of the 3-2-1 rule: an off-site, offline copy that protects against fire, theft, flood and ransomware with control of the NAS. A drive in a drawer elsewhere cannot be encrypted by an attacker.
+- Rotation with one unit always kept off-site provides the "1" of the 3-2-1 rule: an off-site, offline copy that protects against fire, theft, flood and ransomware that has taken control of the NAS. A drive in a drawer elsewhere cannot be encrypted by an attacker.
 
 ## 1. FIREWALL
 
@@ -55,7 +56,7 @@ A firewall appliance is chosen, not an office mini PC. The essential difference 
 
 The extra cost over the generic option is the premium for European warranty and support, assumed consciously. The barebone version is purchased (no RAM or SSD). The RAM and the SSD are acquired separately.
 
-Capacity for OPNsense and Suricata: the VP2420 uses an Intel Celeron J6412 CPU with AES-NI. It is sufficient to route at 1 Gbps with IDS/IPS active. A higher CPU is not chosen because at 1 Gbps it brings no practical advantage.
+Capacity for OPNsense and Suricata: the VP2420 uses an Intel Celeron J6412 CPU with AES-NI. It is sufficient to route at 1 Gbps with IDS/IPS active. A more powerful CPU is not chosen because at 1 Gbps it brings no practical advantage.
 
 Limitation to keep in mind: the VP2420 accepts M.2 SATA storage, not NVMe. That is why the chosen SSD is SATA. For a firewall, SATA is more than enough.
 
@@ -87,7 +88,7 @@ The critical resource is RAM. The real sum of the service stack is around 18-24 
 
 ### Storage and data location
 
-The server's storage is for compute. Its NVMe holds Proxmox, the virtual machines and containers, the databases and Immich's thumbnail cache. Immich's documentation requires PostgreSQL to use local SSD and never a network share, which is why I choose 512 GB of storage.
+The server's storage is for compute. Its NVMe holds Proxmox, the virtual machines and containers, the databases and Immich's thumbnail cache. Immich's documentation requires PostgreSQL to use local SSD and never a network share, which is why I chose 512 GB of storage.
 
 Immich's access to the photos on the NAS generates traffic between the services VLAN and VLAN 70, which must be enabled explicitly as a registered exception.
 
@@ -99,8 +100,8 @@ The server connects to the central switch through a trunk port, with the Proxmox
 
 Minisforum UM870 Slim, in a 32 GB DDR5 + 512 GB NVMe PCIe 4.0 configuration. I chose this mini PC for its CPU (AMD Ryzen 7 8745H), required so that it has headroom for the full stack; this CPU has integrated graphics, more than enough for everything it has to render.
 
-Another of the reasons that led me to choose this model is its dual RAM slot: it is scalable. It also has a second M.2 slot in case I need to increase its storage, but it is not a feature I give much importance to, since 512 GB should be more than enough.
+Another reason I chose this model is its dual RAM slots: it is scalable. It also has a second M.2 slot in case I need to increase its storage, but it is not a feature I give much importance to, since 512 GB should be more than enough.
 
-The port is 2.5GbE for the VLAN trunk and all the traffic with the NAS.
+Its 2.5GbE port carries the VLAN trunk and all the traffic with the NAS.
 
 I chose the version already configured with 32 GB and 512 GB. With the current price of DDR5 memory, buying the equipment with the RAM included is more economical than acquiring a barebone and adding the modules separately.
