@@ -18,7 +18,7 @@ Toda la configuración central está en `astro.config.mjs` bajo el plugin `starl
 - No inventes props ni opciones de configuración: Starlight tiene una API fija.
 
 ## Stack y estructura del proyecto
-- Framework: Astro v4+ con integración Starlight
+- Framework: Astro 6 con integración Starlight 0.39
 - Estilos: CSS custom en `src/styles/custom.css` (referenciado en `customCss` en astro.config.mjs)
 - Contenido: archivos `.md` / `.mdx` en `src/content/docs/`
 - Componentes override: en `src/components/` (registrados en `starlight({ components: {...} })`)
@@ -39,7 +39,7 @@ Toda la configuración central está en `astro.config.mjs` bajo el plugin `starl
 - Profesión: [Computer engineering student]
 - Email: [lbretonesvillegas@gmail.com]
 - GitHub: [LuisBretonesVillegas]
-- LinkedIn: [https://www.linkedin.com/in/luis-bretones-villegas-02b103315/]
+- LinkedIn: [https://www.linkedin.com/in/luisbretonesvillegas]
 - Descripción corta: "[Computer Engineering student at UAL. This is where I document what I build and learn.]"
 
 ## Secciones del portfolio que quiero tener
@@ -70,9 +70,8 @@ Toda la configuración central está en `astro.config.mjs` bajo el plugin `starl
 - [x] Fill in the About section with this text: [Fill in the About section with this exact text, do not change or invent anything:
 
 Computer Engineering student based in Spain, focused on networking and cloud infrastructure.
-I'm currently working toward my AWS Cloud Practitioner and CCNA certifications, with plans
-to continue with the AWS Solutions Architect Associate and CCNP to deepen my expertise in
-both cloud and enterprise networking. C1 English level. This site is where I document what
+I'm currently studying for the Terraform Associate and the CCNA, with the CKA next and the
+AWS Solutions Architect Associate after that, building toward a career in DevOps and SRE. C1 English level. This site is where I document what
 I build and learn along the way.]. Do not invent anything. Keep everything in English.
 - [x] Create the page src/content/docs/projects/index.md with a list of my projects. For now just titles and one sentence each: [Protocol Analysis of Wireless Audio Transceivers]. Keep everything in English.
 - [x] Create an individual .md page for each project under src/content/docs/projects/[project-name].md with its content. Keep everything in English.
