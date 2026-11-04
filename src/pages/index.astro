@@ -1,6 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import Portfolio from '../layouts/Portfolio.astro';
+import { entryUrl, dateLabel } from '../lib/entries';
 
 // Projects highlighted on the home page, in display order.
 const FEATURED = [
@@ -13,32 +14,6 @@ const featured = FEATURED
   .map(slug => allDocs.find(e => e.id.replace(/\.mdx?$/, '') === slug))
   .filter((e): e is NonNullable<typeof e> => Boolean(e));
 
-function formatDate(date: Date): string {
-  return date.toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
-  });
-}
-
-// Latest blog post date for a project, so projects without a progress.json
-// still get a "Started · Updated" label derived from their write-ups.
-const blogPosts = allDocs.filter(e => e.id.startsWith('blog/') && !e.id.match(/^blog\/index\.mdx?$/));
-function dateLabel(data: (typeof featured)[number]['data']): string {
-  if (!data.date) return '';
-  const started = formatDate(data.date);
-  if (data.progressUrl) return `Started ${started}`;
-  const times = blogPosts
-    .filter(p => p.data.project === data.title && p.data.date)
-    .map(p => new Date(p.data.date!).getTime());
-  if (times.length) {
-    const updated = new Date(Math.max(...times));
-    if (updated.getTime() > new Date(data.date).getTime()) {
-      return `Started ${started} · Updated ${formatDate(updated)}`;
-    }
-  }
-  return started;
-}
 ---
 <Portfolio>
   <style>
@@ -325,12 +300,11 @@ function dateLabel(data: (typeof featured)[number]['data']): string {
     <p class="section-title">Featured // Selected projects</p>
     <div class="featured-grid">
       {featured.map(project => {
-        const url = `/${project.id.replace(/\.mdx?$/, '')}/`;
         return (
-          <a href={url} class="featured-card">
+          <a href={entryUrl(project)} class="featured-card">
             {project.data.date && (
               <time class="featured-date" data-progress-url={project.data.progressUrl ?? undefined}>
-                {dateLabel(project.data)}
+                {dateLabel(project.data, allDocs)}
               </time>
             )}
             <p class="featured-title">{project.data.title}</p>
@@ -465,23 +439,7 @@ function dateLabel(data: (typeof featured)[number]['data']): string {
   </section>
 
   <script>
-    import { lastUpdated } from '../scripts/progressUpdated.js';
-
-    document.querySelectorAll('time[data-progress-url]').forEach(async (el) => {
-      const url = el.getAttribute('data-progress-url');
-      if (!url) return;
-      try {
-        const res = await fetch(url + '?t=' + Date.now());
-        const data = await res.json();
-        const last = await lastUpdated(url, data);
-        if (!last) return;
-        const d = last.toLocaleDateString('en-US', {
-          year: 'numeric',
-          month: 'short',
-          day: 'numeric',
-        });
-        el.textContent = el.textContent + ' · Updated ' + d;
-      } catch {}
-    });
+    import { showUpdatedDates } from '../scripts/progressUpdated.js';
+    showUpdatedDates();
   </script>
 </Portfolio>

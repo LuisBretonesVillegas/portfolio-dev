@@ -52,8 +52,10 @@ src/
 │   ├── Footer.astro       ← Starlight component overrides
 │   ├── SiteTitle.astro
 │   ├── ThemeSelect.astro
-│   ├── JavaProgress.astro ← progress grid + devlog for the course trackers
-│   └── BlogPostList.astro
+│   ├── EntryList.astro    ← shared listing for /projects/ and /learning/
+│   └── JavaProgress.astro ← progress grid + devlog for the course trackers
+├── lib/
+│   └── entries.ts         ← sorting, URLs and date labels shared by the landing pages
 ├── scripts/
 │   └── progressUpdated.js ← "last updated" date from the tracker repo's latest commit
 └── styles/
