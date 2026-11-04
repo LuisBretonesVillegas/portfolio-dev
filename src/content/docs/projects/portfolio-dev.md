@@ -13,7 +13,7 @@ A personal portfolio site built from scratch with Astro and Starlight. This page
 |-------|-----------|
 | **Framework** | Astro 6 with Starlight 0.39 |
 | **Styling** | Handwritten CSS, Starlight CSS custom properties |
-| **Fonts** | Playfair Display · DM Sans · JetBrains Mono (Google Fonts) |
+| **Fonts** | Playfair Display · DM Sans · JetBrains Mono (self-hosted with the Astro Fonts API) |
 | **Deployment** | GitHub Actions → GitHub Pages |
 | **Domain** | luisbretones.dev |
 
@@ -50,10 +50,14 @@ src/
 │   └── blog/              ← blog posts (Starlight)
 ├── components/
 │   ├── Footer.astro       ← Starlight component overrides
+│   ├── Head.astro
 │   ├── SiteTitle.astro
 │   ├── ThemeSelect.astro
 │   ├── EntryList.astro    ← shared listing for /projects/ and /learning/
 │   └── JavaProgress.astro ← progress grid + devlog for the course trackers
+├── assets/
+│   ├── avatar.jpeg        ← optimized to WebP at build time
+│   └── fonts/             ← self-hosted woff2 files
 ├── lib/
 │   └── entries.ts         ← sorting, URLs and date labels shared by the landing pages
 ├── scripts/
@@ -120,13 +124,24 @@ Three fonts, each with a distinct role:
 
 **JetBrains Mono** - metadata and labels. Used for section titles (`SKILLS // CURRENT STACK`), tags (`arch-linux`), dates, the nav subtitle (`ALMERÍA`), and the buttons. The monospace rhythm gives those elements a technical, terminal-like feel that matches the networking/infrastructure content.
 
-```css
-/* Portfolio.astro loads all three with a <link> to Google Fonts.
-   custom.css imports DM Sans and JetBrains Mono for the Starlight pages: */
-@import url('...DM+Sans...JetBrains+Mono...');
+The woff2 files live in `src/assets/fonts/` and are registered with the Astro Fonts API, so the site makes no requests to Google Fonts at runtime:
 
---sl-font:      'DM Sans', sans-serif;
---sl-font-mono: 'JetBrains Mono', monospace;
+```js
+// astro.config.mjs (one variant shown)
+fonts: [{
+  provider: fontProviders.local(),
+  name: 'DM Sans',
+  cssVariable: '--font-body',
+  fallbacks: ['sans-serif'],
+  options: { variants: [{ src: ['./src/assets/fonts/dm-sans-300-700-normal-latin.woff2'], weight: '300 700', style: 'normal' }] },
+}]
+```
+
+`<Font />` in `Portfolio.astro` and in a `Head.astro` override for Starlight pages emits the `@font-face` rules, and the Starlight variables point at the same fonts:
+
+```css
+--sl-font:      var(--font-body);
+--sl-font-mono: var(--font-mono);
 ```
 
 ---
@@ -137,7 +152,7 @@ Three fonts, each with a distinct role:
 
 The homepage is the most complex page. It has five sections:
 
-**Hero** - two-column grid: text on the left, circular photo on the right. The photo uses `border-radius: 50%`, `object-fit: cover`, and `object-position: center top` to keep the face in frame regardless of crop. Desktop avatar: 280px. The hero padding (`5rem 0 4rem`) gives it room to breathe before the first section separator. Two buttons sit under the tagline: Projects and CV.
+**Hero** - two-column grid: text on the left, circular photo on the right. The photo is an `astro:assets` `<Image>` (WebP, with a srcset for the 88px and 280px sizes) and uses `border-radius: 50%`, `object-fit: cover`, and `object-position: center top` to keep the face in frame regardless of crop. Desktop avatar: 280px. The hero padding (`5rem 0 4rem`) gives it room to breathe before the first section separator. Two buttons sit under the tagline: Projects and CV.
 
 ```css
 .hero {

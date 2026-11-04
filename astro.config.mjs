@@ -1,5 +1,5 @@
 // @ts-check
-import { defineConfig } from 'astro/config';
+import { defineConfig, fontProviders } from 'astro/config';
 import starlight from '@astrojs/starlight';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -80,6 +80,90 @@ function blogSidebarItems() {
 // https://astro.build/config
 export default defineConfig({
 	site: 'https://luisbretones.dev',
+	// Self-hosted fonts (woff2 files from Google Fonts, latin and latin-ext
+	// subsets, in src/assets/fonts) instead of loading Google Fonts at runtime.
+	// <Font /> in Portfolio.astro and Head.astro emits the @font-face rules and
+	// sets these CSS variables.
+	fonts: [
+		{
+			provider: fontProviders.local(),
+			name: 'DM Sans',
+			cssVariable: '--font-body',
+			fallbacks: ['sans-serif'],
+			options: {
+				variants: [
+					{
+						src: ['./src/assets/fonts/dm-sans-400-italic-latin-ext.woff2'],
+						weight: '400',
+						style: 'italic',
+						unicodeRange: ['U+0100-02BA', 'U+02BD-02C5', 'U+02C7-02CC', 'U+02CE-02D7', 'U+02DD-02FF', 'U+0304', 'U+0308', 'U+0329', 'U+1D00-1DBF', 'U+1E00-1E9F', 'U+1EF2-1EFF', 'U+2020', 'U+20A0-20AB', 'U+20AD-20C4', 'U+2113', 'U+2C60-2C7F', 'U+A720-A7FF'],
+					},
+					{
+						src: ['./src/assets/fonts/dm-sans-400-italic-latin.woff2'],
+						weight: '400',
+						style: 'italic',
+						unicodeRange: ['U+0000-00FF', 'U+0131', 'U+0152-0153', 'U+02BB-02BC', 'U+02C6', 'U+02DA', 'U+02DC', 'U+0304', 'U+0308', 'U+0329', 'U+2000-206F', 'U+20AC', 'U+2122', 'U+2191', 'U+2193', 'U+2212', 'U+2215', 'U+FEFF', 'U+FFFD'],
+					},
+					{
+						src: ['./src/assets/fonts/dm-sans-300-700-normal-latin-ext.woff2'],
+						weight: '300 700',
+						style: 'normal',
+						unicodeRange: ['U+0100-02BA', 'U+02BD-02C5', 'U+02C7-02CC', 'U+02CE-02D7', 'U+02DD-02FF', 'U+0304', 'U+0308', 'U+0329', 'U+1D00-1DBF', 'U+1E00-1E9F', 'U+1EF2-1EFF', 'U+2020', 'U+20A0-20AB', 'U+20AD-20C4', 'U+2113', 'U+2C60-2C7F', 'U+A720-A7FF'],
+					},
+					{
+						src: ['./src/assets/fonts/dm-sans-300-700-normal-latin.woff2'],
+						weight: '300 700',
+						style: 'normal',
+						unicodeRange: ['U+0000-00FF', 'U+0131', 'U+0152-0153', 'U+02BB-02BC', 'U+02C6', 'U+02DA', 'U+02DC', 'U+0304', 'U+0308', 'U+0329', 'U+2000-206F', 'U+20AC', 'U+2122', 'U+2191', 'U+2193', 'U+2212', 'U+2215', 'U+FEFF', 'U+FFFD'],
+					},
+				],
+			},
+		},
+		{
+			provider: fontProviders.local(),
+			name: 'Playfair Display',
+			cssVariable: '--font-display',
+			fallbacks: ['serif'],
+			options: {
+				variants: [
+					{
+						src: ['./src/assets/fonts/playfair-display-700-800-normal-latin-ext.woff2'],
+						weight: '700 800',
+						style: 'normal',
+						unicodeRange: ['U+0100-02BA', 'U+02BD-02C5', 'U+02C7-02CC', 'U+02CE-02D7', 'U+02DD-02FF', 'U+0304', 'U+0308', 'U+0329', 'U+1D00-1DBF', 'U+1E00-1E9F', 'U+1EF2-1EFF', 'U+2020', 'U+20A0-20AB', 'U+20AD-20C4', 'U+2113', 'U+2C60-2C7F', 'U+A720-A7FF'],
+					},
+					{
+						src: ['./src/assets/fonts/playfair-display-700-800-normal-latin.woff2'],
+						weight: '700 800',
+						style: 'normal',
+						unicodeRange: ['U+0000-00FF', 'U+0131', 'U+0152-0153', 'U+02BB-02BC', 'U+02C6', 'U+02DA', 'U+02DC', 'U+0304', 'U+0308', 'U+0329', 'U+2000-206F', 'U+20AC', 'U+2122', 'U+2191', 'U+2193', 'U+2212', 'U+2215', 'U+FEFF', 'U+FFFD'],
+					},
+				],
+			},
+		},
+		{
+			provider: fontProviders.local(),
+			name: 'JetBrains Mono',
+			cssVariable: '--font-mono',
+			fallbacks: ['monospace'],
+			options: {
+				variants: [
+					{
+						src: ['./src/assets/fonts/jetbrains-mono-400-500-normal-latin-ext.woff2'],
+						weight: '400 500',
+						style: 'normal',
+						unicodeRange: ['U+0100-02BA', 'U+02BD-02C5', 'U+02C7-02CC', 'U+02CE-02D7', 'U+02DD-02FF', 'U+0304', 'U+0308', 'U+0329', 'U+1D00-1DBF', 'U+1E00-1E9F', 'U+1EF2-1EFF', 'U+2020', 'U+20A0-20AB', 'U+20AD-20C4', 'U+2113', 'U+2C60-2C7F', 'U+A720-A7FF'],
+					},
+					{
+						src: ['./src/assets/fonts/jetbrains-mono-400-500-normal-latin.woff2'],
+						weight: '400 500',
+						style: 'normal',
+						unicodeRange: ['U+0000-00FF', 'U+0131', 'U+0152-0153', 'U+02BB-02BC', 'U+02C6', 'U+02DA', 'U+02DC', 'U+0304', 'U+0308', 'U+0329', 'U+2000-206F', 'U+20AC', 'U+2122', 'U+2191', 'U+2193', 'U+2212', 'U+2215', 'U+FEFF', 'U+FFFD'],
+					},
+				],
+			},
+		},
+	],
 	// These pages moved to Learning; keep the old URLs working.
 	redirects: {
 		'/projects/java-summer-2026': '/learning/java-summer-2026/',
@@ -110,6 +194,7 @@ export default defineConfig({
 			],
 			components: {
 				Footer: './src/components/Footer.astro',
+				Head: './src/components/Head.astro',
 				SiteTitle: './src/components/SiteTitle.astro',
 				ThemeSelect: './src/components/ThemeSelect.astro',
 			},

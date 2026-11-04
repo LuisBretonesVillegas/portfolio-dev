@@ -65,13 +65,13 @@ const feedUrl = new URL('/rss.xml', Astro.site).href;
   .rss-url {
     flex: 1;
     min-width: 0;
-    font-family: 'JetBrains Mono', monospace;
+    font-family: var(--font-mono);
     font-size: 0.85rem;
     color: var(--text);
     overflow-wrap: anywhere;
   }
   .rss-copy {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: var(--font-mono);
     font-size: 0.72rem;
     font-weight: 600;
     letter-spacing: 0.08em;

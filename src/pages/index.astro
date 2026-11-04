@@ -1,5 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+import avatar from '../assets/avatar.jpeg';
 import Portfolio from '../layouts/Portfolio.astro';
 import { entryUrl, dateLabel } from '../lib/entries';
 
@@ -27,7 +29,7 @@ const featured = FEATURED
       border-bottom: 1px solid var(--border);
     }
     .hero-meta {
-      font-family: 'JetBrains Mono', monospace;
+      font-family: var(--font-mono);
       font-size: 0.7rem;
       font-weight: 500;
       letter-spacing: 0.1em;
@@ -36,7 +38,7 @@ const featured = FEATURED
       margin-bottom: 1.5rem;
     }
     h1 {
-      font-family: 'Playfair Display', serif;
+      font-family: var(--font-display);
       font-size: clamp(2.8rem, 6vw, 4rem);
       font-weight: 800;
       letter-spacing: -0.02em;
@@ -59,7 +61,7 @@ const featured = FEATURED
     }
     .hero-actions { display: flex; gap: 0.75rem; flex-wrap: wrap; }
     .btn {
-      font-family: 'JetBrains Mono', monospace;
+      font-family: var(--font-mono);
       font-size: 0.75rem;
       font-weight: 600;
       letter-spacing: 0.08em;
@@ -109,7 +111,7 @@ const featured = FEATURED
     .skill-cell:nth-child(3n) { border-right: none; }
     .skill-cell:nth-last-child(-n+3) { border-bottom: none; }
     .skill-cell-title {
-      font-family: 'JetBrains Mono', monospace;
+      font-family: var(--font-mono);
       font-size: 0.6rem;
       font-weight: 600;
       letter-spacing: 0.12em;
@@ -157,7 +159,7 @@ const featured = FEATURED
     }
     .featured-card:hover { border-color: var(--accent); }
     .featured-date {
-      font-family: 'JetBrains Mono', monospace;
+      font-family: var(--font-mono);
       font-size: 0.62rem;
       font-weight: 600;
       letter-spacing: 0.12em;
@@ -165,7 +167,7 @@ const featured = FEATURED
       color: var(--accent);
     }
     .featured-title {
-      font-family: 'Playfair Display', serif;
+      font-family: var(--font-display);
       font-size: 1.35rem;
       font-weight: 700;
       line-height: 1.25;
@@ -185,7 +187,7 @@ const featured = FEATURED
       flex-wrap: wrap;
     }
     .featured-tag {
-      font-family: 'JetBrains Mono', monospace;
+      font-family: var(--font-mono);
       font-size: 0.62rem;
       font-weight: 500;
       padding: 0.15rem 0.5rem;
@@ -198,7 +200,7 @@ const featured = FEATURED
       align-items: center;
       gap: 0.4rem;
       margin-top: 0.4rem;
-      font-family: 'JetBrains Mono', monospace;
+      font-family: var(--font-mono);
       font-size: 0.72rem;
       font-weight: 600;
       letter-spacing: 0.04em;
@@ -224,7 +226,7 @@ const featured = FEATURED
     }
     .cert-row:last-child { border-bottom: 1px solid var(--border); }
     .cert-status {
-      font-family: 'JetBrains Mono', monospace;
+      font-family: var(--font-mono);
       font-size: 0.6rem;
       font-weight: 700;
       letter-spacing: 0.08em;
@@ -245,7 +247,7 @@ const featured = FEATURED
     .cert-name { color: var(--text); font-weight: 500; }
     .cert-row.planned .cert-name { color: var(--text-muted); font-weight: 400; }
     .cert-target {
-      font-family: 'JetBrains Mono', monospace;
+      font-family: var(--font-mono);
       font-size: 0.7rem;
       color: var(--text-muted);
       white-space: nowrap;
@@ -292,7 +294,17 @@ const featured = FEATURED
       </div>
     </div>
     <div class="hero-right">
-      <img src="/avatar.jpeg" alt="Luis Bretones" class="avatar" />
+      <Image
+        src={avatar}
+        alt="Luis Bretones"
+        class="avatar"
+        width={280}
+        height={280}
+        widths={[176, 280, 560]}
+        sizes="(max-width: 768px) 88px, 280px"
+        loading="eager"
+        fetchpriority="high"
+      />
     </div>
   </section>
 

@@ -1,9 +1,8 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
-
 /* ── Fonts ── */
+/* Self-hosted through the Astro Fonts API (see `fonts` in astro.config.mjs and Head.astro). */
 :root {
-  --sl-font: 'DM Sans', sans-serif;
-  --sl-font-mono: 'JetBrains Mono', monospace;
+  --sl-font: var(--font-body);
+  --sl-font-mono: var(--font-mono);
 }
 
 /* ── Always light ── */
