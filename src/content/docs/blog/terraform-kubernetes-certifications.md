@@ -3,7 +3,7 @@ title: Why I'm going for the Terraform and Kubernetes certifications
 date: 2026-11-03
 description: ED50 v2.0 made me add Terraform (TA-004) and Kubernetes (CKA) to my certification roadmap. Here's the order I'll take them in and why.
 tags: [terraform, kubernetes, certifications, devops]
-project: ED50 v2.0 From Homelab to Enterprise Network
+project: "ED50 v2.0: From Homelab to Enterprise Network"
 ---
 
 Looking at the ED50 v2.0 project, I've decided to prepare for the Terraform (TA-004) and Kubernetes (CKA) certifications. In this project I've limited my use of AI, because what I'm after is testing my own knowledge, not being efficient. If I'm not going to lean on AI, I need to learn these technologies in a structured way, and a certification gives me a syllabus and a way to measure my progress.

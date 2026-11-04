@@ -67,14 +67,14 @@ Deploy a document management system for a consultancy's invoices, integrated int
 
 ```
 (outside home: Tailscale → subnet router)
-Client ─ https://facturas.ed50.es ──► Caddy (LXC, .20) ──► LXC Paperless (.21:8000)
+Client ─ https://invoices.ed50.es ──► Caddy (LXC, .20) ──► LXC Paperless (.21:8000)
                                                                    │
                                           ┌────────────────────────┴────────────────────┐
                                           │  Docker Compose                             │
                                           │  paperless-ngx ─ PostgreSQL 17 ─ Redis 8    │
                                           └────────────────────────▲────────────────────┘
                                                                    │
-                            Intake 1: IMAP (facturas@ mailbox) ────┤
+                            Intake 1: IMAP (invoices@ mailbox) ────┤
                             Intake 2: consume folder / web upload ─┤
                             Intake 3: Telegram bot (for receipts) ─┘
 ```
@@ -99,7 +99,7 @@ Relevant service configuration:
 
 ```yaml
 environment:
-  PAPERLESS_URL: https://facturas.ed50.es   # correct CSRF behind the proxy
+  PAPERLESS_URL: https://invoices.ed50.es   # correct CSRF behind the proxy
   PAPERLESS_TIME_ZONE: Europe/Madrid
   PAPERLESS_OCR_LANGUAGE: spa
 ```
@@ -108,7 +108,7 @@ PostgreSQL password and `PAPERLESS_SECRET_KEY` generated and kept safe in a pass
 
 #### Email intake (IMAP)
 
-Dedicated mailbox `facturas@ed50.es` at the domain provider, used exclusively as an intake queue for machines.
+Dedicated mailbox `invoices@ed50.es` at the domain provider, used exclusively as an intake queue for machines.
 
 Mail rule in Paperless:
 
@@ -160,7 +160,7 @@ docker compose exec -u paperless webserver python3 manage.py mail_fetcher
 - Document uploaded via web: OCR correct, inner text findable from the search box.
 - Document dropped into the consume folder (via `pct push`): consumed and indexed automatically.
 - Email with a PDF attachment: detected by the IMAP rule, attachment consumed, correspondent created automatically from the sender, email preserved and marked as read.
-- HTTPS access with a valid certificate via `facturas.ed50.es`, inside and outside the LAN (mobile app included, configured against the domain URL).
+- HTTPS access with a valid certificate via `invoices.ed50.es`, inside and outside the LAN (mobile app included, configured against the domain URL).
 
 ---
 

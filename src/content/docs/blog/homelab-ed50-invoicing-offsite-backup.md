@@ -37,7 +37,7 @@ Internet ─ (no open ports; remote access over Tailscale)
 Caddy (LXC, reverse proxy, TLS wildcard DNS-01)
    ├── paperless.domain   → Paperless-ngx (LXC)
    ├── n8n.domain         → n8n (LXC)
-   └── facturas.domain    → FacturaScripts (new LXC)
+   └── invoices.domain    → FacturaScripts (new LXC)
                               ├── app container (official image)
                               └── MariaDB 11.8 LTS container (pinned)
 ```
