@@ -12,12 +12,28 @@ const FEATURED = [
 ];
 
 const allDocs = await getCollection('docs');
+
+// Structured data so search engines can tie the site to its author.
+const person = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: 'Luis Bretones',
+  url: Astro.site?.href,
+  image: new URL('/avatar.jpeg', Astro.site).href,
+  jobTitle: 'Computer Engineering Student',
+  affiliation: { '@type': 'CollegeOrUniversity', name: 'University of Almería' },
+  sameAs: [
+    'https://github.com/LuisBretonesVillegas',
+    'https://www.linkedin.com/in/luisbretonesvillegas',
+  ],
+};
 const featured = FEATURED
   .map(slug => allDocs.find(e => e.id.replace(/\.mdx?$/, '') === slug))
   .filter((e): e is NonNullable<typeof e> => Boolean(e));
 
 ---
 <Portfolio>
+  <script type="application/ld+json" set:html={JSON.stringify(person)} />
   <style>
     /* ── HERO ── */
     .hero {

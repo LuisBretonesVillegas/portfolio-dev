@@ -51,6 +51,7 @@ src/
 ├── components/
 │   ├── Footer.astro       ← Starlight component overrides
 │   ├── Head.astro
+│   ├── PageTitle.astro    ← adds the date and reading time to blog posts
 │   ├── SiteTitle.astro
 │   ├── ThemeSelect.astro
 │   ├── EntryList.astro    ← shared listing for /projects/ and /learning/
