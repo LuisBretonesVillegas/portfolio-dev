@@ -46,7 +46,7 @@ const featured = FEATURED
     }
     .hero-meta {
       font-family: var(--font-mono);
-      font-size: 0.7rem;
+      font-size: 0.75rem;
       font-weight: 500;
       letter-spacing: 0.1em;
       text-transform: uppercase;
@@ -128,9 +128,9 @@ const featured = FEATURED
     .skill-cell:nth-last-child(-n+3) { border-bottom: none; }
     .skill-cell-title {
       font-family: var(--font-mono);
-      font-size: 0.6rem;
+      font-size: 0.75rem;
       font-weight: 600;
-      letter-spacing: 0.12em;
+      letter-spacing: 0.06em;
       text-transform: uppercase;
       margin-bottom: 0.85rem;
     }
@@ -176,7 +176,7 @@ const featured = FEATURED
     .featured-card:hover { border-color: var(--accent); }
     .featured-date {
       font-family: var(--font-mono);
-      font-size: 0.62rem;
+      font-size: 0.75rem;
       font-weight: 600;
       letter-spacing: 0.12em;
       text-transform: uppercase;
@@ -204,7 +204,7 @@ const featured = FEATURED
     }
     .featured-tag {
       font-family: var(--font-mono);
-      font-size: 0.62rem;
+      font-size: 0.75rem;
       font-weight: 500;
       padding: 0.15rem 0.5rem;
       border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
@@ -217,7 +217,7 @@ const featured = FEATURED
       gap: 0.4rem;
       margin-top: 0.4rem;
       font-family: var(--font-mono);
-      font-size: 0.72rem;
+      font-size: 0.75rem;
       font-weight: 600;
       letter-spacing: 0.04em;
       color: var(--accent);
@@ -243,11 +243,12 @@ const featured = FEATURED
     .cert-row:last-child { border-bottom: 1px solid var(--border); }
     .cert-status {
       font-family: var(--font-mono);
-      font-size: 0.6rem;
+      font-size: 0.75rem;
       font-weight: 700;
       letter-spacing: 0.08em;
       text-transform: uppercase;
       justify-self: start;
+      white-space: nowrap;
       padding: 0.2rem 0.5rem;
       border-radius: 3px;
     }
@@ -264,7 +265,7 @@ const featured = FEATURED
     .cert-row.planned .cert-name { color: var(--text-muted); font-weight: 400; }
     .cert-target {
       font-family: var(--font-mono);
-      font-size: 0.7rem;
+      font-size: 0.75rem;
       color: var(--text-muted);
       white-space: nowrap;
     }
@@ -289,7 +290,7 @@ const featured = FEATURED
       .skill-grid { grid-template-columns: repeat(2, 1fr); }
       .skill-cell:nth-child(3n) { border-right: 1px solid var(--grid-line); }
       .skill-cell:nth-child(2n) { border-right: none; }
-      .cert-row { grid-template-columns: 96px 1fr; row-gap: 0.2rem; }
+      .cert-row { grid-template-columns: 112px 1fr; row-gap: 0.2rem; }
       .cert-target { grid-column: 2; }
       .featured-grid { grid-template-columns: 1fr; }
     }
@@ -450,7 +451,7 @@ const featured = FEATURED
       </div>
       <div class="cert-row">
         <span class="cert-status status-active">In progress</span>
-        <span class="cert-name">Cisco Certified Network Associate (CCNA 200-301)</span>
+        <span class="cert-name">Cisco Certified Network Associate <span style="white-space: nowrap;">(CCNA 200-301)</span></span>
         <span class="cert-target">Exam early 2028</span>
       </div>
       <div class="cert-row">
